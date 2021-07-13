@@ -111,3 +111,4 @@ export {
 } from './copypaste';
 export {tablePopUpMenu, tablePopUpMenuKey};
 export {selectionShadowPlugin} from './selectionshadow';
+export {formattingInheritancePlugin} from './plugins/formatting-inheritance';
