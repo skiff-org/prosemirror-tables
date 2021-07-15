@@ -1,7 +1,5 @@
 import {Plugin, PluginKey} from 'prosemirror-state';
 import {isInTable, nextCell} from '../util';
-import {findTextNodes} from 'prosemirror-utils';
-import {TextSelection} from 'prosemirror-state';
 
 export const formattingInheritanceKey = new PluginKey('formattingInheritance');
 
@@ -18,8 +16,14 @@ export const formattingInheritancePlugin = (schema) => {
         .node(CELL_DEPTH);
 
       // if the cell already has content return.
-      if (currentCell && currentCell.content.content[0].childCount > 0)
+      if (
+        currentCell &&
+        currentCell.content.content[0].childCount > 0 &&
+        (currentCell.textContent.replace(/[^\x00-\x7F]/g, '') !== '' ||
+          !currentCell.content.content[0].isTextblock)
+      ) {
         return null;
+      }
 
       //not in table, more than one step or no steps at all
       if (
@@ -44,11 +48,15 @@ export const formattingInheritancePlugin = (schema) => {
       )
         return null;
 
-      const prevCellStart = nextCell(
-        newState.doc.resolve(from - 2),
-        'vertical',
-        -1
+      const withWeirdCharacter = /[^\x00-\x7F]/g.test(currentCell.textContent);
+
+      const resFrom = newState.doc.resolve(
+        withWeirdCharacter ? from - 3 : from - 2
       );
+
+      if (resFrom.node(-1).type.name !== 'table') return null;
+
+      const prevCellStart = nextCell(resFrom, 'vertical', -1);
 
       // no cell to the left of the current cell
       if (!prevCellStart) return null;
@@ -59,8 +67,13 @@ export const formattingInheritancePlugin = (schema) => {
       let firstTextNodeInCellMarks;
 
       prevCellNode.descendants((node, pos, parent) => {
-        if (node.isTextblock && !firstTextBlockInCell) firstTextBlockInCell = node;
-        if (node.isText && !firstTextNodeInCellMarks && node.textContent !== "​") {
+        if (node.isTextblock && !firstTextBlockInCell)
+          firstTextBlockInCell = node;
+        if (
+          node.isText &&
+          !firstTextNodeInCellMarks &&
+          node.textContent !== '​'
+        ) {
           firstTextNodeInCellMarks = node.marks;
           return false;
         }
