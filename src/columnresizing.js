@@ -361,7 +361,7 @@ function handleDoubleClick(view, event, cellMinWidth) {
     }px;white-space: nowrap;`;
 
     const cellScrollWidth = cellContent.scrollWidth;
-    console.log(cellScrollWidth, cellContent);
+
     columnMaxWidth = Math.max(columnMaxWidth, cellScrollWidth);
   });
 

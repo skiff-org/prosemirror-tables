@@ -7,9 +7,6 @@ import {
   DATE_FORMAT,
   buildDateObjectFromText,
 } from './utils';
-
-import {DatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
-import DateUtilDayJS from '@date-io/dayjs';
 import {findParentNodeOfTypeClosestToPos} from 'prosemirror-utils';
 
 const DateComponent = ({view, node, getPos, editorContentRef, dom}) => {
@@ -52,7 +49,7 @@ const DateComponent = ({view, node, getPos, editorContentRef, dom}) => {
   );
 };
 
-export const DatePickerComponent = ({view, node, pos}) => {
+export const DatePickerComponent = ({view, node, pos, DatePickerTheme}) => {
   const [date, setDate] = useState(
     buildDateObjectFromText(node.textContent, DATE_FORMAT) || new Date()
   );
@@ -102,15 +99,18 @@ export const DatePickerComponent = ({view, node, pos}) => {
 
   return (
     <div className="date-picker" ref={ref}>
-      <MuiPickersUtilsProvider utils={DateUtilDayJS}>
-        <DatePicker
-          autoOk
-          onChange={handleChange}
-          openTo="date"
-          value={date}
-          variant="static"
-        />
-      </MuiPickersUtilsProvider>
+      <DatePickerTheme date={date} handleChange={handleChange}/>
+      {/* <ThemeProvider theme={DatePickerTheme}>
+        <MuiPickersUtilsProvider utils={DateUtilDayJS}>
+          <DatePicker
+            autoOk
+            onChange={handleChange}
+            openTo="date"
+            value={date}
+            variant="static"
+          />
+        </MuiPickersUtilsProvider>
+      </ThemeProvider> */}
     </div>
   );
 };

@@ -13,8 +13,9 @@ import {DatePickerComponent} from './Component.jsx';
 import {findParentNodeOfType} from 'prosemirror-utils';
 
 class TableDateMenuView {
-  constructor(view) {
+  constructor(view, DatePickerTheme) {
     this.view = view;
+    this.datePickerTheme = DatePickerTheme;
 
     this.buildMenuDOM();
 
@@ -86,6 +87,7 @@ class TableDateMenuView {
     ReactDOM.render(
       <DatePickerComponent
         dom={this.cellData.dom}
+        DatePickerTheme={this.datePickerTheme}
         node={this.cellData.node}
         pos={this.cellData.pos}
         view={this.view}
@@ -97,9 +99,9 @@ class TableDateMenuView {
         const [, ...duplicatedStyleTags] = document.querySelectorAll(
           'style[data-meta="MuiButtonBase"]'
         );
-        duplicatedStyleTags.forEach((tag) => {
-          tag.remove();
-        });
+        // duplicatedStyleTags.forEach((tag) => {
+        //   tag.remove();
+        // });
       }
     );
   }
@@ -115,12 +117,12 @@ class TableDateMenuView {
   destroy() {}
 }
 
-export const TableDateMenu = (dateFormat) => {
+export const TableDateMenu = (dateFormat, DatePickerTheme) => {
   setDateFormat(dateFormat);
   return new Plugin({
     key: tableDateMenuKey,
     view(view) {
-      const menuView = new TableDateMenuView(view);
+      const menuView = new TableDateMenuView(view, DatePickerTheme);
 
       return menuView;
     },
