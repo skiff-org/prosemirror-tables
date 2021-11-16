@@ -279,7 +279,7 @@ export function removeRow(tr, {map, table, tableStart}, row) {
 
 // :: (EditorState, dispatch: ?(tr: Transaction)) → bool
 // Remove the selected rows from a table.
-export function deleteRow(state, dispatch) {
+export function deleteRow(state, dispatch, rect) {
   if (!isInTable(state)) return false;
   if (dispatch) {
     const rect = selectedRect(state),
@@ -870,3 +870,40 @@ export const deleteColAtPos = (pos, view) => {
   return true
 };
 
+export const deleteLastRow = (state, dispatch) => {
+  const resolvedPos = state.doc.resolve(state.selection.from);
+  const tableWithPos = findParentNodeOfTypeClosestToPos(resolvedPos, state.schema.nodes.table)
+  if (!tableWithPos) return false;
+  const map = TableMap.get(tableWithPos.node)
+  const rect = {
+    table: tableWithPos.node,
+    tableStart: tableWithPos.pos,
+    map
+  }
+
+  const {tr} = state;
+  removeRow(tr, rect, rect.map.height - 1);
+
+  tr.setSelection(TextSelection.create(tr.doc, map.map[map.map.length - (map.width * 2)] + tableWithPos.pos))
+
+  dispatch(tr)
+}
+
+export const deleteLastCol = (state, dispatch) => {
+  const resolvedPos = state.doc.resolve(state.selection.from);
+  const tableWithPos = findParentNodeOfTypeClosestToPos(resolvedPos, state.schema.nodes.table)
+  if (!tableWithPos) return false;
+  const map = TableMap.get(tableWithPos.node)
+  const rect = {
+    table: tableWithPos.node,
+    tableStart: tableWithPos.pos,
+    map
+  }
+
+  const {tr} = state;
+  removeColumn(tr, rect, rect.map.width - 1);
+
+  tr.setSelection(TextSelection.create(tr.doc, map.map[map.width * 2 - 3] + tableWithPos.pos))
+
+  dispatch(tr)
+}

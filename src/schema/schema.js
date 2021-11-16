@@ -1,8 +1,12 @@
 // Helper for creating a schema that supports tables.
 
-import { cellExtraAttrs } from "./cellAttrs";
-import { checkboxExtraAttrs, dateExtraAttrs, labelsExtraAttrs } from "./cellTypeAttrs";
-import { tableExtraAttrs } from "./tableAttrs";
+import {cellExtraAttrs} from './cellAttrs';
+import {
+  checkboxExtraAttrs,
+  dateExtraAttrs,
+  labelsExtraAttrs,
+} from './cellTypeAttrs';
+import {tableExtraAttrs} from './tableAttrs';
 
 function getNodeAttrs(dom, extraAttrs) {
   const attrsFromNode = {};
@@ -26,8 +30,6 @@ export function setNodeAttrs(node, extraAttrs) {
 
   return attrsForDOM;
 }
-
-
 
 // :: (Object) → Object
 //
@@ -63,7 +65,10 @@ export function setNodeAttrs(node, extraAttrs) {
 //       A function to add the attribute's value to an attribute
 //       object that's used to render the cell's DOM.
 export function tableNodes(options) {
-  const tableCellExtraAttrs = {...options.cellAttributes || {}, ...cellExtraAttrs} ;
+  const tableCellExtraAttrs = {
+    ...(options.cellAttributes || {}),
+    ...cellExtraAttrs,
+  };
   const cellAttrs = {
     typesValues: {
       default: {
@@ -72,9 +77,9 @@ export function tableNodes(options) {
         currency: '',
         labels: [],
         date: -1,
-        checkbox: false
-      }
-    }
+        checkbox: false,
+      },
+    },
   };
   for (const prop in tableCellExtraAttrs)
     cellAttrs[prop] = {default: tableCellExtraAttrs[prop].default};
@@ -91,9 +96,11 @@ export function tableNodes(options) {
         labels: {default: []},
         filters: {default: []},
       },
-      parseDOM: [{tag: 'table', getAttrs: (dom) => getNodeAttrs(dom, tableExtraAttrs)}],
+      parseDOM: [
+        {tag: 'table', getAttrs: (dom) => getNodeAttrs(dom, tableExtraAttrs)},
+      ],
       toDOM() {
-        return ['table', setNodeAttrs(node, tableExtraAttrs), ['tbody',  0]];
+        return ['table', setNodeAttrs(node, tableExtraAttrs), ['tbody', 0]];
       },
     },
     table_row: {
@@ -114,7 +121,9 @@ export function tableNodes(options) {
       tableRole: 'cell',
       isolating: true,
       allowGapCursor: false,
-      parseDOM: [{tag: 'td', getAttrs: (dom) => getNodeAttrs(dom, tableCellExtraAttrs)}],
+      parseDOM: [
+        {tag: 'td', getAttrs: (dom) => getNodeAttrs(dom, tableCellExtraAttrs)},
+      ],
       toDOM(node) {
         return ['td', setNodeAttrs(node, tableCellExtraAttrs), 0];
       },
@@ -124,7 +133,9 @@ export function tableNodes(options) {
       attrs: cellAttrs,
       tableRole: 'header_cell',
       isolating: true,
-      parseDOM: [{tag: 'th', getAttrs: (dom) => getNodeAttrs(dom, tableCellExtraAttrs)}],
+      parseDOM: [
+        {tag: 'th', getAttrs: (dom) => getNodeAttrs(dom, tableCellExtraAttrs)},
+      ],
       toDOM(node) {
         return ['th', setNodeAttrs(node, tableCellExtraAttrs), 0];
       },
@@ -137,7 +148,7 @@ export function tableNodes(options) {
       parseDOM: [
         {
           tag: '.cell-checkbox',
-          getAttrs: (dom) => getNodeAttrs(dom, checkboxExtraAttrs)
+          getAttrs: (dom) => getNodeAttrs(dom, checkboxExtraAttrs),
         },
       ],
       toDOM(node) {
@@ -147,8 +158,8 @@ export function tableNodes(options) {
             class: node.attrs.checked
               ? 'cell-checkbox checked'
               : 'cell-checkbox',
-            ...setNodeAttrs(node, checkboxExtraAttrs)
-          }
+            ...setNodeAttrs(node, checkboxExtraAttrs),
+          },
         ];
       },
     },
@@ -162,8 +173,7 @@ export function tableNodes(options) {
       parseDOM: [
         {
           tag: '.cell-date',
-          getAttrs: (dom) => getNodeAttrs(dom, dateExtraAttrs)
-
+          getAttrs: (dom) => getNodeAttrs(dom, dateExtraAttrs),
         },
       ],
       toDOM(node) {
@@ -171,7 +181,7 @@ export function tableNodes(options) {
           'div',
           {
             class: 'cell-date',
-            ...setNodeAttrs(node, dateExtraAttrs)
+            ...setNodeAttrs(node, dateExtraAttrs),
           },
         ];
       },
@@ -185,7 +195,7 @@ export function tableNodes(options) {
       parseDOM: [
         {
           tag: '.cell-label',
-          getAttrs: (dom) => getNodeAttrs(dom, labelsExtraAttrs)
+          getAttrs: (dom) => getNodeAttrs(dom, labelsExtraAttrs),
         },
       ],
       toDOM(node) {
@@ -193,7 +203,7 @@ export function tableNodes(options) {
           'div',
           {
             class: 'cell-label',
-            ...setNodeAttrs(node, labelsExtraAttrs)
+            ...setNodeAttrs(node, labelsExtraAttrs),
           },
         ];
       },
