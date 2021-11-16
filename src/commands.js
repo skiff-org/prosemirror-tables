@@ -870,7 +870,7 @@ export const deleteColAtPos = (pos, view) => {
   return true
 };
 
-export const deleteLastRow = (state, dispatch) => {
+const getTableRect = (state) => {
   const resolvedPos = state.doc.resolve(state.selection.from);
   const tableWithPos = findParentNodeOfTypeClosestToPos(resolvedPos, state.schema.nodes.table)
   if (!tableWithPos) return false;
@@ -881,29 +881,29 @@ export const deleteLastRow = (state, dispatch) => {
     map
   }
 
+  return rect
+}
+
+export const deleteLastRow = (state, dispatch) => {
+  const rect = getTableRect(state)
+  if (!rect) return false;
+
   const {tr} = state;
   removeRow(tr, rect, rect.map.height - 1);
 
-  tr.setSelection(TextSelection.create(tr.doc, map.map[map.map.length - (map.width * 2)] + tableWithPos.pos))
+  tr.setSelection(TextSelection.create(tr.doc, rect.map.map[rect.map.map.length - (rect.map.width * 2)] + rect.tableStart))
 
   dispatch(tr)
 }
 
 export const deleteLastCol = (state, dispatch) => {
-  const resolvedPos = state.doc.resolve(state.selection.from);
-  const tableWithPos = findParentNodeOfTypeClosestToPos(resolvedPos, state.schema.nodes.table)
-  if (!tableWithPos) return false;
-  const map = TableMap.get(tableWithPos.node)
-  const rect = {
-    table: tableWithPos.node,
-    tableStart: tableWithPos.pos,
-    map
-  }
+  const rect = getTableRect(state)
+  if (!rect) return false;
 
   const {tr} = state;
   removeColumn(tr, rect, rect.map.width - 1);
 
-  tr.setSelection(TextSelection.create(tr.doc, map.map[map.width * 2 - 3] + tableWithPos.pos))
+  tr.setSelection(TextSelection.create(tr.doc, rect.map.map[rect.map.width * 2 - 3] + rect.tableStart))
 
   dispatch(tr)
 }
