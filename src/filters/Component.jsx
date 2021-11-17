@@ -307,7 +307,6 @@ const closeFiltersPopup = (view, tr) => {
 
 export const TableFiltersComponent = ({table, pos, view, headerPos}) => {
   const [filtersGroups, setFiltersGroups] = useState(table.attrs.filters || []);
-  const [filtersDisabled, setFiltersDisabled] = useState(true);
 
   // ad filter to selected column
   useEffect(() => {
@@ -319,34 +318,26 @@ export const TableFiltersComponent = ({table, pos, view, headerPos}) => {
     setFiltersGroups((oldGroups) => [...oldGroups, [colDefaultFilter]]);
   }, []);
 
-  // apply all filters
-  useEffect(() => {
-    const tr = executeFilters(
-      table,
-      pos,
-      view.state,
-      filtersDisabled
-        ? [[createDefaultFilter(view.state, table)]]
-        : filtersGroups
-    );
-    view.dispatch(tr);
-  }, [filtersGroups, filtersDisabled]);
-
   const addNewGroup = () => {
     const defaultFilter = createDefaultFilter(view.state, table);
     setFiltersGroups((oldFilters) => [...oldFilters, [defaultFilter]]);
   };
 
   const createFiltersGroupSetter = (groupIndex) => (newGroup) => {
-    let newFilters = filtersGroups.map((group) => group.slice());
+    let newFilters = filtersGroups.slice();
     newFilters[groupIndex] = newGroup;
     newFilters = newFilters.filter((filtersGroup) => !!filtersGroup.length);
 
-    setFiltersGroups(newFilters);
+    // apply all filters
+    const tr = executeFilters(table, pos, view.state, newFilters);
+
     if (!newFilters.length) {
       // Close filter popup when no filters rule left
       closeFiltersPopup(view, tr);
     }
+    view.dispatch(tr);
+
+    setFiltersGroups(newFilters);
   };
 
   const ref = useClickOutside((e) => {
