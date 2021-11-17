@@ -142,4 +142,4 @@ export {typesEnforcer} from './columnsTypes/typesEnforcer';
 export {TableDateMenu} from './columnsTypes/types/Date/datePopup';
 export {TableLabelMenu} from './columnsTypes/types/Label/labelPopup';
 export {TableFiltersMenu} from './filters/filters-menu';
-export {addBottomRow, addRightColumn, deleteLastRow, deleteLastCol} from './commands';
+export {getDeleteCommand} from './input';
