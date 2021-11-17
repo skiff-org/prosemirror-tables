@@ -123,7 +123,7 @@ export {
   columnIsHeader,
 } from './util';
 export {tableNodes, tableNodeTypes} from './schema/schema';
-export {CellSelection} from './cellselection';
+export {CellSelection, getSelectedCellsCoords} from './cellselection';
 export {columnHandles} from './columnhandles';
 export {TableMap} from './tablemap';
 export {tableEditingKey};
