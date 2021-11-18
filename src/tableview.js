@@ -115,8 +115,6 @@ export class TableView {
         this.filterStatusIndicator
       );
 
-      this.disBtn = createButtonWithIcon('test-test');
-
       this.activeFiltersActions = createElementWithClass(
         'div',
         'active-filters-actions'
@@ -176,7 +174,7 @@ export class TableView {
       );
     }
 
-    this.disBtn.onclick = () => {
+    this.enableFiltersBtn.onclick = () => {
       const {dispatch} = this.view;
       const {tr} = this.view.state;
 
@@ -193,6 +191,13 @@ export class TableView {
     } else {
       this.openFiltersBtn.lastChild.innerText = '';
       this.activeFiltersActions.classList.add('no-filters');
+    }
+    if (node.attrs.disableFilters) {
+      this.enableFiltersBtn.lastChild.innerText = 'Enable filters';
+      this.enableFiltersBtn.classList.remove('disable');
+    } else {
+      this.enableFiltersBtn.lastChild.innerText = 'Disable filters';
+      this.enableFiltersBtn.classList.add('disable');
     }
   }
 
