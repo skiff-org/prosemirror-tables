@@ -923,6 +923,16 @@ export const changeCellsBackgroundColor = (state, dispatch, color) => {
   dispatch(tr);
 };
 
+export const isCellColorActive = (state, color) => {
+  const { selection: sel } = state;
+  if (!(sel instanceof CellSelection)) return false;
+  let colorActive = true;
+  sel.forEachCell((node) => {
+    colorActive = colorActive && node.attrs.background === color;
+  })
+  return colorActive;
+}
+
 
 export const toggleTableHeaders = (state, dispatch, view) => {
   const {map, tableStart, table} = selectedRect(state);
