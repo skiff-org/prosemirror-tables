@@ -150,9 +150,12 @@ export const executeFilters = (table, tablePos, state, filters) => {
   });
 
   const {tr} = state;
-
+  const {disableFilters} = table.attrs;
+  console.log(disableFilters);
   tableRows.forEach((row) => {
-    tr.setNodeMarkup(row.pos, undefined, {hidden: !!row.hidden});
+    tr.setNodeMarkup(row.pos, undefined, {
+      hidden: !(disableFilters || !row.hidden),
+    });
   });
 
   // update table attrs with new filters

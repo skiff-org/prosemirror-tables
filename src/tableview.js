@@ -2,7 +2,7 @@ import {NodeSelection} from 'prosemirror-state';
 import {addBottomRow, addRightColumn} from './commands';
 import {createButtonWithIcon, createElementWithClass} from './util';
 import {typeInheritance} from './headers/headers-menu/index';
-import {tableFiltersMenuKey} from './filters/utils';
+import {executeFilters, tableFiltersMenuKey} from './filters/utils';
 import {tableHeadersMenuKey} from './columnsTypes/types.config';
 
 const createAddCellsButton = (type, view, pos) => {
@@ -115,6 +115,8 @@ export class TableView {
         this.filterStatusIndicator
       );
 
+      this.disBtn = createButtonWithIcon('test-test');
+
       this.activeFiltersBtn = createButtonWithIcon('active-filters');
 
       this.activeFiltersBtn.dataset.test = 'add-filter';
@@ -127,6 +129,7 @@ export class TableView {
       };
 
       this.filterStatusIndicator.appendChild(this.activeFiltersBtn);
+      this.filterStatusIndicator.appendChild(this.disBtn);
 
       this.activeFiltersBtn.onclick = (e) => {
         const {dispatch} = this.view;
@@ -161,6 +164,17 @@ export class TableView {
         this.filterStatusIndicatorScrollContainer
       );
     }
+
+    this.disBtn.onclick = () => {
+      const {dispatch} = this.view;
+      const {tr} = this.view.state;
+
+      node.attrs = {...node.attrs, disableFilters: !node.attrs.disableFilters};
+      const pos = this.getPos();
+      tr.setNodeMarkup(pos, undefined, node.attrs);
+      dispatch(tr);
+      dispatch(executeFilters(node, pos + 1, this.view.state));
+    };
     // TODO: Find a way not to update it on every update
     this.activeFiltersBtn.lastChild.innerText =
       node.attrs.filters && node.attrs.filters.length
