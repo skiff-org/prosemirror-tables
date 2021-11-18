@@ -141,7 +141,7 @@
   transform: rotate(90deg);
 }
 .filters-colum-icon {
-  content: url(./svgs/filter.svg);
+  content: url(./svgs/open-filter.svg);
 }
 .delete-colum-icon {
   content: url(./svgs/trash_can_black.svg);
