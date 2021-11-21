@@ -41,15 +41,14 @@
 
 .add-label-icon {
   content: url('./svgs/plus.svg');
-  stroke: red;
   width: 8px;
   height: 8px;
 }
+
 .add-label {
   cursor: pointer;
   border: 1px solid #b1b0ad;
-  background-color: #454a55;
-  color: red;
+  background-color: #454a55 !important;
 
   border-radius: 2px;
   width: 16px;
@@ -62,8 +61,10 @@
 }
 
 .add-label:hover {
-  color: #006ae0;
   border-color: #006ae0;
+}
+.add-label:hover .add-label-icon {
+  content: url('./svgs/plus-hover.svg');
 }
 
 .label-container {
