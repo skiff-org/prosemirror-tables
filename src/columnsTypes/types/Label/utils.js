@@ -150,8 +150,8 @@ export const calculateMenuPosition = (menuDOM, {node, dom: cellDOM, pos}) => {
     top,
     height: cellHeight,
     width: cellWidth,
-  } = cellDOM.parentElement.getBoundingClientRect();
-  console.log(cellDOM.parentElement);
+  } = cellDOM.closest('td').getBoundingClientRect();
+  console.log();
 
   if (left === 0 || top === 0) return;
 

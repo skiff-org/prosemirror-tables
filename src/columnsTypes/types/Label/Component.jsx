@@ -22,8 +22,7 @@ const Label = ({title, onDelete, color, editMode, openChooser}) => {
       >
         {title}
       </span>
-      <span class="delete-label"> </span>
-      {}
+      <span class="delete-label" onClick={onDelete} />
     </div>
   );
 };

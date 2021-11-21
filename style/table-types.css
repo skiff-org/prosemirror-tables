@@ -27,14 +27,13 @@
 }
 
 .all-labels-container {
+  height: 100%;
   display: flex;
-  gap: 16px;
+  gap: 9px;
   justify-content: flex-start;
   align-items: center;
-  padding-bottom: 2px;
-  padding: 16px 16px;
+  padding: 9px 14px;
 
-  position: relative;
   flex-wrap: wrap;
   overflow: hidden;
 }
@@ -86,11 +85,11 @@
 }
 
 .delete-label {
+  content: url('./svgs/delete-label.svg');
+  cursor: pointer;
   border-radius: 100%;
   width: 10px;
   height: 10px;
-  background-color: white;
-  white-space: normal;
 }
 
 .label-title {
