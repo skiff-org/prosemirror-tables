@@ -186,13 +186,16 @@
 
 .add-new-label {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   border-radius: 3px;
   align-items: center;
-  padding: 4px 8px;
-  font-size: 15px;
+  padding: 4px 8px 4px 11px;
+  font-size: 13px;
   justify-content: flex-start;
   cursor: pointer;
+}
+.add-new-label .label-color {
+  margin-left: 4px;
 }
 
 .add-new-label:hover {

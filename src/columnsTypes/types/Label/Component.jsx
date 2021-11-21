@@ -198,13 +198,13 @@ export const LabelsChooser = ({
               inFilters ? () => null : createNewLabel();
             }
           }}
+          placeholder={
+            tableLabels.length
+              ? 'Type to filter / create new'
+              : 'Type to create new label'
+          }
           type="text"
         />
-        <span className="new-label-placeholder">
-          {tableLabels.length
-            ? 'Type to filter / create new'
-            : 'Type to create new label'}
-        </span>
         <div className="labels-list">
           {inputValue.length && isNotExists(inputValue) ? (
             <div className="add-new-label" onClick={createNewLabel}>
