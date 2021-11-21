@@ -32,7 +32,7 @@
   justify-content: flex-start;
   align-items: center;
   padding-bottom: 2px;
-  padding-left: 8px;
+  padding: 16px 16px;
 
   position: relative;
   flex-wrap: wrap;
@@ -121,16 +121,17 @@
   justify-content: center;
   height: fit-content;
 
-  position: absolute;
-  top: 30px;
-  left: 20px;
-
   border-radius: 6px;
   background-color: white;
+  transform: translateX(-50%);
 
   z-index: 100;
 
   padding: 5px;
+}
+
+.labels-cell {
+  padding: 0 !important;
 }
 
 .labels-list {
