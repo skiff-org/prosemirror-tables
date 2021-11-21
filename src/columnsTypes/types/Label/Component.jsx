@@ -288,7 +288,7 @@ const LabelComponent = ({view, node, getPos, dom}) => {
             data-test="add-label"
             onClick={openChooser}
           >
-            <span>+</span>
+            <span className="add-label-icon"></span>
           </button>
         )}
       </div>

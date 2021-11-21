@@ -28,30 +28,33 @@
 
 .all-labels-container {
   display: flex;
-  gap: 10px;
+  gap: 16px;
   justify-content: flex-start;
   align-items: center;
   padding-bottom: 2px;
+  padding-left: 8px;
 
   position: relative;
   flex-wrap: wrap;
   overflow: hidden;
 }
 
+.add-label-icon {
+  content: url('./svgs/plus.svg');
+  stroke: red;
+  width: 8px;
+  height: 8px;
+}
 .add-label {
   cursor: pointer;
-  border: 1px solid rgb(189, 189, 189);
-  height: fit-content;
-  width: fit-content;
-  border-radius: 5px;
-  background-color: transparent;
-  padding: 1px;
-  font-size: 20px;
-  color: rgba(73, 73, 73, 0.7);
+  border: 1px solid #b1b0ad;
+  background-color: #454a55;
+  color: red;
 
-  margin-left: 3px;
-  margin-top: 1px;
-  margin-bottom: 1px;
+  border-radius: 2px;
+  width: 16px;
+  height: 16px;
+  padding: 4px;
 
   display: flex;
   align-items: center;
@@ -59,13 +62,8 @@
 }
 
 .add-label:hover {
-  transform: scale(1.05);
-}
-
-.add-label span {
-  height: 15px;
-  width: 15px;
-  line-height: 15px;
+  color: #006ae0;
+  border-color: #006ae0;
 }
 
 .label-container {
