@@ -13,27 +13,17 @@ import {
 import useClickOutside from '../../../useClickOutside.jsx';
 
 const Label = ({title, onDelete, color, editMode, openChooser}) => {
+  const bgStyle = {backgroundColor: `${color}`};
   return (
-    <div className="label-container">
-      <span
-        className="label-color"
-        style={{backgroundColor: `${color}`}}
-      ></span>
+    <div className="label-container" style={bgStyle}>
       <span
         className="label-title"
         onClick={editMode ? openChooser : () => null}
       >
         {title}
       </span>
-      {editMode && (
-        <button
-          className="remove-label"
-          onClick={() => onDelete()}
-          type="button"
-        >
-          <span className="remove-label-icon"></span>
-        </button>
-      )}
+      <span class="delete-label"> </span>
+      {}
     </div>
   );
 };
@@ -56,7 +46,7 @@ const LabelOption = ({
         onChange(title, !selected);
       }}
     >
-      <img
+      <span
         className={
           selected ? 'label-option-checkbox selected' : 'label-option-checkbox'
         }
@@ -126,6 +116,9 @@ export const LabelsChooser = ({
       : tableLabels.filter((label) =>
           label.title.toLowerCase().includes(inputValue.toLowerCase())
         );
+
+  const isNotExists = (label) =>
+    tableLabels.filter(({title}) => title === label).length === 0;
 
   useEffect(() => {
     const input = document.getElementById('labels-input');
@@ -207,43 +200,39 @@ export const LabelsChooser = ({
           }}
           type="text"
         />
+        <span className="new-label-placeholder">
+          {tableLabels.length
+            ? 'Type to filter / create new'
+            : 'Type to create new label'}
+        </span>
         <div className="labels-list">
-          {filteredLabels.length ? (
-            filteredLabels.map(({title, color}, index) => (
-              <LabelOption
-                checked={chosenLabels.find((label) => label.title === title)}
-                color={color}
-                inFilters={inFilters}
-                key={`${title}${index}`}
-                onChange={(title, checked) =>
-                  handleLabelCheck(title, color, checked)
-                }
-                onDelete={handleLabelDelete}
-                title={title}
-              />
-            ))
-          ) : (
+          {inputValue.length && isNotExists(inputValue) ? (
             <div className="add-new-label" onClick={createNewLabel}>
-              {inputValue.length && !inFilters ? (
-                <>
-                  +
-                  <span
-                    className="label-color"
-                    style={{backgroundColor: `${newLabelColor}`}}
-                  ></span>
-                  <span className="new-label-title">Create "{inputValue}"</span>
-                </>
-              ) : (
-                <>
-                  <span className="new-label-placeholder">
-                    {inFilters
-                      ? 'Type to search for labels'
-                      : 'Type to create new label'}
-                  </span>
-                </>
-              )}
+              +
+              <span
+                className="label-color"
+                style={{backgroundColor: `${newLabelColor}`}}
+              ></span>
+              <span className="new-label-title">Create "{inputValue}"</span>
             </div>
+          ) : (
+            ''
           )}
+          {filteredLabels.length
+            ? filteredLabels.map(({title, color}, index) => (
+                <LabelOption
+                  checked={chosenLabels.find((label) => label.title === title)}
+                  color={color}
+                  inFilters={inFilters}
+                  key={`${title}${index}`}
+                  onChange={(title, checked) =>
+                    handleLabelCheck(title, color, checked)
+                  }
+                  onDelete={handleLabelDelete}
+                  title={title}
+                />
+              ))
+            : ''}
         </div>
       </div>
     </>
