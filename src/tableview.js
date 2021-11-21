@@ -102,7 +102,7 @@ export class TableView {
   }
 
   buildActiveFiltersButton(node) {
-    if (!this.openFiltersBtn) {
+    if (!this.activeFiltersActions) {
       this.filterStatusIndicator = createElementWithClass(
         'div',
         'filterStatusIndicator'
@@ -207,7 +207,9 @@ export class TableView {
     if (node.type != this.node.type) {
       return false;
     }
+
     this.buildActiveFiltersButton(node);
+
     if (this.node.attrs.headers) {
       typeInheritance(this.view, node, this.getPos());
     }
