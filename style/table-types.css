@@ -242,6 +242,54 @@
   font-size: 15px;
   margin: 8px;
 }
+.light.date-picker {
+  height: fit-content;
+  width: fit-content;
+  padding: 0px;
+  overflow: hidden;
+}
+
+.light .sgo-tables-plugin--MuiPickersStaticWrapper-staticWrapperRoot {
+  border: 1px solid#E2E3E4;
+  border-radius: 16px;
+}
+.light h6.sgo-tables-plugin--MuiTypography-root {
+  font-family: 'Proxima Nova';
+  font-size: 15px;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: black;
+}
+.light h4.sgo-tables-plugin--MuiTypography-root {
+  font-family: 'Proxima Nova';
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: 0em;
+  text-align: left;
+  font-weight: 900;
+  color: black;
+}
+.light .sgo-tables-plugin--MuiPickersDay-daySelected span p {
+  color: #027aff;
+  z-index: 100;
+}
+.light .sgo-tables-plugin--MuiPickersDay-daySelected span *,
+.light .sgo-tables-plugin--MuiPickersDay-daySelected,
+.light .sgo-tables-plugin--MuiPickersDay-daySelected:hover {
+  background-color: #e0eefc;
+}
+
+.light .sgo-tables-plugin--MuiToolbar-root {
+  background-color: white;
+}
+.light button.sgo-tables-plugin--MuiPickersCalendarHeader-iconButton {
+  background-color: transparent;
+}
+.light span.sgo-tables-plugin--MuiTypography-root {
+  color: #9a9ea2;
+  font-weight: 600;
+}
 
 .dark.date-picker {
   height: fit-content;
@@ -275,7 +323,6 @@
 }
 
 .dark .sgo-tables-plugin--MuiToolbar-root {
-  border: 1px solid #3d4045;
   background-color: #005cc2;
 }
 .dark button.sgo-tables-plugin--MuiPickersCalendarHeader-iconButton {
