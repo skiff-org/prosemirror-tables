@@ -117,7 +117,7 @@ export const LabelsChooser = ({
         );
 
   const isNotExists = (label) =>
-    tableLabels.filter(({title}) => title === label).length === 0;
+    !tableLabels.some(({title}) => title === label);
 
   useEffect(() => {
     const input = document.getElementById('labels-input');
