@@ -96,7 +96,7 @@
 }
 
 .delete-label {
-  color: transparent;
+  mask: url('./svgs/delete-label.svg');
   cursor: pointer;
   border-radius: 100%;
   width: 10px;
