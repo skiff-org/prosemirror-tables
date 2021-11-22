@@ -145,13 +145,11 @@ export const displayPopup = (view, popupDOM) => {
 export const calculateMenuPosition = (menuDOM, {node, dom: cellDOM, pos}) => {
   const {style} = menuDOM;
 
-  const {
-    left,
-    top,
-    height: cellHeight,
-    width: cellWidth,
-  } = cellDOM.closest('td').getBoundingClientRect();
-  console.log();
+  const tableCell = cellDOM.closest('td');
+  const addButton = tableCell.querySelector('button.add-label');
+
+  const {top, height: cellHeight} = tableCell.getBoundingClientRect();
+  const {left, width: buttonWidth} = addButton.getBoundingClientRect();
 
   if (left === 0 || top === 0) return;
 
@@ -163,7 +161,7 @@ export const calculateMenuPosition = (menuDOM, {node, dom: cellDOM, pos}) => {
   style.top = `${
     top - EDITOR_TOP_OFFSET + (scrolledEl.scrollTop || 0) + cellHeight + 4
   }px`;
-  style.left = `${left - EDITOR_LEFT_OFFSET + cellWidth / 2}px`;
+  style.left = `${left - EDITOR_LEFT_OFFSET + buttonWidth / 2}px`;
 };
 
 export const removeLabelsFromTableCells = (state, pos, deletedLabel, tr) => {
