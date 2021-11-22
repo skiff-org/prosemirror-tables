@@ -12,22 +12,52 @@ import {
 } from './utils';
 import useClickOutside from '../../../useClickOutside.jsx';
 
-const Label = ({title, onDelete, color, editMode, openChooser}) => {
-  const bgStyle = {backgroundColor: `${color}`};
+const Label = ({theme, title, onDelete, color, editMode, openChooser}) => {
   return (
-    <div className="label-container" style={bgStyle}>
+    <div
+      className="label-container"
+      style={
+        theme === 'dark'
+          ? {backgroundColor: color.replace('1.0', '0.3')}
+          : {backgroundColor: color}
+      }
+    >
       <span
         className="label-title"
         onClick={editMode ? openChooser : () => null}
+        style={
+          theme === 'dark'
+            ? {
+                color: color,
+              }
+            : {
+                color: 'white',
+              }
+        }
       >
         {title}
       </span>
-      {editMode && <span class="delete-label" onClick={onDelete} />}
+      {editMode && (
+        <span
+          className="delete-label"
+          onClick={onDelete}
+          style={
+            theme === 'dark'
+              ? {
+                  backgroundColor: color,
+                }
+              : {
+                  backgroundColor: 'white',
+                }
+          }
+        />
+      )}
     </div>
   );
 };
 
 const LabelOption = ({
+  theme,
   color,
   title,
   onChange,
@@ -39,7 +69,7 @@ const LabelOption = ({
 
   return (
     <div
-      className="label-option"
+      className={`label-option ${theme}`}
       onClick={() => {
         setSelected(!selected);
         onChange(title, !selected);
@@ -75,6 +105,7 @@ const LabelOption = ({
 };
 
 export const LabelsChooser = ({
+  theme,
   view,
   pos,
   node,
@@ -220,6 +251,7 @@ export const LabelsChooser = ({
           {filteredLabels.length
             ? filteredLabels.map(({title, color}, index) => (
                 <LabelOption
+                  theme={theme}
                   checked={chosenLabels.find((label) => label.title === title)}
                   color={color}
                   inFilters={inFilters}
@@ -241,6 +273,8 @@ export const LabelsChooser = ({
 const LabelComponent = ({view, node, getPos, dom}) => {
   const labels = node.attrs.labels;
 
+  const theme = window.localStorage.getItem('THEME_MODE') || 'light';
+
   const openChooser = (e) => {
     const {tr} = view.state;
     tr.setMeta(tableLabelsMenuKey, {
@@ -261,6 +295,7 @@ const LabelComponent = ({view, node, getPos, dom}) => {
       <div className="all-labels-container">
         {labels.map(({title, color}, index) => (
           <Label
+            theme={theme}
             color={color}
             editMode={view.editable}
             key={`${color}${title}${index}`}
@@ -272,7 +307,7 @@ const LabelComponent = ({view, node, getPos, dom}) => {
 
         {view.editable && (
           <button
-            className="add-label"
+            className={`add-label ${theme}`}
             data-test="add-label"
             onClick={openChooser}
           >

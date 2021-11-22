@@ -44,6 +44,17 @@
   height: 8px;
 }
 
+.light .add-label-icon {
+  content: url('./svgs/plus_light.svg');
+  width: 8px;
+  height: 8px;
+}
+
+.add-label.light {
+  border: 1px solid transparent;
+  background-color: transparent !important;
+}
+
 .add-label {
   cursor: pointer;
   border: 1px solid #b1b0ad;
@@ -85,11 +96,12 @@
 }
 
 .delete-label {
-  content: url('./svgs/delete-label.svg');
+  color: transparent;
   cursor: pointer;
   border-radius: 100%;
   width: 10px;
   height: 10px;
+  position: relative;
 }
 
 .label-title {
@@ -166,6 +178,10 @@
   background-color: #313740;
 }
 
+.label-option.light:hover {
+  background-color: #f0f1f3;
+}
+
 .label-option-checkbox {
   background-color: transparent;
   border: none;
@@ -175,6 +191,16 @@
   padding: 0px;
   opacity: 0.7;
 }
+
+.light .label-option-checkbox {
+  opacity: 1;
+  content: url(./svgs/check_box_light.svg);
+}
+
+.light .label-option-checkbox.selected {
+  content: url(./svgs/checked_check_box_light.svg);
+}
+
 .label-option-checkbox:hover {
   opacity: 1;
 }
