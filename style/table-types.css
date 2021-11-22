@@ -243,15 +243,60 @@
   margin: 8px;
 }
 
-.date-picker {
-  border: 1px solid rgb(189, 189, 189);
+.dark.date-picker {
   height: fit-content;
   width: fit-content;
-  border-radius: 5px;
   padding: 0px;
   overflow: hidden;
-  background-color: white;
 }
+
+.dark .sgo-tables-plugin--MuiPickersStaticWrapper-staticWrapperRoot {
+  background-color: #15191e;
+  border: 1px solid #3d4045;
+  border-radius: 16px;
+}
+.dark h6.sgo-tables-plugin--MuiTypography-root {
+  font-family: 'Proxima Nova';
+  font-size: 15px;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+.dark h4.sgo-tables-plugin--MuiTypography-root {
+  font-family: 'Proxima Nova';
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: 0em;
+  text-align: left;
+  font-weight: 900;
+}
+.dark div.sgo-tables-plugin--MuiTypography-root {
+  color: white;
+}
+
+.dark .sgo-tables-plugin--MuiToolbar-root {
+  border: 1px solid #3d4045;
+  background-color: #005cc2;
+}
+.dark button.sgo-tables-plugin--MuiPickersCalendarHeader-iconButton {
+  background-color: transparent;
+}
+.dark .sgo-tables-plugin--MuiTypography-body1 {
+  color: white;
+}
+.dark span.sgo-tables-plugin--MuiTypography-root {
+  color: #9a9ea2;
+  font-weight: 600;
+}
+.dark div.sgo-tables-plugin--MuiPickersCalendar-week span {
+  color: white;
+  font-family: 'Proxima Nova';
+  font-size: 15px;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: center;
+}
+
 .empty-date .DD_MM_YYYY .cell-date-content,
 .empty-date .YYYY_MM_DD .cell-date-content,
 .empty-date .MM_DD_YYYY .cell-date-content {
