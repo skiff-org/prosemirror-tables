@@ -96,6 +96,7 @@ export function tableNodes(options) {
         labels: {default: []},
         filters: {default: []},
         disableFilters: {default: false},
+        tooltipOpen: {default: false},
       },
       parseDOM: [
         {tag: 'table', getAttrs: (dom) => getNodeAttrs(dom, tableExtraAttrs)},

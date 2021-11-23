@@ -161,7 +161,7 @@ export const createElementWithClassAndChild = (
 ) => {
   const el = document.createElement(type);
   el.className = className;
-  el.append(child);
+  el.append(...child);
   if (datatest) {
     el.dataset.test = datatest;
   }

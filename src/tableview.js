@@ -33,7 +33,6 @@ export class TableView {
     this.view = view;
     this.getPos = getPos;
     this.cellMinWidth = cellMinWidth;
-    this.openFiltersBtn = null;
     const tableScrollWrapper = cewc('div', 'tableScrollWrapper');
     this.tableWrapper = tableScrollWrapper.appendChild(
       cewc('div', 'tableWrapper')
@@ -73,6 +72,7 @@ export class TableView {
 
     this.actionsDOM = this.buildActions();
     this.tableVerticalWrapper.prepend(this.actionsDOM);
+    this.updateActions(node);
   }
 
   updateMarkers() {
@@ -100,10 +100,12 @@ export class TableView {
   updateActions(node) {
     // TODO: Find a way not to update it on every update
     if (node.attrs.filters?.length) {
-      this.openFiltersBtn.lastChild.innerText = node.attrs.filters.length;
+      this.openActionsBtn.querySelector('.open-actions-label').innerText = `${
+        node.attrs.filters.length
+      } Filter${node.attrs.filters.length === 1 ? '' : 's'}`;
       this.activeFiltersActions.classList.remove('no-filters');
     } else {
-      this.openFiltersBtn.lastChild.innerText = '';
+      this.openActionsBtn.querySelector('.open-actions-label').innerText = '';
       this.activeFiltersActions.classList.add('no-filters');
     }
     if (node.attrs.disableFilters) {
@@ -114,24 +116,19 @@ export class TableView {
       this.enableFiltersBtn.classList.add('disable');
     }
 
-    this.openFiltersBtn.onclick = '';
-    this.enableFiltersBtn.onclick = '';
-    this.clearFilterBtn.onclick = '';
-    this.openFiltersBtn.addEventListener(
-      'click',
-      this.openFiltersBtnClicked.bind(this)
-    );
-    this.enableFiltersBtn.addEventListener(
-      'click',
-      this.enableFiltersBtnClicked.bind(this)
-    );
-    this.clearFilterBtn.addEventListener(
-      'click',
-      this.clearFilterBtnClicked.bind(this)
-    );
+    if (node.attrs.tooltipOpen) {
+      this.actionsTooltip.classList.remove('hidden');
+    } else {
+      this.actionsTooltip.classList.add('hidden');
+    }
+
+    this.openActionsBtn.onclick = this.openActionsBtnClicked.bind(this);
+    this.manageFiltersBtn.onclick = this.manageFiltersBtnClicked.bind(this);
+    this.enableFiltersBtn.onclick = this.enableFiltersBtnClicked.bind(this);
+    this.clearFilterBtn.onclick = this.clearFilterBtnClicked.bind(this);
   }
 
-  enableFiltersBtnClicked() {
+  enableFiltersBtnClicked(e) {
     const {
       node,
       view: {
@@ -145,9 +142,30 @@ export class TableView {
     tr.setNodeMarkup(pos, undefined, node.attrs);
     dispatch(tr);
     dispatch(executeFilters(node, pos + 1, this.view.state));
+    e.preventDefault();
+    e.stopPropagation();
   }
 
-  clearFilterBtnClicked() {
+  openActionsBtnClicked(e) {
+    const {
+      node,
+      view: {
+        dispatch,
+        state: {tr},
+      },
+    } = this;
+
+    node.attrs = {...node.attrs, tooltipOpen: !node.attrs.tooltipOpen};
+    const pos = this.getPos();
+    tr.setNodeMarkup(pos, undefined, node.attrs);
+    dispatch(tr);
+    dispatch(executeFilters(node, pos + 1, this.view.state));
+    e.preventDefault();
+    e.stopPropagation();
+    this.updateActions(node);
+  }
+
+  clearFilterBtnClicked(e) {
     const {
       node,
       view: {
@@ -161,9 +179,11 @@ export class TableView {
     tr.setNodeMarkup(pos, undefined, node.attrs);
     dispatch(tr);
     dispatch(executeFilters(node, pos + 1, this.view.state));
+    e.preventDefault();
+    e.stopPropagation();
   }
 
-  openFiltersBtnClicked(e) {
+  manageFiltersBtnClicked(e) {
     const {
       node,
       view: {
@@ -200,7 +220,10 @@ export class TableView {
   }
 
   buildActions() {
-    this.filterStatusIndicator = cewc('div', 'filterStatusIndicator');
+    this.filterStatusIndicator = cewc(
+      'div',
+      'filterStatusIndicator open-tooltip'
+    );
     const filterStatusIndicatorScrollContainer = cewc(
       'div',
       'filterStatusIndicatorScrollContainer'
@@ -210,39 +233,37 @@ export class TableView {
     );
 
     this.activeFiltersActions = cewc('div', 'active-filters-actions');
-    this.openTooltipBtn = createButtonWithIcon('open-tooltip');
-    this.openFiltersBtn = createButtonWithIcon('open-filters');
+    this.openActionsBtn = cewcac('button', 'open-actions-button', [
+      cewc('span', 'open-actions-filter-icon'),
+      cewc('span', 'open-actions-label'),
+      cewc('span', 'open-actions-arrow-icon'),
+    ]);
 
-    this.activeFiltersActions.appendChild(this.openFiltersBtn);
-    this.activeFiltersActions.appendChild(this.openTooltipBtn);
+    this.activeFiltersActions.appendChild(this.openActionsBtn);
 
     this.actionsTooltip = cewc('div', 'actions-tooltip');
+    this.manageFiltersBtn = createButtonWithIcon('manage-filters');
     this.enableFiltersBtn = createButtonWithIcon('enable-filters');
-    this.enableFiltersBtn.lastChild.innerText = 'Disable filters';
-    this.enableFiltersBtn.classList.add('disable');
     this.clearFilterBtn = createButtonWithIcon('clear-filters');
+    this.manageFiltersBtn.lastChild.innerText = 'Manage filters';
+    this.enableFiltersBtn.lastChild.innerText = 'Disable filters';
     this.clearFilterBtn.lastChild.innerText = 'Clear filters';
-    this.actionsTooltip.append(this.enableFiltersBtn, this.clearFilterBtn);
-
-    this.openFiltersBtn.dataset.test = 'add-filter';
+    this.enableFiltersBtn.classList.add('disable');
+    this.actionsTooltip.append(
+      this.manageFiltersBtn,
+      this.enableFiltersBtn,
+      this.clearFilterBtn
+    );
 
     this.filterStatusIndicator.append(
       this.activeFiltersActions,
       this.actionsTooltip
     );
 
-    this.openFiltersBtn.addEventListener(
-      'click',
-      this.openFiltersBtnClicked.bind(this)
-    );
-    this.enableFiltersBtn.addEventListener(
-      'click',
-      this.enableFiltersBtnClicked.bind(this)
-    );
-    this.clearFilterBtn.addEventListener(
-      'click',
-      this.clearFilterBtnClicked.bind(this)
-    );
+    this.openActionsBtn.onclick = this.openActionsBtnClicked.bind(this);
+    this.manageFiltersBtn.onclick = this.manageFiltersBtnClicked.bind(this);
+    this.enableFiltersBtn.onclick = this.enableFiltersBtnClicked.bind(this);
+    this.clearFilterBtn.onclick = this.clearFilterBtnClicked.bind(this);
 
     return filterStatusIndicatorScrollContainer;
   }

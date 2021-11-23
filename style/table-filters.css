@@ -274,31 +274,26 @@
   height: 28px;
 }
 
-.open-filters-icon {
+.open-actions-filter-icon {
   content: url(./svgs/open-filter.svg);
   height: 20px;
   stroke-width: 5px;
   aspect-ratio: 1;
 }
 
-.open-tooltip-icon {
+.open-actions-arrow-icon {
   content: url(./svgs/filters-tooltip.svg);
   height: 20px;
   stroke-width: 5px;
   aspect-ratio: 1;
 }
 
-.open-filters-label {
-  height: 15px;
-  aspect-ratio: 1;
-  background-color: #c4c4c4;
-  border-radius: 100%;
-  color: #005cc2;
-  font-size: 12px;
-  font-weight: 400;
+.open-actions-label {
+  color: white;
+  font-weight: 500;
 }
 
-.no-filters .open-filters-label {
+.no-filters .open-actions-label {
   display: none;
 }
 
@@ -306,21 +301,21 @@
   display: none;
 }
 
-.no-filters .open-filters-button {
+.no-filters .open-actions-button {
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
   padding: 3px 15px;
   background-color: transparent;
-  border: 2px solid white;
+  border: 1px solid white;
 }
 
-.no-filters .open-filters-button:hover {
+.no-filters .open-actions-button:hover {
   background-color: #006ae0;
   border: none;
   padding: 5px 17px;
 }
 
-.open-filters-button {
+.open-actions-button {
   border: none;
   cursor: pointer;
   background-color: #005cc2;
@@ -348,7 +343,7 @@
   border-bottom-right-radius: 8px;
 }
 
-.open-filters-button:hover,
+.open-actions-button:hover,
 .open-tooltip-button:hover,
 .open-tooltip-button.open {
   background-color: #102e4f;
@@ -368,6 +363,7 @@
 }
 
 .enable-filters-button,
+.manage-filters-button,
 .clear-filters-button {
   padding-left: 15px;
   display: flex;
@@ -381,9 +377,14 @@
   border-radius: 3px;
 }
 
+.manage-filters-button:hover,
 .enable-filters-button:hover,
 .clear-filters-button:hover {
   background-color: #313740;
+}
+
+.manage-filters-icon {
+  content: url('./svgs/manage_filters.svg');
 }
 
 .clear-filters-icon {
