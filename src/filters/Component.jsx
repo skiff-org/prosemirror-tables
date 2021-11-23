@@ -160,17 +160,9 @@ const FilterRule = ({
 
   return (
     <div className="filter-row">
-      {index === 0 ? (
-        isFirstGroup ? (
-          'Where'
-        ) : (
-          <>
-            <span className="concatenation-rule">Or</span> Where
-          </>
-        )
-      ) : (
-        <span className="concatenation-rule">And</span>
-      )}
+      <span className="concatenation-rule">
+        {index !== 0 ? 'And' : isFirstGroup ? 'Where' : 'Or where'}
+      </span>
       <div className="column-chooser" data-test="filter-column-chooser">
         <SelectDropdown
           className="filter-columns-dropdown"
@@ -213,6 +205,7 @@ const FiltersGroup = ({
   isFirstGroup,
   table,
   addNewGroup,
+  removeGroup,
   view,
   index,
 }) => {
@@ -241,7 +234,7 @@ const FiltersGroup = ({
   return (
     <div className="filters-group-container">
       {!isFirstGroup && <hr className="filters-group-separator"></hr>}
-      <span>Filter {index + 1}</span>
+      <span className="filter-index">Filter {index + 1}</span>
       {filters.length ? (
         filters.map((filterHandler, index) => {
           return (
@@ -270,13 +263,19 @@ const FiltersGroup = ({
           >
             + And
           </button>
-          {isLastGroup && (
+          <button
+            className="group-action-button"
+            data-test="filter-or-button"
+            onClick={() => addNewGroup()}
+          >
+            + Or
+          </button>
+          {filters.length > 1 && (
             <button
-              className="group-action-button"
-              data-test="filter-or-button"
-              onClick={() => addNewGroup()}
+              className="group-action-button remove"
+              onClick={removeGroup}
             >
-              + Or
+              <span className="group-action-remove-icon"></span>
             </button>
           )}
         </div>
@@ -343,6 +342,10 @@ export const TableFiltersComponent = ({table, pos, view, headerPos}) => {
 
   return (
     <div className="table-filters-container" ref={ref}>
+      <div className="active-filters-heading">
+        <span className="active-filters-heading-icon"></span>
+        <span className="active-filters-heading-label"> Filters </span>
+      </div>
       <div className="active-filters">
         {filtersGroups.length ? (
           <>

@@ -117,8 +117,10 @@ export class TableView {
     }
 
     if (node.attrs.tooltipOpen) {
+      this.activeFiltersActions.classList.add('open-tooltip');
       this.actionsTooltip.classList.remove('hidden');
     } else {
+      this.activeFiltersActions.classList.remove('open-tooltip');
       this.actionsTooltip.classList.add('hidden');
     }
 
@@ -144,6 +146,7 @@ export class TableView {
     dispatch(executeFilters(node, pos + 1, this.view.state));
     e.preventDefault();
     e.stopPropagation();
+    this.updateActions(node);
   }
 
   openActionsBtnClicked(e) {
@@ -181,6 +184,14 @@ export class TableView {
     dispatch(executeFilters(node, pos + 1, this.view.state));
     e.preventDefault();
     e.stopPropagation();
+
+    const clearPopUp = cewcac('div', 'clear-filters-popup', [
+      cewc('span', 'clear-filters-icon'),
+      cewcac('span', 'clear-filters-label', ['Filters are cleared.']),
+      cewcac('button', 'clear-filters-button', ['Undo']),
+    ]);
+
+    this.updateActions(node);
   }
 
   manageFiltersBtnClicked(e) {
@@ -220,10 +231,7 @@ export class TableView {
   }
 
   buildActions() {
-    this.filterStatusIndicator = cewc(
-      'div',
-      'filterStatusIndicator open-tooltip'
-    );
+    this.filterStatusIndicator = cewc('div', 'filterStatusIndicator');
     const filterStatusIndicatorScrollContainer = cewc(
       'div',
       'filterStatusIndicatorScrollContainer'
