@@ -153,6 +153,22 @@ export const createElementWithClass = (type, className, datatest) => {
   return el;
 };
 
+export const createElementWithClassAndChild = (
+  type,
+  className,
+  child = [],
+  datatest
+) => {
+  const el = document.createElement(type);
+  el.className = className;
+  el.append(child);
+  if (datatest) {
+    el.dataset.test = datatest;
+  }
+
+  return el;
+};
+
 export const createButtonWithIcon = (className) => {
   const button = createElementWithClass('button', `${className}-button`);
   const icon = createElementWithClass('span', `${className}-icon`);

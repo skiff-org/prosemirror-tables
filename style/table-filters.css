@@ -250,9 +250,13 @@
   top: -50px;
 }
 
+.tableFocus .filterStatusIndicator {
+  display: inline-flex;
+}
+
 .filterStatusIndicator {
   width: fit-content;
-  display: inline-flex;
+  display: none;
   flex-direction: column;
   position: sticky;
   font-size: 12px;

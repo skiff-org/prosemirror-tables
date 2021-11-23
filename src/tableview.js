@@ -1,13 +1,17 @@
 import {NodeSelection} from 'prosemirror-state';
 import {addBottomRow, addRightColumn} from './commands';
-import {createButtonWithIcon, createElementWithClass} from './util';
+import {
+  createButtonWithIcon,
+  createElementWithClass as cewc,
+  createElementWithClassAndChild as cewcac,
+} from './util';
 import {typeInheritance} from './headers/headers-menu/index';
 import {executeFilters, tableFiltersMenuKey} from './filters/utils';
 import {tableHeadersMenuKey} from './columnsTypes/types.config';
 
 const createAddCellsButton = (type, view, pos) => {
   const isRow = type === 'row';
-  const newElement = createElementWithClass(
+  const newElement = cewc(
     'button',
     `tableButton ${isRow ? 'tableAddBottomRow' : 'tableAddRightColumn'}`
   );
@@ -30,26 +34,17 @@ export class TableView {
     this.getPos = getPos;
     this.cellMinWidth = cellMinWidth;
     this.openFiltersBtn = null;
-    const tableScrollWrapper = createElementWithClass(
-      'div',
-      'tableScrollWrapper'
-    );
+    const tableScrollWrapper = cewc('div', 'tableScrollWrapper');
     this.tableWrapper = tableScrollWrapper.appendChild(
-      createElementWithClass('div', 'tableWrapper')
+      cewc('div', 'tableWrapper')
     );
     this.dom = tableScrollWrapper;
     this.dom.dataset.test = 'table-wrapper';
 
-    this.tableHandle = createElementWithClass('div', 'tableHandle');
+    this.tableHandle = cewc('div', 'tableHandle');
     this.tableHandle.dataset.test = 'table-handle';
-    this.tableHorizontalWrapper = createElementWithClass(
-      'div',
-      'tableHorizontalWrapper'
-    );
-    this.tableVerticalWrapper = createElementWithClass(
-      'div',
-      'tableVerticalWrapper'
-    );
+    this.tableHorizontalWrapper = cewc('div', 'tableHorizontalWrapper');
+    this.tableVerticalWrapper = cewc('div', 'tableVerticalWrapper');
 
     this.tableHandle.onclick = (e) => this.selectTable(e);
     this.tableHandle.onmousedown = (e) => e.preventDefault();
@@ -76,7 +71,8 @@ export class TableView {
     updateColumns(node, this.colgroup, this.table, cellMinWidth);
     this.contentDOM = this.table.appendChild(document.createElement('tbody'));
 
-    this.buildActiveFiltersButton(node);
+    this.actionsDOM = this.buildActions();
+    this.tableVerticalWrapper.prepend(this.actionsDOM);
   }
 
   updateMarkers() {
@@ -101,89 +97,7 @@ export class TableView {
     e.preventDefault();
   }
 
-  buildActiveFiltersButton(node) {
-    if (!this.activeFiltersActions) {
-      this.filterStatusIndicator = createElementWithClass(
-        'div',
-        'filterStatusIndicator'
-      );
-      this.filterStatusIndicatorScrollContainer = createElementWithClass(
-        'div',
-        'filterStatusIndicatorScrollContainer'
-      );
-      this.filterStatusIndicatorScrollContainer.appendChild(
-        this.filterStatusIndicator
-      );
-
-      this.activeFiltersActions = createElementWithClass(
-        'div',
-        'active-filters-actions'
-      );
-      this.openTooltipBtn = createButtonWithIcon('open-tooltip');
-      this.openFiltersBtn = createButtonWithIcon('open-filters');
-
-      this.activeFiltersActions.appendChild(this.openFiltersBtn);
-      this.activeFiltersActions.appendChild(this.openTooltipBtn);
-
-      this.actionsTooltip = createElementWithClass('div', 'actions-tooltip');
-      this.enableFiltersBtn = createButtonWithIcon('enable-filters');
-      this.enableFiltersBtn.lastChild.innerText = 'Disable filters';
-      this.enableFiltersBtn.classList.add('disable');
-      this.clearFilterBtn = createButtonWithIcon('clear-filters');
-      this.clearFilterBtn.lastChild.innerText = 'Clear filters';
-      this.actionsTooltip.append(this.enableFiltersBtn, this.clearFilterBtn);
-
-      this.openFiltersBtn.dataset.test = 'add-filter';
-
-      this.filterStatusIndicator.append(
-        this.activeFiltersActions,
-        this.actionsTooltip
-      );
-
-      this.openFiltersBtn.onclick = (e) => {
-        const {dispatch} = this.view;
-        const {tr} = this.view.state;
-        // TODO: Create util that open the filter popup and close other - reuse
-        if (!tableFiltersMenuKey.getState(this.view.state)) {
-          tr.setMeta(tableFiltersMenuKey, {
-            action: 'open',
-            dom: this.contentDOM,
-            pos: this.getPos() + 1,
-            node: node,
-            id: window.id,
-          });
-        } else {
-          tr.setMeta(tableFiltersMenuKey, {
-            action: 'close',
-            id: window.id,
-          });
-        }
-
-        tr.setMeta(tableHeadersMenuKey, {
-          action: 'close',
-          id: window.id,
-        });
-
-        dispatch(tr);
-
-        e.preventDefault();
-        e.stopPropagation();
-      };
-      this.tableVerticalWrapper.prepend(
-        this.filterStatusIndicatorScrollContainer
-      );
-    }
-
-    this.enableFiltersBtn.onclick = () => {
-      const {dispatch} = this.view;
-      const {tr} = this.view.state;
-
-      node.attrs = {...node.attrs, disableFilters: !node.attrs.disableFilters};
-      const pos = this.getPos();
-      tr.setNodeMarkup(pos, undefined, node.attrs);
-      dispatch(tr);
-      dispatch(executeFilters(node, pos + 1, this.view.state));
-    };
+  updateActions(node) {
     // TODO: Find a way not to update it on every update
     if (node.attrs.filters?.length) {
       this.openFiltersBtn.lastChild.innerText = node.attrs.filters.length;
@@ -199,16 +113,147 @@ export class TableView {
       this.enableFiltersBtn.lastChild.innerText = 'Disable filters';
       this.enableFiltersBtn.classList.add('disable');
     }
+
+    this.openFiltersBtn.onclick = '';
+    this.enableFiltersBtn.onclick = '';
+    this.clearFilterBtn.onclick = '';
+    this.openFiltersBtn.addEventListener(
+      'click',
+      this.openFiltersBtnClicked.bind(this)
+    );
+    this.enableFiltersBtn.addEventListener(
+      'click',
+      this.enableFiltersBtnClicked.bind(this)
+    );
+    this.clearFilterBtn.addEventListener(
+      'click',
+      this.clearFilterBtnClicked.bind(this)
+    );
+  }
+
+  enableFiltersBtnClicked() {
+    const {
+      node,
+      view: {
+        dispatch,
+        state: {tr},
+      },
+    } = this;
+
+    node.attrs = {...node.attrs, disableFilters: !node.attrs.disableFilters};
+    const pos = this.getPos();
+    tr.setNodeMarkup(pos, undefined, node.attrs);
+    dispatch(tr);
+    dispatch(executeFilters(node, pos + 1, this.view.state));
+  }
+
+  clearFilterBtnClicked() {
+    const {
+      node,
+      view: {
+        dispatch,
+        state: {tr},
+      },
+    } = this;
+
+    node.attrs = {...node.attrs, filters: []};
+    const pos = this.getPos();
+    tr.setNodeMarkup(pos, undefined, node.attrs);
+    dispatch(tr);
+    dispatch(executeFilters(node, pos + 1, this.view.state));
+  }
+
+  openFiltersBtnClicked(e) {
+    const {
+      node,
+      view: {
+        dispatch,
+        state: {tr},
+      },
+    } = this;
+
+    // TODO: Create util that open the filter popup and close other - reuse
+    if (!tableFiltersMenuKey.getState(this.view.state)) {
+      tr.setMeta(tableFiltersMenuKey, {
+        action: 'open',
+        dom: this.contentDOM,
+        pos: this.getPos() + 1,
+        node: node,
+        id: window.id,
+      });
+    } else {
+      tr.setMeta(tableFiltersMenuKey, {
+        action: 'close',
+        id: window.id,
+      });
+    }
+
+    tr.setMeta(tableHeadersMenuKey, {
+      action: 'close',
+      id: window.id,
+    });
+
+    dispatch(tr);
+
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  buildActions() {
+    this.filterStatusIndicator = cewc('div', 'filterStatusIndicator');
+    const filterStatusIndicatorScrollContainer = cewc(
+      'div',
+      'filterStatusIndicatorScrollContainer'
+    );
+    filterStatusIndicatorScrollContainer.appendChild(
+      this.filterStatusIndicator
+    );
+
+    this.activeFiltersActions = cewc('div', 'active-filters-actions');
+    this.openTooltipBtn = createButtonWithIcon('open-tooltip');
+    this.openFiltersBtn = createButtonWithIcon('open-filters');
+
+    this.activeFiltersActions.appendChild(this.openFiltersBtn);
+    this.activeFiltersActions.appendChild(this.openTooltipBtn);
+
+    this.actionsTooltip = cewc('div', 'actions-tooltip');
+    this.enableFiltersBtn = createButtonWithIcon('enable-filters');
+    this.enableFiltersBtn.lastChild.innerText = 'Disable filters';
+    this.enableFiltersBtn.classList.add('disable');
+    this.clearFilterBtn = createButtonWithIcon('clear-filters');
+    this.clearFilterBtn.lastChild.innerText = 'Clear filters';
+    this.actionsTooltip.append(this.enableFiltersBtn, this.clearFilterBtn);
+
+    this.openFiltersBtn.dataset.test = 'add-filter';
+
+    this.filterStatusIndicator.append(
+      this.activeFiltersActions,
+      this.actionsTooltip
+    );
+
+    this.openFiltersBtn.addEventListener(
+      'click',
+      this.openFiltersBtnClicked.bind(this)
+    );
+    this.enableFiltersBtn.addEventListener(
+      'click',
+      this.enableFiltersBtnClicked.bind(this)
+    );
+    this.clearFilterBtn.addEventListener(
+      'click',
+      this.clearFilterBtnClicked.bind(this)
+    );
+
+    return filterStatusIndicatorScrollContainer;
   }
 
   update(node, markers) {
     this.updateMarkers();
+    this.updateActions(node);
 
     if (node.type != this.node.type) {
       return false;
     }
-
-    this.buildActiveFiltersButton(node);
 
     if (this.node.attrs.headers) {
       typeInheritance(this.view, node, this.getPos());

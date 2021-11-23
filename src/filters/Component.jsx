@@ -214,6 +214,7 @@ const FiltersGroup = ({
   table,
   addNewGroup,
   view,
+  index,
 }) => {
   const createFilterRemover = (filterIndex) => () => {
     const newFilters = filters.map((filter) => filter.toAttrsValue());
@@ -239,53 +240,46 @@ const FiltersGroup = ({
 
   return (
     <div className="filters-group-container">
-      {!isFirstGroup && (
-        <>
-          <hr className="filters-group-separator"></hr>
-        </>
-      )}
+      {!isFirstGroup && <hr className="filters-group-separator"></hr>}
+      <span>Filter {index + 1}</span>
       {filters.length ? (
-        <>
-          {filters.map((filterHandler, index) => {
-            return (
-              <>
-                <FilterRule
-                  colsDropdownOptions={getColsOptions(table)}
-                  filterHandler={filterHandler}
-                  index={index}
-                  isFirstGroup={isFirstGroup}
-                  key={`${index}${filterHandler.headerId}`}
-                  onFilterChange={createFilterSetter(index)}
-                  onFilterRemove={createFilterRemover(index)}
-                />
-              </>
-            );
-          })}
-        </>
+        filters.map((filterHandler, index) => {
+          return (
+            <>
+              <FilterRule
+                colsDropdownOptions={getColsOptions(table)}
+                filterHandler={filterHandler}
+                index={index}
+                isFirstGroup={isFirstGroup}
+                key={`${index}${filterHandler.headerId}`}
+                onFilterChange={createFilterSetter(index)}
+                onFilterRemove={createFilterRemover(index)}
+              />
+            </>
+          );
+        })
       ) : (
         <></>
       )}
       {filters.length ? (
-        <>
-          <div className="group-actions-container">
+        <div className="group-actions-container">
+          <button
+            className="group-action-button"
+            data-test="filter-and-button"
+            onClick={addFilterToGroup}
+          >
+            + And
+          </button>
+          {isLastGroup && (
             <button
               className="group-action-button"
-              data-test="filter-and-button"
-              onClick={addFilterToGroup}
+              data-test="filter-or-button"
+              onClick={() => addNewGroup()}
             >
-              + And
+              + Or
             </button>
-            {isLastGroup && (
-              <button
-                className="group-action-button"
-                data-test="filter-or-button"
-                onClick={() => addNewGroup()}
-              >
-                + Or
-              </button>
-            )}
-          </div>
-        </>
+          )}
+        </div>
       ) : (
         <button className="group-action-button" onClick={addFilterToGroup}>
           + Add filter
@@ -315,12 +309,12 @@ export const TableFiltersComponent = ({table, pos, view, headerPos}) => {
       return;
     }
     const colDefaultFilter = createDefaultFilter(view.state, table, headerPos);
-    setFiltersGroups((oldGroups) => [...oldGroups, [colDefaultFilter]]);
+    setFiltersGroups((oldGroups) => [[colDefaultFilter], ...oldGroups]);
   }, []);
 
   const addNewGroup = () => {
     const defaultFilter = createDefaultFilter(view.state, table);
-    setFiltersGroups((oldFilters) => [...oldFilters, [defaultFilter]]);
+    setFiltersGroups((oldFilters) => [[defaultFilter], ...oldFilters]);
   };
 
   const createFiltersGroupSetter = (groupIndex) => (newGroup) => {
@@ -356,6 +350,7 @@ export const TableFiltersComponent = ({table, pos, view, headerPos}) => {
               return (
                 <>
                   <FiltersGroup
+                    index={index}
                     addNewGroup={addNewGroup}
                     filters={groupFilters.map(
                       (filter) => new Filter(view, table, filter)
