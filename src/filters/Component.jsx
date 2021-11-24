@@ -205,7 +205,6 @@ const FiltersGroup = ({
   isFirstGroup,
   table,
   addNewGroup,
-  removeGroup,
   view,
   index,
 }) => {
@@ -273,7 +272,7 @@ const FiltersGroup = ({
           {filters.length > 1 && (
             <button
               className="group-action-button remove"
-              onClick={removeGroup}
+              onClick={() => onGroupChange([])}
             >
               <span className="group-action-remove-icon"></span>
             </button>

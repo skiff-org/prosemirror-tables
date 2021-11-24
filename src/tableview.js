@@ -228,6 +228,7 @@ export class TableView {
 
     e.preventDefault();
     e.stopPropagation();
+    this.updateActions(node);
   }
 
   buildActions() {
