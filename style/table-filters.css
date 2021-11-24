@@ -254,6 +254,7 @@
 
 .concatenation-rule {
   color: rgba(253, 251, 254, 1);
+  width: max-content;
 }
 
 .remove-filters-group {
