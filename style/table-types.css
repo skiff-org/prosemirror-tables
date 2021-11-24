@@ -133,6 +133,12 @@
   transform: scale(1.05);
 }
 
+.select-dropdown-container .labels-chooser-container {
+  transform: translateX(0);
+  position: absolute;
+  top: 36px;
+}
+
 .labels-chooser-container {
   display: flex;
   flex-direction: column;

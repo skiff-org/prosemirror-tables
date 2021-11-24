@@ -276,19 +276,18 @@
   top: -60px;
 }
 
-.tableFocus .filterStatusIndicator {
-  display: inline-flex;
-}
-
-.tableFocus .open-actions-button {
+.tableFocus .disable.open-actions-button {
+  background-color: #bbbdbf;
+  border: none;
   display: flex;
 }
 
-.disable .open-actions-button {
+.disable.open-actions-button {
   display: none;
 }
 
 .filterStatusIndicator {
+  display: inline-flex;
   width: fit-content;
   flex-direction: column;
   position: sticky;
@@ -328,24 +327,34 @@
   font-weight: 500;
 }
 
-.open-tooltip.no-filters .open-actions-button,
-.open-tooltip.no-filters .open-actions-button:hover {
-  background-color: rgba(0, 106, 224, 1);
-  border: none;
+.tableFocus .no-filters.open-actions-button {
+  display: flex;
 }
 
-.no-filters .open-actions-button {
+.open-actions-button {
+  transform: translateY(-10px);
+}
+
+.tableFocus .open-actions-button {
+  transform: translateY(0);
+}
+
+.no-filters.open-actions-button {
   border-radius: 12px;
   width: 60px;
   height: 36px;
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
   background-color: transparent;
   border: 2px solid rgba(255, 255, 255, 0.28);
 }
 
-.no-filters .open-actions-button:hover {
+.open-actions-button:focus {
+  outline: none;
+}
+
+.no-filters.open-actions-button:hover {
   background-color: rgba(255, 255, 255, 0.08);
   border: 2px solid rgba(255, 255, 255, 0.08);
 }
@@ -368,9 +377,6 @@
   font-size: 15px;
 }
 
-.open-actions-arrow-icon {
-}
-
 .open-tooltip-button {
   border: none;
   cursor: pointer;
@@ -390,8 +396,8 @@
   border-color: white;
 }
 
-.open-tooltip-button:hover,
-.open-tooltip-button.open {
+.open-actions-button:hover,
+.open-actions-button.open {
   background-color: #102e4f;
 }
 
