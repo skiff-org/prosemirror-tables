@@ -83,14 +83,12 @@ class TableDateMenuView {
   }
 
   onOpen() {
-    const theme = window.localStorage.getItem('THEME_MODE') || 'light';
     ReactDOM.render(
       <DatePickerComponent
         dom={this.cellData.dom}
         node={this.cellData.node}
         pos={this.cellData.pos}
         view={this.view}
-        theme={theme}
       />,
       this.popUpDOM
     );

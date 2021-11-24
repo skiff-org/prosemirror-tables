@@ -121,7 +121,7 @@ export const DatePickerComponent = ({theme, view, node, pos}) => {
   );
 
   return (
-    <div className={`date-picker ${theme}`} ref={ref}>
+    <div className="date-picker" ref={ref}>
       <StylesProvider generateClassName={generateClassName}>
         <ThemeProvider theme={DatePickerTheme}>
           <MuiPickersUtilsProvider utils={DateUtilDayJS}>
