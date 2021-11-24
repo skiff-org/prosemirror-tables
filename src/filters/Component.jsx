@@ -397,6 +397,7 @@ export const FiltersActionsComponent = ({table, pos, view, manageFilters}) => {
     closeFiltersPopup(view, tr);
     tr.setNodeMarkup(pos, undefined, table.attrs);
     dispatch(tr);
+    return false;
   }, [table, view]);
 
   const clearFilterBtnClicked = useCallback(() => {
@@ -405,11 +406,12 @@ export const FiltersActionsComponent = ({table, pos, view, manageFilters}) => {
       state: {tr},
     } = view;
 
-    table.attrs = {...table.attrs, filters: []};
+    table.attrs = {...table.attrs, disableFilters: false, filters: []};
     tr.setNodeMarkup(pos, undefined, table.attrs);
     closeFiltersPopup(view, tr);
     dispatch(tr);
     //dispatch(executeFilters(table, pos + 1, view.state));
+    return false;
   }, [table, view]);
 
   const ref = useClickOutside((e) => {
@@ -425,10 +427,6 @@ export const FiltersActionsComponent = ({table, pos, view, manageFilters}) => {
         <span className="manage-filters-icon"></span>
         <span className="manage-filters-label"> Manage filters</span>
       </button>
-      <button className="clear-filters-button" onClick={clearFilterBtnClicked}>
-        <span className="clear-filters-icon"></span>
-        <span className="clear-filters-label"> Clear filters</span>
-      </button>
       <button
         className={`${
           table.attrs.disableFilters ? 'disable' : ''
@@ -439,6 +437,10 @@ export const FiltersActionsComponent = ({table, pos, view, manageFilters}) => {
         <span className="enable-filters-label">
           {table.attrs.disableFilters ? 'Enable' : 'Disable'} filters
         </span>
+      </button>
+      <button className="clear-filters-button" onClick={clearFilterBtnClicked}>
+        <span className="clear-filters-icon"></span>
+        <span className="clear-filters-label"> Clear filters</span>
       </button>
     </div>
   );

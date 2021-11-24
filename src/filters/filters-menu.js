@@ -93,7 +93,8 @@ class TableFiltersMenuView {
   }
 
   onOpen(manage = false) {
-    document.querySelector('.open-actions-button').classList.add('open');
+    document.querySelector('.tableScrollWrapper').classList.add('open');
+
     if (this.tablesData.node.attrs.filters.length < 1 || manage) {
       ReactDOM.render(
         <TableFiltersComponent
@@ -121,7 +122,8 @@ class TableFiltersMenuView {
   }
 
   onClose() {
-    document.querySelector('.open-actions-button').classList.remove('open');
+    document.querySelector('.tableScrollWrapper').classList.remove('open');
+
     this.tablesData = null;
 
     ReactDOM.unmountComponentAtNode(this.popUpDOM);

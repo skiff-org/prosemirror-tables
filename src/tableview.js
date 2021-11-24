@@ -97,6 +97,7 @@ export class TableView {
     this.view.dispatch(tr);
 
     e.preventDefault();
+    e.stopPropagation();
   }
 
   updateActions(node) {
@@ -107,12 +108,15 @@ export class TableView {
     }
 
     if (node.attrs.filters?.length) {
+      this.openActionsBtn.querySelector('.open-actions-label').style.display =
+        'block';
       this.openActionsBtn.querySelector('.open-actions-label').innerText = `${
         node.attrs.filters.length
       } Filter${node.attrs.filters.length === 1 ? '' : 's'}`;
       this.openActionsBtn.classList.remove('no-filters');
     } else {
-      this.openActionsBtn.querySelector('.open-actions-label').innerText = '';
+      this.openActionsBtn.querySelector('.open-actions-label').style.display =
+        'none';
       this.openActionsBtn.classList.add('no-filters');
     }
     this.openActionsBtn.onclick = this.openActionsBtnClicked.bind(this);
@@ -147,11 +151,10 @@ export class TableView {
       action: 'close',
       id: window.id,
     });
-
     dispatch(tr);
-
     e.preventDefault();
     e.stopPropagation();
+    return false;
   }
 
   buildActions() {
