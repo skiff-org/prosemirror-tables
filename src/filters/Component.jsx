@@ -410,7 +410,6 @@ export const FiltersActionsComponent = ({table, pos, view, manageFilters}) => {
     tr.setNodeMarkup(pos, undefined, table.attrs);
     closeFiltersPopup(view, tr);
     dispatch(tr);
-    //dispatch(executeFilters(table, pos + 1, view.state));
     return false;
   }, [table, view]);
 
