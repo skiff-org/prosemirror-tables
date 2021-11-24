@@ -8,7 +8,7 @@ import {
   calculateMenuPosition,
   executeFilters,
 } from './utils';
-import {TableFiltersComponent} from './Component.jsx';
+import {FiltersActionsComponent, TableFiltersComponent} from './Component.jsx';
 import {findParentNodeOfTypeClosestToPos} from 'prosemirror-utils';
 
 class TableFiltersMenuView {
@@ -46,7 +46,9 @@ class TableFiltersMenuView {
       this.tablesData &&
       (tablesData.pos !== this.tablesData.pos ||
         tablesData.node.firstChild.nodeSize !== // check if headers row has changed - if so update the filters popup
-          this.tablesData.node.firstChild.nodeSize)
+          this.tablesData.node.firstChild.nodeSize ||
+        this.tablesData.node.attrs.disableFilters !==
+          tablesData.node.attrs.disableFilters)
     );
   }
 
@@ -90,17 +92,31 @@ class TableFiltersMenuView {
     this.updateMenu(view);
   }
 
-  onOpen() {
-    ReactDOM.render(
-      <TableFiltersComponent
-        dom={this.tablesData.dom}
-        headerPos={this.tablesData.headerPos}
-        pos={this.tablesData.pos}
-        table={this.tablesData.node}
-        view={this.view}
-      />,
-      this.popUpDOM
-    );
+  onOpen(manage = false) {
+    if (this.tablesData.node.attrs.filters.length < 1 || manage) {
+      ReactDOM.render(
+        <TableFiltersComponent
+          dom={this.tablesData.dom}
+          headerPos={this.tablesData.headerPos}
+          pos={this.tablesData.pos}
+          table={this.tablesData.node}
+          view={this.view}
+        />,
+        this.popUpDOM
+      );
+    } else {
+      ReactDOM.render(
+        <FiltersActionsComponent
+          manageFilters={() => {
+            this.onOpen(true);
+          }}
+          pos={this.tablesData.pos}
+          table={this.tablesData.node}
+          view={this.view}
+        />,
+        this.popUpDOM
+      );
+    }
   }
 
   onClose() {

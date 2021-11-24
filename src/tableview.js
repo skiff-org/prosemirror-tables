@@ -71,6 +71,7 @@ export class TableView {
     this.contentDOM = this.table.appendChild(document.createElement('tbody'));
 
     this.clearedPopUp = false;
+    this.openToolTip = false;
     this.actionsDOM = this.buildActions();
     this.tableVerticalWrapper.prepend(this.actionsDOM);
     this.updateActions(node);
@@ -99,99 +100,25 @@ export class TableView {
   }
 
   updateActions(node) {
+    if (node.attrs.disableFilters) {
+      this.openActionsBtn.classList.add('disable');
+    } else {
+      this.openActionsBtn.classList.remove('disable');
+    }
+
     if (node.attrs.filters?.length) {
       this.openActionsBtn.querySelector('.open-actions-label').innerText = `${
         node.attrs.filters.length
       } Filter${node.attrs.filters.length === 1 ? '' : 's'}`;
-      this.activeFiltersActions.classList.remove('no-filters');
+      this.openActionsBtn.classList.remove('no-filters');
     } else {
       this.openActionsBtn.querySelector('.open-actions-label').innerText = '';
-      this.activeFiltersActions.classList.add('no-filters');
+      this.openActionsBtn.classList.add('no-filters');
     }
-    if (node.attrs.disableFilters) {
-      this.enableFiltersBtn.lastChild.innerText = 'Enable filters';
-      this.enableFiltersBtn.classList.remove('disable');
-    } else {
-      this.enableFiltersBtn.lastChild.innerText = 'Disable filters';
-      this.enableFiltersBtn.classList.add('disable');
-    }
-    if (node.attrs.tooltipOpen) {
-      this.activeFiltersActions.classList.add('open-tooltip');
-      this.actionsTooltip.classList.remove('hidden');
-    } else {
-      this.activeFiltersActions.classList.remove('open-tooltip');
-      this.actionsTooltip.classList.add('hidden');
-    }
-    if (this.clearedPopUp) this.clearPopUp.classList.remove('hidden');
-    else this.clearPopUp.classList.add('hidden');
-
     this.openActionsBtn.onclick = this.openActionsBtnClicked.bind(this);
-    this.manageFiltersBtn.onclick = this.manageFiltersBtnClicked.bind(this);
-    this.enableFiltersBtn.onclick = this.enableFiltersBtnClicked.bind(this);
-    this.clearFilterBtn.onclick = this.clearFilterBtnClicked.bind(this);
-  }
-
-  enableFiltersBtnClicked(e) {
-    const {
-      node,
-      view: {
-        dispatch,
-        state: {tr},
-      },
-    } = this;
-
-    node.attrs = {...node.attrs, disableFilters: !node.attrs.disableFilters};
-    const pos = this.getPos();
-    tr.setNodeMarkup(pos, undefined, node.attrs);
-    dispatch(tr);
-    dispatch(executeFilters(node, pos + 1, this.view.state));
-    e.preventDefault();
-    e.stopPropagation();
-    this.updateActions(node);
   }
 
   openActionsBtnClicked(e) {
-    const {
-      node,
-      view: {
-        dispatch,
-        state: {tr},
-      },
-    } = this;
-
-    node.attrs = {...node.attrs, tooltipOpen: !node.attrs.tooltipOpen};
-    const pos = this.getPos();
-    tr.setNodeMarkup(pos, undefined, node.attrs);
-    dispatch(tr);
-    dispatch(executeFilters(node, pos + 1, this.view.state));
-    e.preventDefault();
-    e.stopPropagation();
-    this.updateActions(node);
-  }
-
-  clearFilterBtnClicked(e) {
-    const {
-      node,
-      view: {
-        dispatch,
-        state: {tr},
-      },
-    } = this;
-
-    node.attrs = {...node.attrs, filters: []};
-    const pos = this.getPos();
-    tr.setNodeMarkup(pos, undefined, node.attrs);
-    dispatch(tr);
-    dispatch(executeFilters(node, pos + 1, this.view.state));
-    e.preventDefault();
-    e.stopPropagation();
-
-    this.clearedPopUp = true;
-
-    this.updateActions(node);
-  }
-
-  manageFiltersBtnClicked(e) {
     const {
       node,
       view: {
@@ -225,7 +152,6 @@ export class TableView {
 
     e.preventDefault();
     e.stopPropagation();
-    this.updateActions(node);
   }
 
   buildActions() {
@@ -238,57 +164,27 @@ export class TableView {
       this.filterStatusIndicator
     );
 
-    this.activeFiltersActions = cewc('div', 'active-filters-actions');
     this.openActionsBtn = cewcac('button', 'open-actions-button', [
       cewc('span', 'open-actions-filter-icon'),
       cewc('span', 'open-actions-label'),
       cewc('span', 'open-actions-arrow-icon'),
     ]);
 
-    this.activeFiltersActions.appendChild(this.openActionsBtn);
-
-    this.actionsTooltip = cewc('div', 'actions-tooltip');
-    this.manageFiltersBtn = createButtonWithIcon('manage-filters');
-    this.enableFiltersBtn = createButtonWithIcon('enable-filters');
-    this.clearFilterBtn = createButtonWithIcon('clear-filters');
-    this.manageFiltersBtn.lastChild.innerText = 'Manage filters';
-    this.enableFiltersBtn.lastChild.innerText = 'Disable filters';
-    this.clearFilterBtn.lastChild.innerText = 'Clear filters';
-    this.enableFiltersBtn.classList.add('disable');
-    this.actionsTooltip.append(
-      this.manageFiltersBtn,
-      this.enableFiltersBtn,
-      this.clearFilterBtn
-    );
-
-    this.clearPopUp = cewcac('div', 'clear-filters-popup', [
-      cewc('span', 'clear-filters-icon'),
-      cewcac('span', 'clear-filters-label', ['Filters are cleared.']),
-      cewcac('button', 'clear-filters-button', ['Undo']),
-    ]);
-    this.clearPopUp.classList.add('hidden');
-
-    this.filterStatusIndicator.append(
-      this.activeFiltersActions,
-      this.actionsTooltip,
-      this.clearPopUp
-    );
+    this.filterStatusIndicator.append(this.openActionsBtn);
 
     this.openActionsBtn.onclick = this.openActionsBtnClicked.bind(this);
-    this.manageFiltersBtn.onclick = this.manageFiltersBtnClicked.bind(this);
-    this.enableFiltersBtn.onclick = this.enableFiltersBtnClicked.bind(this);
-    this.clearFilterBtn.onclick = this.clearFilterBtnClicked.bind(this);
 
     return filterStatusIndicatorScrollContainer;
   }
 
   update(node, markers) {
     this.updateMarkers();
-    this.updateActions(node);
 
     if (node.type != this.node.type) {
       return false;
     }
+
+    this.updateActions(node);
 
     if (this.node.attrs.headers) {
       typeInheritance(this.view, node, this.getPos());

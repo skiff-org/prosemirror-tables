@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import Filter from './Filter';
 import {
   createDefaultFilter,
@@ -379,6 +379,67 @@ export const TableFiltersComponent = ({table, pos, view, headerPos}) => {
           </>
         )}
       </div>
+    </div>
+  );
+};
+
+export const FiltersActionsComponent = ({table, pos, view, manageFilters}) => {
+  const enableFiltersBtnClicked = useCallback(() => {
+    const {
+      dispatch,
+      state: {tr},
+    } = view;
+
+    table.attrs = {
+      ...table.attrs,
+      disableFilters: !table.attrs.disableFilters,
+    };
+    closeFiltersPopup(view, tr);
+    tr.setNodeMarkup(pos, undefined, table.attrs);
+    dispatch(tr);
+  }, [table, view]);
+
+  const clearFilterBtnClicked = useCallback(() => {
+    const {
+      dispatch,
+      state: {tr},
+    } = view;
+
+    table.attrs = {...table.attrs, filters: []};
+    tr.setNodeMarkup(pos, undefined, table.attrs);
+    closeFiltersPopup(view, tr);
+    dispatch(tr);
+    //dispatch(executeFilters(table, pos + 1, view.state));
+  }, [table, view]);
+
+  const ref = useClickOutside((e) => {
+    if (view.dom.contains(e.target)) {
+      const tr = closeFiltersPopup(view);
+      view.dispatch(tr);
+    }
+  }, 'mousedown');
+
+  return (
+    <div className="actions-tooltip" ref={ref}>
+      <button className="manage-filters-button" onClick={manageFilters}>
+        <span className="manage-filters-icon"></span>
+        <span className="manage-filters-label"> Manage filters</span>
+      </button>
+      <button className="clear-filters-button" onClick={clearFilterBtnClicked}>
+        <span className="clear-filters-icon"></span>
+        <span className="clear-filters-label"> Clear filters</span>
+      </button>
+      <button
+        className={`${
+          table.attrs.disableFilters ? 'disable' : ''
+        } enable-filters-button`}
+        onClick={enableFiltersBtnClicked}
+      >
+        <span className="enable-filters-icon"></span>
+        <span className="enable-filters-label">
+          {table.attrs.disableFilters ? 'Enable' : 'Disable'} filters
+        </span>
+      </button>
     </div>
   );
 };

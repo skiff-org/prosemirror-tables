@@ -280,9 +280,16 @@
   display: inline-flex;
 }
 
+.tableFocus .open-actions-button {
+  display: flex;
+}
+
+.disable .open-actions-button {
+  display: none;
+}
+
 .filterStatusIndicator {
   width: fit-content;
-  display: none;
   flex-direction: column;
   position: sticky;
   font-size: 12px;
@@ -319,14 +326,6 @@
 .open-actions-label {
   color: white;
   font-weight: 500;
-}
-
-.no-filters .open-actions-label {
-  display: none;
-}
-
-.no-filters .open-tooltip-button {
-  display: none;
 }
 
 .open-tooltip.no-filters .open-actions-button,
@@ -401,14 +400,9 @@
   display: flex;
   flex-direction: column;
   align-items: right;
-  position: absolute;
-  top: 46px;
   z-index: 10;
-  background-color: #15191e;
-  border: 1px solid #3f4247;
   border-radius: 16px;
   overflow: hidden;
-  padding: 8px;
 }
 
 .enable-filters-button,
