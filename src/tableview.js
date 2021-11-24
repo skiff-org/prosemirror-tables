@@ -70,10 +70,7 @@ export class TableView {
     updateColumns(node, this.colgroup, this.table, cellMinWidth);
     this.contentDOM = this.table.appendChild(document.createElement('tbody'));
 
-    this.clearedPopUp = false;
-    this.openToolTip = false;
-    this.actionsDOM = this.buildActions();
-    this.tableVerticalWrapper.prepend(this.actionsDOM);
+    this.tableVerticalWrapper.prepend(this.buildActions());
     this.updateActions(node);
   }
 
@@ -167,11 +164,16 @@ export class TableView {
       this.filterStatusIndicator
     );
 
-    this.openActionsBtn = cewcac('button', 'open-actions-button', [
-      cewc('span', 'open-actions-filter-icon'),
-      cewc('span', 'open-actions-label'),
-      cewc('span', 'open-actions-arrow-icon'),
-    ]);
+    this.openActionsBtn = cewcac(
+      'button',
+      'open-actions-button',
+      [
+        cewc('span', 'open-actions-filter-icon'),
+        cewc('span', 'open-actions-label'),
+        cewc('span', 'open-actions-arrow-icon'),
+      ],
+      'open-actions-filters'
+    );
 
     this.filterStatusIndicator.append(this.openActionsBtn);
 
