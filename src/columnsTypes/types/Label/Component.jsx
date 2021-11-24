@@ -12,33 +12,52 @@ import {
 } from './utils';
 import useClickOutside from '../../../useClickOutside.jsx';
 
-const Label = ({title, onDelete, color, editMode, openChooser}) => {
+const Label = ({theme, title, onDelete, color, editMode, openChooser}) => {
   return (
-    <div className="label-container">
-      <span
-        className="label-color"
-        style={{backgroundColor: `${color}`}}
-      ></span>
+    <div
+      className="label-container"
+      style={
+        theme === 'dark'
+          ? {backgroundColor: color.replace('1.0', '0.3')}
+          : {backgroundColor: color}
+      }
+    >
       <span
         className="label-title"
         onClick={editMode ? openChooser : () => null}
+        style={
+          theme === 'dark'
+            ? {
+                color: color,
+              }
+            : {
+                color: 'white',
+              }
+        }
       >
         {title}
       </span>
       {editMode && (
-        <button
-          className="remove-label"
-          onClick={() => onDelete()}
-          type="button"
-        >
-          <span className="remove-label-icon"></span>
-        </button>
+        <span
+          className="delete-label"
+          onClick={onDelete}
+          style={
+            theme === 'dark'
+              ? {
+                  backgroundColor: color,
+                }
+              : {
+                  backgroundColor: 'white',
+                }
+          }
+        />
       )}
     </div>
   );
 };
 
 const LabelOption = ({
+  theme,
   color,
   title,
   onChange,
@@ -50,13 +69,13 @@ const LabelOption = ({
 
   return (
     <div
-      className="label-option"
+      className={`label-option ${theme}`}
       onClick={() => {
         setSelected(!selected);
         onChange(title, !selected);
       }}
     >
-      <img
+      <span
         className={
           selected ? 'label-option-checkbox selected' : 'label-option-checkbox'
         }
@@ -86,6 +105,7 @@ const LabelOption = ({
 };
 
 export const LabelsChooser = ({
+  theme,
   view,
   pos,
   node,
@@ -126,6 +146,9 @@ export const LabelsChooser = ({
       : tableLabels.filter((label) =>
           label.title.toLowerCase().includes(inputValue.toLowerCase())
         );
+
+  const isNotExists = (label) =>
+    !tableLabels.some(({title}) => title === label);
 
   useEffect(() => {
     const input = document.getElementById('labels-input');
@@ -205,45 +228,42 @@ export const LabelsChooser = ({
               inFilters ? () => null : createNewLabel();
             }
           }}
+          placeholder={
+            tableLabels.length
+              ? 'Type to filter / create new'
+              : 'Type to create new label'
+          }
           type="text"
         />
         <div className="labels-list">
-          {filteredLabels.length ? (
-            filteredLabels.map(({title, color}, index) => (
-              <LabelOption
-                checked={chosenLabels.find((label) => label.title === title)}
-                color={color}
-                inFilters={inFilters}
-                key={`${title}${index}`}
-                onChange={(title, checked) =>
-                  handleLabelCheck(title, color, checked)
-                }
-                onDelete={handleLabelDelete}
-                title={title}
-              />
-            ))
-          ) : (
+          {inputValue.length && isNotExists(inputValue) ? (
             <div className="add-new-label" onClick={createNewLabel}>
-              {inputValue.length && !inFilters ? (
-                <>
-                  +
-                  <span
-                    className="label-color"
-                    style={{backgroundColor: `${newLabelColor}`}}
-                  ></span>
-                  <span className="new-label-title">Create "{inputValue}"</span>
-                </>
-              ) : (
-                <>
-                  <span className="new-label-placeholder">
-                    {inFilters
-                      ? 'Type to search for labels'
-                      : 'Type to create new label'}
-                  </span>
-                </>
-              )}
+              +
+              <span
+                className="label-color"
+                style={{backgroundColor: `${newLabelColor}`}}
+              ></span>
+              <span className="new-label-title">Create "{inputValue}"</span>
             </div>
+          ) : (
+            ''
           )}
+          {filteredLabels.length
+            ? filteredLabels.map(({title, color}, index) => (
+                <LabelOption
+                  theme={theme}
+                  checked={chosenLabels.find((label) => label.title === title)}
+                  color={color}
+                  inFilters={inFilters}
+                  key={`${title}${index}`}
+                  onChange={(title, checked) =>
+                    handleLabelCheck(title, color, checked)
+                  }
+                  onDelete={handleLabelDelete}
+                  title={title}
+                />
+              ))
+            : ''}
         </div>
       </div>
     </>
@@ -252,6 +272,8 @@ export const LabelsChooser = ({
 
 const LabelComponent = ({view, node, getPos, dom}) => {
   const labels = node.attrs.labels;
+
+  const theme = window.localStorage.getItem('THEME_MODE') || 'light';
 
   const openChooser = (e) => {
     const {tr} = view.state;
@@ -273,6 +295,7 @@ const LabelComponent = ({view, node, getPos, dom}) => {
       <div className="all-labels-container">
         {labels.map(({title, color}, index) => (
           <Label
+            theme={theme}
             color={color}
             editMode={view.editable}
             key={`${color}${title}${index}`}
@@ -284,11 +307,11 @@ const LabelComponent = ({view, node, getPos, dom}) => {
 
         {view.editable && (
           <button
-            className="add-label"
+            className={`add-label ${theme}`}
             data-test="add-label"
             onClick={openChooser}
           >
-            <span>+</span>
+            <span className="add-label-icon"></span>
           </button>
         )}
       </div>

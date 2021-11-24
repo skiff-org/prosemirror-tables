@@ -43,11 +43,12 @@
   border-radius: 6px;
   background-color: white;
 
+  top: -30px;
+  right: 36px;
+  transform: translateX(100%);
+
   display: none;
   flex-direction: column;
-
-  top: -50px;
-  left: 180px;
 }
 
 .headersMenu
@@ -67,7 +68,8 @@
   gap: 10px;
   align-items: center;
   width: 100%;
-  padding: 9px;
+  padding: 0 12px;
+  height: 32px;
 }
 
 .ProseMirror-menu-dropdown.columnTypeDropdown::before {
@@ -104,6 +106,7 @@
 }
 
 .currencyItemIcon {
+  width: 10px;
   content: url(./svgs/types/currency.svg);
 }
 
@@ -157,7 +160,8 @@
   gap: 10px;
   align-items: center;
   width: 100%;
-  padding: 9px;
+  height: 32px;
+  padding: 0 12px;
 }
 
 .empty-header {
