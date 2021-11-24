@@ -142,6 +142,13 @@ export const executeFilters = (table, tablePos, state, filters) => {
   // apply filters on each column
   tableFilterGroups.forEach((filterGroup, groupIndex) => {
     filterGroup.forEach((filter) => {
+      if (!tableHeaders[filter.headerId]) {
+        console.error(
+          `cant find headerId: ${filter.headerId} on tableHeaders:`,
+          tableHeaders
+        );
+        return;
+      }
       const {colType, colIndex} = tableHeaders[filter.headerId];
       filterColumn(tableRows, colIndex, colType, filter, groupIndex);
     });
