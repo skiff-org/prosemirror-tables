@@ -70,6 +70,7 @@ export class TableView {
     updateColumns(node, this.colgroup, this.table, cellMinWidth);
     this.contentDOM = this.table.appendChild(document.createElement('tbody'));
 
+    this.clearedPopUp = false;
     this.actionsDOM = this.buildActions();
     this.tableVerticalWrapper.prepend(this.actionsDOM);
     this.updateActions(node);
@@ -98,7 +99,6 @@ export class TableView {
   }
 
   updateActions(node) {
-    // TODO: Find a way not to update it on every update
     if (node.attrs.filters?.length) {
       this.openActionsBtn.querySelector('.open-actions-label').innerText = `${
         node.attrs.filters.length
@@ -115,7 +115,6 @@ export class TableView {
       this.enableFiltersBtn.lastChild.innerText = 'Disable filters';
       this.enableFiltersBtn.classList.add('disable');
     }
-
     if (node.attrs.tooltipOpen) {
       this.activeFiltersActions.classList.add('open-tooltip');
       this.actionsTooltip.classList.remove('hidden');
@@ -123,6 +122,8 @@ export class TableView {
       this.activeFiltersActions.classList.remove('open-tooltip');
       this.actionsTooltip.classList.add('hidden');
     }
+    if (this.clearedPopUp) this.clearPopUp.classList.remove('hidden');
+    else this.clearPopUp.classList.add('hidden');
 
     this.openActionsBtn.onclick = this.openActionsBtnClicked.bind(this);
     this.manageFiltersBtn.onclick = this.manageFiltersBtnClicked.bind(this);
@@ -185,11 +186,7 @@ export class TableView {
     e.preventDefault();
     e.stopPropagation();
 
-    const clearPopUp = cewcac('div', 'clear-filters-popup', [
-      cewc('span', 'clear-filters-icon'),
-      cewcac('span', 'clear-filters-label', ['Filters are cleared.']),
-      cewcac('button', 'clear-filters-button', ['Undo']),
-    ]);
+    this.clearedPopUp = true;
 
     this.updateActions(node);
   }
@@ -264,9 +261,17 @@ export class TableView {
       this.clearFilterBtn
     );
 
+    this.clearPopUp = cewcac('div', 'clear-filters-popup', [
+      cewc('span', 'clear-filters-icon'),
+      cewcac('span', 'clear-filters-label', ['Filters are cleared.']),
+      cewcac('button', 'clear-filters-button', ['Undo']),
+    ]);
+    this.clearPopUp.classList.add('hidden');
+
     this.filterStatusIndicator.append(
       this.activeFiltersActions,
-      this.actionsTooltip
+      this.actionsTooltip,
+      this.clearPopUp
     );
 
     this.openActionsBtn.onclick = this.openActionsBtnClicked.bind(this);
