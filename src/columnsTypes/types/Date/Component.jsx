@@ -6,7 +6,7 @@ import {
   tableDateMenuKey,
   DATE_FORMAT,
   buildDateObjectFromText,
-  getClosestDate
+  getClosestDate,
 } from './utils';
 
 import {DatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
@@ -20,10 +20,10 @@ import DatePickerTheme from './DatePickerTheme';
 import {ThemeProvider} from '@material-ui/core/styles';
 import ee from 'event-emitter';
 
-const DateEventEmitter = function(){}
-ee(DateEventEmitter.prototype)
+const DateEventEmitter = function () {};
+ee(DateEventEmitter.prototype);
 
-export const datePopupEmitter = new DateEventEmitter()
+export const datePopupEmitter = new DateEventEmitter();
 
 const generateClassName = createGenerateClassName({
   seed: 'sgo-tables-plugin-',
@@ -62,26 +62,26 @@ const DateComponent = ({view, node, getPos, editorContentRef, dom}) => {
       className={`${DATE_FORMAT.replaceAll('/', '_')} date-component`}
       onClick={openChooser}
     >
-      <EditorContent ref={editorContentRef}/>
+      <EditorContent ref={editorContentRef} />
     </div>
   );
 };
 
-export const DatePickerComponent = ({view, node, pos}) => {
+export const DatePickerComponent = ({theme, view, node, pos}) => {
   const [date, setDate] = useState(
     buildDateObjectFromText(node ? node.textContent : '', DATE_FORMAT) ||
       new Date()
   );
 
   datePopupEmitter.once('updatePopup', (content) => {
-    const closestDate = getClosestDate(content, DATE_FORMAT)
+    const closestDate = getClosestDate(content, DATE_FORMAT);
 
-    setDate(closestDate || date)
-  })
+    setDate(closestDate || date);
+  });
 
   const ref = useClickOutside((e) => {
     if (!view.dom.contains(e.target)) return;
-    
+
     const {tr} = view.state;
     tr.setMeta(tableDateMenuKey, {
       id: window.id,
@@ -121,7 +121,7 @@ export const DatePickerComponent = ({view, node, pos}) => {
   );
 
   return (
-    <div className="date-picker" ref={ref}>
+    <div className={`date-picker ${theme}`} ref={ref}>
       <StylesProvider generateClassName={generateClassName}>
         <ThemeProvider theme={DatePickerTheme}>
           <MuiPickersUtilsProvider utils={DateUtilDayJS}>
