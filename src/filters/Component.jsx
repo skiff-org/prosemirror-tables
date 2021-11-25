@@ -235,19 +235,17 @@ const FiltersGroup = ({
       {!isFirstGroup && <hr className="filters-group-separator"></hr>}
       <span className="filter-index">Filter {index + 1}</span>
       {filters.length ? (
-        filters.map((filterHandler, index) => {
+        filters.map((filterHandler, i) => {
           return (
-            <>
-              <FilterRule
-                colsDropdownOptions={getColsOptions(table)}
-                filterHandler={filterHandler}
-                index={index}
-                isFirstGroup={isFirstGroup}
-                key={`${index}${filterHandler.headerId}`}
-                onFilterChange={createFilterSetter(index)}
-                onFilterRemove={createFilterRemover(index)}
-              />
-            </>
+            <FilterRule
+              colsDropdownOptions={getColsOptions(table)}
+              filterHandler={filterHandler}
+              index={i}
+              isFirstGroup={isFirstGroup}
+              key={`${index}${i}`}
+              onFilterChange={createFilterSetter(index)}
+              onFilterRemove={createFilterRemover(index)}
+            />
           );
         })
       ) : (
@@ -350,21 +348,19 @@ export const TableFiltersComponent = ({table, pos, view, headerPos}) => {
           <>
             {filtersGroups.map((groupFilters, index) => {
               return (
-                <>
-                  <FiltersGroup
-                    addNewGroup={addNewGroup}
-                    filters={groupFilters.map(
-                      (filter) => new Filter(view, table, filter)
-                    )}
-                    index={index}
-                    isFirstGroup={index === 0}
-                    isLastGroup={index + 1 === filtersGroups.length}
-                    key={`${index}`}
-                    onGroupChange={createFiltersGroupSetter(index)}
-                    table={table}
-                    view={view}
-                  />
-                </>
+                <FiltersGroup
+                  addNewGroup={addNewGroup}
+                  filters={groupFilters.map(
+                    (filter) => new Filter(view, table, filter)
+                  )}
+                  index={index}
+                  isFirstGroup={index === 0}
+                  isLastGroup={index + 1 === filtersGroups.length}
+                  key={`${index}`}
+                  onGroupChange={createFiltersGroupSetter(index)}
+                  table={table}
+                  view={view}
+                />
               );
             })}
           </>
