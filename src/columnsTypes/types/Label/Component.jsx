@@ -150,12 +150,15 @@ export const LabelsChooser = ({
 
   const handleLabelCheck = React.useCallback(
     (title, color, checked) => {
-      const newChosenLabels = checked
-        ? [...chosenLabels, {title, color}]
-        : chosenLabels.filter((label) => label.title !== title);
-      setChosenLabels(newChosenLabels);
-      if (inFilters) handleLabelChoose(title, checked, newChosenLabels);
-      // updateCellLabels(view, pos, node, newChosenLabels, false);
+      if (inFilters) handleLabelChoose(title, checked, chosenLabels);
+
+      if (checked) {
+        setChosenLabels((oldChosen) => [...oldChosen, {title, color}]);
+      } else {
+        setChosenLabels((oldChosen) =>
+          oldChosen.filter((label) => label.title !== title)
+        );
+      }
       const input = document.getElementById('labels-input');
       if (input) input.focus();
     },

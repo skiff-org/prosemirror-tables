@@ -83,7 +83,6 @@ class TableLabelsMenu {
   onOpen() {
     ReactDOM.render(
       <LabelsChooser
-        handleLabelChoose={this.updateMenu(this.view)}
         initialChosenLabels={this.cellData.node.attrs.labels}
         node={this.cellData.node}
         pos={this.cellData.pos}
