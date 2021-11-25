@@ -168,15 +168,12 @@ export const LabelsChooser = ({
 
   const handleLabelCheck = React.useCallback(
     (title, color, checked) => {
-      if (inFilters) handleLabelChoose(title, checked, chosenLabels);
-
-      if (checked) {
-        setChosenLabels((oldChosen) => [...oldChosen, {title, color}]);
-      } else {
-        setChosenLabels((oldChosen) =>
-          oldChosen.filter((label) => label.title !== title)
-        );
-      }
+      const newChosenLabels = checked
+        ? [...chosenLabels, {title, color}]
+        : chosenLabels.filter((label) => label.title !== title);
+      setChosenLabels(newChosenLabels);
+      if (inFilters) handleLabelChoose(title, checked, newChosenLabels);
+      updateCellLabels(view, pos, node, newChosenLabels, false);
       const input = document.getElementById('labels-input');
       if (input) input.focus();
     },
@@ -251,7 +248,6 @@ export const LabelsChooser = ({
           {filteredLabels.length
             ? filteredLabels.map(({title, color}, index) => (
                 <LabelOption
-                  theme={theme}
                   checked={chosenLabels.find((label) => label.title === title)}
                   color={color}
                   inFilters={inFilters}
@@ -260,6 +256,7 @@ export const LabelsChooser = ({
                     handleLabelCheck(title, color, checked)
                   }
                   onDelete={handleLabelDelete}
+                  theme={theme}
                   title={title}
                 />
               ))
@@ -295,12 +292,12 @@ const LabelComponent = ({view, node, getPos, dom}) => {
       <div className="all-labels-container">
         {labels.map(({title, color}, index) => (
           <Label
-            theme={theme}
             color={color}
             editMode={view.editable}
             key={`${color}${title}${index}`}
             onDelete={() => removeLabel(view, getPos(), node, title)}
             openChooser={openChooser}
+            theme={theme}
             title={title}
           />
         ))}

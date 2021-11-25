@@ -100,7 +100,7 @@ export const updateTablesLabels = (tr, pos, action = 'add', newLabels) => {
   tr.setNodeMarkup(table.pos, undefined, newAttrs);
 };
 
-export const updateCellLabels = (view, pos, node, labels) => {
+export const updateCellLabels = (view, pos, node, labels, close = true) => {
   const {tr} = view.state;
 
   const newAttrs = {
@@ -115,7 +115,7 @@ export const updateCellLabels = (view, pos, node, labels) => {
   );
 
   updateTablesLabels(tr, pos, 'add', labels);
-  tr.setMeta(tableLabelsMenuKey, {action: 'close', id: window.id});
+  if (close) tr.setMeta(tableLabelsMenuKey, {action: 'close', id: window.id});
 
   view.dispatch(tr);
 };
