@@ -72,7 +72,7 @@ class TableFiltersMenuView {
 
     if (!this.tablesData && tablesData) {
       this.tablesData = tablesData;
-      this.onOpen();
+      this.onOpen(tablesData.manageFilterPopup); // Check if should open filter sub menu or manage filter popup
     }
 
     // calculate popup position

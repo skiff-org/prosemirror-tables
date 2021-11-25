@@ -366,10 +366,7 @@ export const TableFiltersComponent = ({table, pos, view, headerPos}) => {
           </>
         ) : (
           <>
-            <button
-              className="group-action-button"
-              onClick={() => addNewGroup()}
-            >
+            <button className="group-action-button" onClick={addNewGroup}>
               + Add filter
             </button>
           </>

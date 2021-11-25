@@ -84,6 +84,7 @@ const filterItem = () => {
       const resolvedPos = state.doc.resolve(pos);
       tr.setMeta(tableFiltersMenuKey, {
         action: 'open',
+        manageFilterPopup: true,
         dom: view.domAtPos(resolvedPos.start(-1)).node,
         node: resolvedPos.node(1),
         pos: resolvedPos.start(1),
