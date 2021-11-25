@@ -107,6 +107,7 @@
 .label-title {
   opacity: 1;
   font-size: 13px;
+  line-height: 0;
   word-break: keep-all;
   white-space: nowrap;
   cursor: pointer;
