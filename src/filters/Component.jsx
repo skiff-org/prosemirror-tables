@@ -235,16 +235,16 @@ const FiltersGroup = ({
       {!isFirstGroup && <hr className="filters-group-separator"></hr>}
       <span className="filter-index">Filter {index + 1}</span>
       {filters.length ? (
-        filters.map((filterHandler, i) => {
+        filters.map((filterHandler, filterRuleIndex) => {
           return (
             <FilterRule
               colsDropdownOptions={getColsOptions(table)}
               filterHandler={filterHandler}
-              index={i}
+              index={filterRuleIndex}
               isFirstGroup={isFirstGroup}
-              key={`${index}${i}`}
-              onFilterChange={createFilterSetter(index)}
-              onFilterRemove={createFilterRemover(index)}
+              key={`${index}${filterHandler.headerId}`}
+              onFilterChange={createFilterSetter(filterRuleIndex)}
+              onFilterRemove={createFilterRemover(filterRuleIndex)}
             />
           );
         })
@@ -263,7 +263,7 @@ const FiltersGroup = ({
           <button
             className="group-action-button"
             data-test="filter-or-button"
-            onClick={() => addNewGroup()}
+            onClick={addNewGroup}
           >
             + Or
           </button>
@@ -436,7 +436,9 @@ export const FiltersActionsComponent = ({table, pos, view, manageFilters}) => {
         onClick={manageFiltersBtnClicked}
       >
         <span className="manage-filters-icon"></span>
-        <span className="manage-filters-label"> Manage filters</span>
+        <span className="manage-filters-label" data-test="manage-filters">
+          Manage filters
+        </span>
       </button>
       <button
         className={`${

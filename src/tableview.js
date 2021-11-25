@@ -1,12 +1,11 @@
 import {NodeSelection} from 'prosemirror-state';
 import {addBottomRow, addRightColumn} from './commands';
 import {
-  createButtonWithIcon,
   createElementWithClass as cewc,
   createElementWithClassAndChild as cewcac,
 } from './util';
 import {typeInheritance} from './headers/headers-menu/index';
-import {executeFilters, tableFiltersMenuKey} from './filters/utils';
+import {tableFiltersMenuKey} from './filters/utils';
 import {tableHeadersMenuKey} from './columnsTypes/types.config';
 
 const createAddCellsButton = (type, view, pos) => {

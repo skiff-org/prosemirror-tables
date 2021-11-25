@@ -57,7 +57,8 @@ export const createDefaultFilter = (state, table, headerPos) => {
 
   return {
     headerId: colHeader.attrs.id,
-    filterId: typeFirstFilter.id,
+    filterId: typeFirstFilter.id, // TODO: Add a real id one
+    // filterRuleId: '_' + Math.random().toString(36).substr(2, 9),
     filterValue: typeFirstFilter.defaultValue,
   };
 };
