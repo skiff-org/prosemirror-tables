@@ -102,11 +102,14 @@
 }
 
 .labelsItemIcon {
+	margin-left: 2px;
   content: url(./svgs/types/label.svg);
 }
 
 .currencyItemIcon {
   width: 10px;
+  margin-left: 3px;
+  margin-right: 2px;
   content: url(./svgs/types/currency.svg);
 }
 
