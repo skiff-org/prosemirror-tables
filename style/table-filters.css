@@ -423,6 +423,7 @@
   height: 28px;
   gap: 3px;
   border-radius: 8px;
+  cursor: pointer;
 }
 
 .manage-filters-button:hover,
