@@ -155,7 +155,7 @@ export const LabelsChooser = ({
         : chosenLabels.filter((label) => label.title !== title);
       setChosenLabels(newChosenLabels);
       if (inFilters) handleLabelChoose(title, checked, newChosenLabels);
-      updateCellLabels(view, pos, node, newChosenLabels, false);
+      // updateCellLabels(view, pos, node, newChosenLabels, false);
       const input = document.getElementById('labels-input');
       if (input) input.focus();
     },
@@ -187,6 +187,12 @@ export const LabelsChooser = ({
     );
   };
 
+  const filterInputPlaceholder = inFilters
+    ? 'Type to filter...'
+    : tableLabels.length
+    ? 'Type to filter / create new'
+    : 'Type to create new label';
+
   return (
     <>
       <div className="labels-chooser-container" ref={ref}>
@@ -207,15 +213,11 @@ export const LabelsChooser = ({
               inFilters ? () => null : createNewLabel();
             }
           }}
-          placeholder={
-            tableLabels.length
-              ? 'Type to filter / create new'
-              : 'Type to create new label'
-          }
+          placeholder={filterInputPlaceholder}
           type="text"
         />
         <div className="labels-list">
-          {inputValue.length && isNotExists(inputValue) ? (
+          {inputValue.length && isNotExists(inputValue) && !inFilters ? (
             <div className="add-new-label" onClick={createNewLabel}>
               +
               <span
@@ -224,9 +226,10 @@ export const LabelsChooser = ({
               ></span>
               <span className="new-label-title">Create "{inputValue}"</span>
             </div>
-          ) : (
-            ''
-          )}
+          ) : null}
+          {!filteredLabels.length && inputValue.length && inFilters ? (
+            <div style={{textAlign: 'center'}}>Can't find labels</div>
+          ) : null}
           {filteredLabels.length
             ? filteredLabels.map(({title, color}, index) => (
                 <LabelOption

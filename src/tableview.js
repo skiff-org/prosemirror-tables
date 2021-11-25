@@ -199,7 +199,10 @@ export class TableView {
     }
 
     // to handle first row/col insert
-    if (!node.firstChild.firstChild.eq(this.node.firstChild.firstChild)) {
+    if (
+      !node.firstChild.firstChild ||
+      !node.firstChild.firstChild.eq(this.node.firstChild.firstChild)
+    ) {
       return false;
     }
 
