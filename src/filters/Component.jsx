@@ -307,12 +307,12 @@ export const TableFiltersComponent = ({table, pos, view, headerPos}) => {
       return;
     }
     const colDefaultFilter = createDefaultFilter(view.state, table, headerPos);
-    setFiltersGroups((oldGroups) => [[colDefaultFilter], ...oldGroups]);
+    setFiltersGroups((oldGroups) => [...oldGroups, [colDefaultFilter]]);
   }, []);
 
   const addNewGroup = () => {
     const defaultFilter = createDefaultFilter(view.state, table);
-    setFiltersGroups((oldFilters) => [[defaultFilter], ...oldFilters]);
+    setFiltersGroups((oldFilters) => [...oldFilters, [defaultFilter]]);
   };
 
   const createFiltersGroupSetter = (groupIndex) => (newGroup) => {
@@ -352,11 +352,11 @@ export const TableFiltersComponent = ({table, pos, view, headerPos}) => {
               return (
                 <>
                   <FiltersGroup
-                    index={index}
                     addNewGroup={addNewGroup}
                     filters={groupFilters.map(
                       (filter) => new Filter(view, table, filter)
                     )}
+                    index={index}
                     isFirstGroup={index === 0}
                     isLastGroup={index + 1 === filtersGroups.length}
                     key={`${index}`}
