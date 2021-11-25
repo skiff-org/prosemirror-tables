@@ -413,6 +413,19 @@ export const FiltersActionsComponent = ({table, pos, view, manageFilters}) => {
     return false;
   }, [table, view]);
 
+  const manageFiltersBtnClicked = useCallback(() => {
+    const {
+      dispatch,
+      state: {tr},
+    } = view;
+
+    table.attrs = {...table.attrs, disableFilters: false};
+    tr.setNodeMarkup(pos, undefined, table.attrs);
+    dispatch(tr);
+    manageFilters();
+    return false;
+  }, [table, view]);
+
   const ref = useClickOutside((e) => {
     if (view.dom.contains(e.target)) {
       const tr = closeFiltersPopup(view);
@@ -422,7 +435,10 @@ export const FiltersActionsComponent = ({table, pos, view, manageFilters}) => {
 
   return (
     <div className="actions-tooltip" ref={ref}>
-      <button className="manage-filters-button" onClick={manageFilters}>
+      <button
+        className="manage-filters-button"
+        onClick={manageFiltersBtnClicked}
+      >
         <span className="manage-filters-icon"></span>
         <span className="manage-filters-label"> Manage filters</span>
       </button>
