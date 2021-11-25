@@ -212,6 +212,14 @@
   content: url('./svgs/trash.svg');
 }
 
+.group-action-button.remove:hover {
+  border-color: #ff4c71;
+}
+
+.group-action-button.remove:hover .group-action-remove-icon {
+  content: url('./svgs/trash_red.svg');
+}
+
 .group-action-button {
   display: flex;
   align-items: center;
