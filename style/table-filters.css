@@ -208,12 +208,8 @@
   background-color: transparent;
 }
 
-.remove.group-action-button {
-  border-color: rgba(255, 76, 113, 1);
-}
-
 .group-action-remove-icon {
-  content: url('./svgs/trash_red.svg');
+  content: url('./svgs/trash.svg');
 }
 
 .group-action-button {
@@ -223,15 +219,15 @@
   cursor: pointer;
   white-space: nowrap;
 
-  padding: 6px 12px;
+  padding: 6px 16px;
   margin-top: 12px;
   margin-bottom: 6px;
   width: fit-content;
-  height: 34px;
+  height: 28px;
 
   background: white;
   border: 1px solid rgba(55, 53, 47, 0.16);
-  border-radius: 12px;
+  border-radius: 8px;
 }
 
 .filters-group-separator {
@@ -249,7 +245,7 @@
 .group-actions-container {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
 }
 
 .concatenation-rule {
