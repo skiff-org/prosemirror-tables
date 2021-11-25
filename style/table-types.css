@@ -104,10 +104,13 @@
   position: relative;
 }
 
+.all-labels-container .label-title {
+  line-height: 0.7;
+}
+
 .label-title {
   opacity: 1;
   font-size: 13px;
-  line-height: 0.7;
   word-break: keep-all;
   white-space: nowrap;
   cursor: pointer;
