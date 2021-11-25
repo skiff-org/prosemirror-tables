@@ -33,7 +33,7 @@ export const calculateMenuPosition = (menuDOM, {dom: tableDOM}) => {
     height: cellHeight,
     top,
     width: tableWidth,
-  } = tableDOM.getBoundingClientRect();
+  } = tableDOM.closest('.tableWrapper').getBoundingClientRect();
 
   if (left === 0 || top === 0 || cellHeight === 0) return;
 
