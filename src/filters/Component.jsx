@@ -450,7 +450,7 @@ export const FiltersActionsComponent = ({table, pos, view, manageFilters}) => {
       </button>
       <button className="clear-filters-button" onClick={clearFilterBtnClicked}>
         <span className="clear-filters-icon"></span>
-        <span className="clear-filters-label"> Clear filters</span>
+        <span className="clear-filters-label">Clear filters</span>
       </button>
     </div>
   );

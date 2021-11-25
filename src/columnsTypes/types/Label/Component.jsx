@@ -12,28 +12,16 @@ import {
 } from './utils';
 import useClickOutside from '../../../useClickOutside.jsx';
 
-const Label = ({theme, title, onDelete, color, editMode, openChooser}) => {
+const Label = ({title, onDelete, color, editMode, openChooser}) => {
   return (
     <div
       className="label-container"
-      style={
-        theme === 'dark'
-          ? {backgroundColor: color.replace('1.0', '0.3')}
-          : {backgroundColor: color}
-      }
+      style={{backgroundColor: color.replace('1.0', '0.3')}}
     >
       <span
         className="label-title"
         onClick={editMode ? openChooser : () => null}
-        style={
-          theme === 'dark'
-            ? {
-                color: color,
-              }
-            : {
-                color: 'white',
-              }
-        }
+        style={{color}}
       >
         {title}
       </span>
@@ -41,15 +29,9 @@ const Label = ({theme, title, onDelete, color, editMode, openChooser}) => {
         <span
           className="delete-label"
           onClick={onDelete}
-          style={
-            theme === 'dark'
-              ? {
-                  backgroundColor: color,
-                }
-              : {
-                  backgroundColor: 'white',
-                }
-          }
+          style={{
+            backgroundColor: color,
+          }}
         />
       )}
     </div>
@@ -57,7 +39,6 @@ const Label = ({theme, title, onDelete, color, editMode, openChooser}) => {
 };
 
 const LabelOption = ({
-  theme,
   color,
   title,
   onChange,
@@ -69,7 +50,7 @@ const LabelOption = ({
 
   return (
     <div
-      className={`label-option ${theme}`}
+      className={`label-option`}
       onClick={() => {
         setSelected(!selected);
         onChange(title, !selected);
@@ -105,7 +86,6 @@ const LabelOption = ({
 };
 
 export const LabelsChooser = ({
-  theme,
   view,
   pos,
   node,
@@ -256,7 +236,6 @@ export const LabelsChooser = ({
                     handleLabelCheck(title, color, checked)
                   }
                   onDelete={handleLabelDelete}
-                  theme={theme}
                   title={title}
                 />
               ))
@@ -269,8 +248,6 @@ export const LabelsChooser = ({
 
 const LabelComponent = ({view, node, getPos, dom}) => {
   const labels = node.attrs.labels;
-
-  const theme = window.localStorage.getItem('THEME_MODE') || 'light';
 
   const openChooser = (e) => {
     const {tr} = view.state;
@@ -297,14 +274,13 @@ const LabelComponent = ({view, node, getPos, dom}) => {
             key={`${color}${title}${index}`}
             onDelete={() => removeLabel(view, getPos(), node, title)}
             openChooser={openChooser}
-            theme={theme}
             title={title}
           />
         ))}
 
         {view.editable && (
           <button
-            className={`add-label ${theme}`}
+            className={`add-label`}
             data-test="add-label"
             onClick={openChooser}
           >

@@ -83,7 +83,6 @@ class TableLabelsMenu {
   onOpen() {
     ReactDOM.render(
       <LabelsChooser
-        theme={window.localStorage.getItem('THEME_MODE') || 'light'}
         handleLabelChoose={this.updateMenu(this.view)}
         initialChosenLabels={this.cellData.node.attrs.labels}
         node={this.cellData.node}
