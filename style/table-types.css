@@ -84,7 +84,7 @@
   width: fit-content;
   border: none;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   gap: 5px;
 }
@@ -107,7 +107,7 @@
 .label-title {
   opacity: 1;
   font-size: 13px;
-  line-height: 0.8;
+  line-height: 0.7;
   word-break: keep-all;
   white-space: nowrap;
   cursor: pointer;
