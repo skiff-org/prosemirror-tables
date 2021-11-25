@@ -52,9 +52,9 @@ export const calculateMenuPosition = (menuDOM, {node, dom: cellDOM, pos}) => {
 export const formatDate = (date, format) => {
   let formattedDate = format;
 
-  const month = date.getUTCMonth() + 1;
-  const year = date.getUTCFullYear();
-  const day = date.getUTCDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+  const day = date.getDate();
 
   formattedDate = formattedDate.replace('DD', day.toString().padStart(2, '0'));
   formattedDate = formattedDate.replace(
