@@ -156,6 +156,9 @@
   padding: 8px;
 }
 
+.colHeader.labels-cell {
+  padding: 4px !important;
+}
 .labels-cell {
   padding: 0 !important;
 }
