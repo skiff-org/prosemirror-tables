@@ -1,5 +1,6 @@
 .table-filters-container {
   padding: 8px;
+  min-width: 520px;
 }
 
 .table-filters-menu {
