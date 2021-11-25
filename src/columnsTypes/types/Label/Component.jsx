@@ -27,12 +27,14 @@ const Label = ({title, onDelete, color, editMode, openChooser}) => {
       </span>
       {editMode && (
         <span
-          className="delete-label"
+          className="delete-label-container"
           onClick={onDelete}
           style={{
             backgroundColor: color,
           }}
-        />
+        >
+          <span className="delete-label" />
+        </span>
       )}
     </div>
   );

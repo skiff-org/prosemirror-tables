@@ -95,13 +95,27 @@
   height: 14px;
 }
 
-.delete-label {
-  mask: url('./svgs/delete-label.svg');
+.delete-label-container {
   cursor: pointer;
   border-radius: 100%;
   width: 10px;
   height: 10px;
   position: relative;
+}
+
+.delete-label {
+  -webkit-mask: url('./svgs/delete-label.svg');
+  mask: url('./svgs/delete-label.svg');
+  background-color: #313740;
+  width: 10px;
+  height: 9px;
+  position: absolute;
+  -webkit-mask-size: 6px;
+  -webkit-mask-repeat: no-repeat;
+  mask-size: 6px;
+  mask-repeat: no-repeat;
+  top: 2px;
+  left: 2px;
 }
 
 .all-labels-container .label-title {
