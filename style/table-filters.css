@@ -1,8 +1,9 @@
 .table-filters-container {
   padding: 8px;
 }
+
 .table-filters-menu {
-  transform: translateX(-100%);
+  transform: translateX(-100%) translateY(-15px);
   border-radius: 16px;
   border: 1px solid black;
   padding: 8px;
