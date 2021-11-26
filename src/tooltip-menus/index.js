@@ -1,8 +1,7 @@
-import {Plugin, PluginKey} from 'prosemirror-state';
+import {Plugin} from 'prosemirror-state';
 import TablePopUpMenuView from './menu-view';
 import {popUpItems} from './items';
-
-export const tablePopUpMenuKey = new PluginKey('tablePopUpMenu');
+import {tablePopUpMenuKey} from '../PopupManager'
 
 const tablePopUpMenu = () => {
   return new Plugin({

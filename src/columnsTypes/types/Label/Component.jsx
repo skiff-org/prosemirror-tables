@@ -5,12 +5,13 @@ import {
   removeLabel,
   stringToColor,
   updateCellLabels,
-  tableLabelsMenuKey,
   updateTablesLabels,
   removeLabelsFromTableCells,
   randomString,
 } from './utils';
+import {tableLabelsMenuKey} from '../../../PopupManager'
 import useClickOutside from '../../../useClickOutside.jsx';
+import PopupManager from '../../../PopupManager';
 
 const Label = ({title, onDelete, color, editMode, openChooser}) => {
   return (
@@ -259,13 +260,12 @@ const LabelComponent = ({view, node, getPos, dom}) => {
 
   const openChooser = (e) => {
     const {tr} = view.state;
-    tr.setMeta(tableLabelsMenuKey, {
+    PopupManager.open(tr, tableLabelsMenuKey, {
       pos: getPos(),
       dom: dom,
       node: node,
-      id: window.id,
-      action: 'open',
-    });
+    })
+
     setTimeout(() => view.dispatch(tr), 0);
 
     e.preventDefault();

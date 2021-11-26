@@ -16,7 +16,8 @@ import {getColIndex, createElementWithClass} from './util';
 import {setNodeAttrs} from './schema/schema';
 import {cellExtraAttrs} from './schema/cellAttrs';
 import {CellSelection} from './cellselection';
-import {tableHeadersMenuKey} from './columnsTypes/types.config';
+import {tableHeadersMenuKey} from './PopupManager';
+import PopupManager from './PopupManager';
 
 export const key = new PluginKey('tableColumnHandles');
 
@@ -215,13 +216,12 @@ export class CellView {
         if (this.rowHandle && this.rowHandle.contains(e.target)) return;
 
         const {tr} = this.view.state;
-        tr.setMeta(tableHeadersMenuKey, {
+        PopupManager.open(tr, tableHeadersMenuKey, {
           pos: this.getPos(),
           dom: this.dom,
           node: this.node,
-          id: window.id,
-          action: 'open',
-        });
+        })
+  
         setTimeout(() => this.view.dispatch(tr), 0);
 
         e.preventDefault();

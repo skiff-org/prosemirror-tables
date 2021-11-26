@@ -4,8 +4,8 @@ import {
   createDefaultFilter,
   getColsOptions,
   executeFilters,
-  tableFiltersMenuKey,
 } from './utils';
+import {tableFiltersMenuKey} from '../PopupManager'
 import SelectDropdown, {SelectDropdownButton} from './Dropdown.jsx';
 import useClickOutside from '../useClickOutside.jsx';
 import {DatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
@@ -18,6 +18,7 @@ import DatePickerTheme from '../columnsTypes/types/Date/DatePickerTheme';
 import {ThemeProvider} from '@material-ui/core/styles';
 import {DATE_FORMAT} from '../columnsTypes/types/Date/utils';
 import {LabelsChooser} from '../columnsTypes/types/Label/Component.jsx';
+import PopupManager from '../PopupManager';
 
 const generateClassName = createGenerateClassName({
   seed: 'sgo-tables-plugin-',
@@ -287,10 +288,7 @@ const FiltersGroup = ({
 
 const closeFiltersPopup = (view, tr) => {
   tr = tr || view.state.tr;
-  tr.setMeta(tableFiltersMenuKey, {
-    action: 'close',
-    id: window.id,
-  });
+  PopupManager.close(tr, tableFiltersMenuKey)
 
   return tr;
 };

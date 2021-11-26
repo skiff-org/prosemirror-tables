@@ -3,12 +3,11 @@ import useClickOutside from '../../../useClickOutside.jsx';
 import EditorContent from '../../../ReactNodeView/EditorContent.jsx';
 import {
   formatDate,
-  tableDateMenuKey,
   DATE_FORMAT,
   buildDateObjectFromText,
   getClosestDate,
 } from './utils';
-
+import {tableDateMenuKey} from '../../../PopupManager'
 import {DatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 import DateUtilDayJS from '@date-io/dayjs';
 import {findParentNodeOfTypeClosestToPos} from 'prosemirror-utils';
@@ -19,6 +18,7 @@ import {
 import DatePickerTheme from './DatePickerTheme';
 import {ThemeProvider} from '@material-ui/core/styles';
 import ee from 'event-emitter';
+import PopupManager from '../../../PopupManager.js';
 
 const DateEventEmitter = function () {};
 ee(DateEventEmitter.prototype);
@@ -32,13 +32,11 @@ const generateClassName = createGenerateClassName({
 const DateComponent = ({view, node, getPos, editorContentRef, dom}) => {
   const openChooser = (e) => {
     const {tr} = view.state;
-    tr.setMeta(tableDateMenuKey, {
+    PopupManager.open(tr, tableDateMenuKey, {
       pos: getPos(),
       dom: dom,
       node: node,
-      id: window.id,
-      action: 'open',
-    });
+    })
 
     view.dispatch(tr);
   };
@@ -83,10 +81,8 @@ export const DatePickerComponent = ({view, node, pos}) => {
     if (!view.dom.contains(e.target)) return;
 
     const {tr} = view.state;
-    tr.setMeta(tableDateMenuKey, {
-      id: window.id,
-      action: 'close',
-    });
+    PopupManager.close(tr, tableDateMenuKey)
+
     view.dispatch(tr);
   });
 

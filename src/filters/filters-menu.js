@@ -4,10 +4,10 @@ import {Plugin} from 'prosemirror-state';
 import {
   generateMenuPopup,
   displayPopup,
-  tableFiltersMenuKey,
   calculateMenuPosition,
   executeFilters,
 } from './utils';
+import {tableFiltersMenuKey} from '../PopupManager'
 import {FiltersActionsComponent, TableFiltersComponent} from './Component.jsx';
 import {findParentNodeOfTypeClosestToPos} from 'prosemirror-utils';
 

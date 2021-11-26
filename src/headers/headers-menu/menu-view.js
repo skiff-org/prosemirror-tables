@@ -2,9 +2,10 @@ import {generateMenuPopup, displayPopup, calculateMenuPosition} from './utils';
 import {renderGrouped} from 'prosemirror-menu';
 import {dropdownClassName} from './items';
 import {TextField} from './textField/text-field.prosemirror';
-import {tableHeadersMenuKey} from '../../columnsTypes/types.config';
+import {tableHeadersMenuKey} from '../../PopupManager';
 import {columnTypesMap} from '../../columnsTypes/types.config';
 import {createElementWithClass} from '../../util';
+import PopupManager from '../../PopupManager';
 
 /**
  * class attached to the editor and update table tooltip on every view update.
@@ -21,7 +22,7 @@ class TableHeadersMenuView {
     this.view.dom.addEventListener('mousedown', () => {
       if (this.headerData) {
         const {tr} = this.view.state;
-        tr.setMeta(tableHeadersMenuKey, {action: 'close', id: window.id});
+        PopupManager.close(tr, tableHeadersMenuKey)
         this.view.dispatch(tr);
       }
     });
@@ -59,7 +60,7 @@ class TableHeadersMenuView {
     this.inputFieldDOM.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         const {tr} = this.view.state;
-        tr.setMeta(tableHeadersMenuKey, {action: 'close', id: window.id});
+        PopupManager.close(tr, tableHeadersMenuKey)
         this.view.dispatch(tr);
       }
     });

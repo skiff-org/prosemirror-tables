@@ -15,7 +15,6 @@ import {
   deleteCurrencyContent,
 } from './deleteCommands';
 
-export const tableHeadersMenuKey = new PluginKey('headersMenu');
 
 /**
  * Type Config -

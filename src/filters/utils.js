@@ -1,8 +1,6 @@
-import {PluginKey} from 'prosemirror-state';
 import {columnTypesMap, types} from '../columnsTypes/types.config';
 import {getColIndex, removeInvisibleCharacterFromText} from '../util';
-
-export const tableFiltersMenuKey = new PluginKey('TableFiltersMenu');
+import {tableFiltersMenuKey} from '../PopupManager'
 
 export const generateMenuPopup = () => {
   const menuElement = document.createElement('div');

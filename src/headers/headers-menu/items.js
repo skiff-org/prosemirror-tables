@@ -7,9 +7,10 @@ import {
 import {HoverDropdown} from '../../menuItems/Dropdown';
 import {createElementWithClass, getColIndex} from '../../util';
 import {getTypesItems} from '../../columnsTypes/typesMenuItems';
-import {tableHeadersMenuKey} from '../../columnsTypes/types.config';
+import {tableHeadersMenuKey} from '../../PopupManager';
 import {deleteColAtPos} from '../../commands';
-import {tableFiltersMenuKey} from '../../filters/utils';
+import {tableFiltersMenuKey} from '../../PopupManager';
+import PopupManager from '../../PopupManager';
 
 const createMenuItemWithIcon = (className, label, iconClassName) => {
   const item = createElementWithClass('div', className);
@@ -82,19 +83,13 @@ const filterItem = () => {
       const {tr} = state;
 
       const resolvedPos = state.doc.resolve(pos);
-      tr.setMeta(tableFiltersMenuKey, {
-        action: 'open',
+      PopupManager.open(tr, tableFiltersMenuKey, {
         manageFilterPopup: true,
         dom: view.domAtPos(resolvedPos.start(-1)).node,
         node: resolvedPos.node(1),
         pos: resolvedPos.start(1),
-        id: window.id,
         headerPos: pos,
-      });
-      tr.setMeta(tableHeadersMenuKey, {
-        action: 'close',
-        id: window.id,
-      });
+      })
 
       dispatch(tr);
     },

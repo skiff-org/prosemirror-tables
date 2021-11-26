@@ -4,13 +4,14 @@ import {Plugin} from 'prosemirror-state';
 import {
   generateMenuPopup,
   displayPopup,
-  tableDateMenuKey,
   calculateMenuPosition,
   getSelectedNode,
   setDateFormat,
 } from './utils';
+import {tableDateMenuKey} from '../../../PopupManager'
 import {DatePickerComponent, datePopupEmitter} from './Component.jsx';
 import {findParentNodeOfType} from 'prosemirror-utils';
+import PopupManager from '../../../PopupManager';
 
 class TableDateMenuView {
   constructor(view) {
@@ -144,10 +145,7 @@ export const TableDateMenu = (dateFormat) => {
         const openMenu = tableDateMenuKey.getState(newState);
         if (openMenu && !selectionInPicker) {
           const {tr} = newState;
-          tr.setMeta(tableDateMenuKey, {
-            id: window.id,
-            action: 'close',
-          });
+          PopupManager.close(tr, tableDateMenuKey)
           return tr;
         }
         return null;

@@ -1,9 +1,8 @@
 import dayjs from 'dayjs';
-import {PluginKey} from 'prosemirror-state';
-
+import {tableDateMenuKey} from '../../../PopupManager'
 export let DATE_FORMAT = 'DD/MM/YYYY';
+
 export const setDateFormat = (format) => (DATE_FORMAT = format);
-export const tableDateMenuKey = new PluginKey('TableDateMenu');
 
 export const generateMenuPopup = () => {
   const menuElement = document.createElement('div');

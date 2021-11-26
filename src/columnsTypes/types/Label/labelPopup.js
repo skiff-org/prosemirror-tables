@@ -4,9 +4,9 @@ import {Plugin} from 'prosemirror-state';
 import {
   generateMenuPopup,
   displayPopup,
-  tableLabelsMenuKey,
   calculateMenuPosition,
 } from './utils';
+import {tableLabelsMenuKey} from '../../../PopupManager'
 import {LabelsChooser} from './Component.jsx';
 
 class TableLabelsMenu {

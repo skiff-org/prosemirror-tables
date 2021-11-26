@@ -1,9 +1,8 @@
 import {findParentNodeOfTypeClosestToPos} from 'prosemirror-utils';
-import {PluginKey} from 'prosemirror-state';
 import {createHash} from 'crypto';
 import {getColCells} from '../../../util';
-
-export const tableLabelsMenuKey = new PluginKey('TableLabelsMenu');
+import PopupManager from '../../../PopupManager';
+import {tableLabelsMenuKey} from '../../../PopupManager'
 
 export const sha256 = (data) => {
   return createHash('sha256').update(data).digest('base64');
@@ -47,7 +46,7 @@ export const addLabel = (view, pos, node, newLabel) => {
   );
 
   updateTablesLabels(tr, pos, 'add', [newLabel]);
-  tr.setMeta(tableLabelsMenuKey, {action: 'close', id: window.id});
+  PopupManager.close(tr, tableLabelsMenuKey)
 
   view.dispatch(tr);
 };
@@ -115,7 +114,7 @@ export const updateCellLabels = (view, pos, node, labels, close = true) => {
   );
 
   updateTablesLabels(tr, pos, 'add', labels);
-  if (close) tr.setMeta(tableLabelsMenuKey, {action: 'close', id: window.id});
+  if (close) PopupManager.close(tr, tableLabelsMenuKey)
 
   view.dispatch(tr);
 };

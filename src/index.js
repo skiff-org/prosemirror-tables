@@ -15,7 +15,8 @@ import {
 import {key as tableEditingKey} from './util';
 import {drawCellSelection, normalizeSelection} from './cellselection';
 import {fixTables, fixTablesKey} from './fixtables';
-import tablePopUpMenu, {tablePopUpMenuKey} from './tooltip-menus/index';
+import tablePopUpMenu from './tooltip-menus/index';
+import {tablePopUpMenuKey} from './PopupManager'
 import CheckboxNodeView from './columnsTypes/types/Checkbox/NodeView';
 import DateComponent from './columnsTypes/types/Date/Component.jsx';
 import DateTypeNodeView from './columnsTypes/types/Date/NodeView';

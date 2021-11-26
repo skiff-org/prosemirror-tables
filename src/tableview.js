@@ -5,8 +5,9 @@ import {
   createElementWithClassAndChild as cewcac,
 } from './util';
 import {typeInheritance} from './headers/headers-menu/index';
-import {tableFiltersMenuKey} from './filters/utils';
-import {tableHeadersMenuKey} from './columnsTypes/types.config';
+import {tableFiltersMenuKey} from './PopupManager';
+import {tableHeadersMenuKey} from './PopupManager';
+import PopupManager from './PopupManager';
 
 const createAddCellsButton = (type, view, pos) => {
   const isRow = type === 'row';
@@ -116,6 +117,13 @@ export class TableView {
       this.openActionsBtn.classList.add('no-filters');
     }
     this.openActionsBtn.onclick = this.openActionsBtnClicked.bind(this);
+
+    // stop mousedown propagation to prevent race between `this.openActionsBtn` close() and filters component `useClickOutside` close()
+    // we want `this.openActionsBtn` to handle the closing.
+    this.openActionsBtn.onmousedown = (e) =>  {
+      e.stopPropagation()
+      e.preventDefault()
+    }
   }
 
   openActionsBtnClicked(e) {
@@ -127,26 +135,15 @@ export class TableView {
       },
     } = this;
 
-    // TODO: Create util that open the filter popup and close other - reuse
     if (!tableFiltersMenuKey.getState(this.view.state)) {
-      tr.setMeta(tableFiltersMenuKey, {
-        action: 'open',
+      PopupManager.open(tr, tableFiltersMenuKey, {
         dom: this.contentDOM,
         pos: this.getPos() + 1,
         node: node,
-        id: window.id,
-      });
+      })
     } else {
-      tr.setMeta(tableFiltersMenuKey, {
-        action: 'close',
-        id: window.id,
-      });
+      PopupManager.close(tr, tableFiltersMenuKey)
     }
-
-    tr.setMeta(tableHeadersMenuKey, {
-      action: 'close',
-      id: window.id,
-    });
     dispatch(tr);
     e.preventDefault();
     e.stopPropagation();

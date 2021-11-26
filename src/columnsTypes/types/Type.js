@@ -1,5 +1,7 @@
+import PopupManager from '../../PopupManager';
 import {getColCells} from '../../util';
-import {columnTypesMap, tableHeadersMenuKey} from '../types.config';
+import {columnTypesMap} from '../types.config';
+import {tableHeadersMenuKey} from '../../PopupManager'
 
 class CellDataType {
   convert(view, typeId) {
@@ -46,7 +48,7 @@ class CellDataType {
       tr.setNodeMarkup(pos, undefined, newAttrs);
     });
 
-    tr.setMeta(tableHeadersMenuKey, {action: 'close', id: window.id})
+    PopupManager.close(tr, tableHeadersMenuKey)
 
     view.dispatch(tr);
   }

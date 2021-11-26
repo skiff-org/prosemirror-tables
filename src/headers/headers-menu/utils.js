@@ -1,6 +1,6 @@
 import {CellSelection} from '../../cellselection';
 import {createElementWithClass} from '../..//util';
-import {tableHeadersMenuKey} from '../../columnsTypes/types.config';
+import {tableHeadersMenuKey} from '../../PopupManager';
 
 export function enableDeleteItem(view) {
   const {selection: sel} = view.state;
