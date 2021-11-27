@@ -120,10 +120,10 @@ export class TableView {
 
     // stop mousedown propagation to prevent race between `this.openActionsBtn` close() and filters component `useClickOutside` close()
     // we want `this.openActionsBtn` to handle the closing.
-    this.openActionsBtn.onmousedown = (e) =>  {
-      e.stopPropagation()
-      e.preventDefault()
-    }
+    this.openActionsBtn.onmousedown = (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+    };
   }
 
   openActionsBtnClicked(e) {
@@ -140,9 +140,9 @@ export class TableView {
         dom: this.contentDOM,
         pos: this.getPos() + 1,
         node: node,
-      })
+      });
     } else {
-      PopupManager.close(tr, tableFiltersMenuKey)
+      PopupManager.close(tr, tableFiltersMenuKey);
     }
     dispatch(tr);
     e.preventDefault();
