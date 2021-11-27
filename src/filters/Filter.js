@@ -77,6 +77,11 @@ class Filter {
     this.filterValue = value;
   }
 
+  setFilterHeaderId(headerId) {
+    this.headerId = headerId;
+    this.colType = this.getColType()
+  }
+
   // should return true if the filter should have dropdown to choose value
   valueIsDropdown() {
     return false;

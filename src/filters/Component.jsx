@@ -169,9 +169,10 @@ const FilterRule = ({
           className="filter-columns-dropdown"
           initialValue={filterHandler.headerId}
           items={colsDropdownOptions}
-          onValueChange={(headerId) =>
-            onFilterChange({...filterHandler.toAttrsValue(), headerId})
-          }
+          onValueChange={(headerId) => {
+            filterHandler.setFilterHeaderId(headerId)
+            onFilterChange(filterHandler.toAttrsValue())
+          }}
         />
       </div>
       <div className="rule-chooser" data-test="filter-role-chooser">
