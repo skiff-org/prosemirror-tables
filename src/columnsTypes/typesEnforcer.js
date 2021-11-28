@@ -18,8 +18,10 @@ export const typesEnforcer = () => {
         false
       );
 
+      const notSingleSelection = oldState.selection.from !== oldState.selection.to
+
       // if the selection has not changed - return
-      if (!selectionChanged || docChanged) return null;
+      if (!selectionChanged || docChanged || notSingleSelection) return null;
 
       const {schema} = newState;
 

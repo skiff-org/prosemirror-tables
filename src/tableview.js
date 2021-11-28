@@ -5,7 +5,7 @@ import {typeInheritance} from './headers/headers-menu/index';
 import {tableFiltersMenuKey} from './filters/utils';
 import {tableHeadersMenuKey} from './columnsTypes/types.config';
 
-const createAddCellsButton = (type, view, pos) => {
+const createAddCellsButton = (type, view) => {
   const isRow = type === 'row';
   const newElement = createElementWithClass(
     'button',
@@ -17,7 +17,7 @@ const createAddCellsButton = (type, view, pos) => {
   }`;
   newElement.contentEditable = false;
   newElement.onclick = () => {
-    (isRow ? addBottomRow : addRightColumn)(view.state, view.dispatch, pos);
+    (isRow ? addBottomRow : addRightColumn)(view.state, view.dispatch);
     view.focus();
   };
   return newElement;
@@ -65,11 +65,9 @@ export class TableView {
     setTimeout(() => {
       this.updateMarkers();
     }, 0);
-    this.tableVerticalWrapper.appendChild(
-      createAddCellsButton('row', view, this.getPos() + 1)
-    );
+    this.tableVerticalWrapper.appendChild(createAddCellsButton('row', view));
     this.tableHorizontalWrapper.appendChild(
-      createAddCellsButton('column', view, this.getPos() + 1)
+      createAddCellsButton('column', view)
     );
 
     this.colgroup = this.table.appendChild(document.createElement('colgroup'));
