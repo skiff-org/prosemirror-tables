@@ -9,7 +9,7 @@ import {
   removeLabelsFromTableCells,
   randomString,
 } from './utils';
-import {tableLabelsMenuKey} from '../../../PopupManager'
+import {tableLabelsMenuKey} from '../../../PopupManager';
 import useClickOutside from '../../../useClickOutside.jsx';
 import PopupManager from '../../../PopupManager';
 
@@ -88,6 +88,9 @@ const LabelOption = ({
   );
 };
 
+const tableLabelDoesNotExist = (tableLabels, label) =>
+  !tableLabels.some(({title}) => title === label);
+
 export const LabelsChooser = ({
   view,
   pos,
@@ -129,9 +132,6 @@ export const LabelsChooser = ({
       : tableLabels.filter((label) =>
           label.title.toLowerCase().includes(inputValue.toLowerCase())
         );
-
-  const isNotExists = (label) =>
-    !tableLabels.some(({title}) => title === label);
 
   useEffect(() => {
     const input = document.getElementById('labels-input');
@@ -221,7 +221,9 @@ export const LabelsChooser = ({
           type="text"
         />
         <div className="labels-list">
-          {inputValue.length && isNotExists(inputValue) && !inFilters ? (
+          {inputValue.length &&
+          tableLabelDoesNotExist(tableLabels, inputValue) &&
+          !inFilters ? (
             <div className="add-new-label" onClick={createNewLabel}>
               +
               <span
@@ -264,7 +266,7 @@ const LabelComponent = ({view, node, getPos, dom}) => {
       pos: getPos(),
       dom: dom,
       node: node,
-    })
+    });
 
     setTimeout(() => view.dispatch(tr), 0);
 
