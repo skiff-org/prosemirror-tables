@@ -7,7 +7,7 @@ import {
   enableCellsColor,
 } from './utils';
 import {changeCellsBackgroundColor, toggleTableHeaders} from './commands';
-import {createElementWithClass} from '../util'
+import {createElementWithClass} from '../util';
 import {getDeleteCommand} from '../input';
 
 const toggleHeader = () => {
