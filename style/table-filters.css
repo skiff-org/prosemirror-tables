@@ -449,12 +449,12 @@
   margin-left: -2px;
 }
 
-.enable-filters-icon {
+.disable .enable-filters-icon {
   content: url('./svgs/enable-filters.svg');
   padding: 4px 6px 4px 2px;
 }
 
-.disable .enable-filters-icon {
+.enable-filters-icon {
   content: url('./svgs/disable-filters.svg');
   padding: 0;
   margin-left: -2px;
