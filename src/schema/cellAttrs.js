@@ -1,5 +1,3 @@
-const NO_VISIBLE_BORDER_WIDTH = new Set(['0pt', '0px']);
-
 export const cellExtraAttrs = {
   id: {
     default: '',
@@ -11,8 +9,7 @@ export const cellExtraAttrs = {
     },
 
     setDOMAttr(value, attrs) {
-      if (value)
-        attrs.id = value;
+      if (value) attrs.id = value;
     }
   },
   type: {
@@ -89,28 +86,6 @@ export const cellExtraAttrs = {
         attrs['data-colwidth'] = value.join(',');
     }
   },
-   borderColor: {
-      default: null,
-
-      getFromDOM(dom) {
-        if (!(dom instanceof HTMLElement)) {
-          return {};
-        }
-        const { borderColor, borderWidth } = dom.style;
-
-        if (NO_VISIBLE_BORDER_WIDTH.has(borderWidth)) {
-          return 'transparent';
-        }
-
-        return (borderColor && toCSSColor(borderColor)) || null;
-      },
-
-      setDOMAttr(value, attrs) {
-        if (value) {
-          attrs.style = `${attrs.style || ''};border-color: ${value};`;
-        }
-      }
-    },
     background: {
       default: 'transparent',
 

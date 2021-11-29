@@ -168,24 +168,29 @@ export const TableDateMenu = (dateFormat) => {
     },
     props: {
       handleKeyPress(view, event) {
-        emitPopupUpdate(view)
-        return false
-      }
-    }
+        emitPopupUpdate(view);
+        return false;
+      },
+    },
   });
 };
 
 const emitPopupUpdate = debounce((view) => {
-  const dateNode = findParentNodeOfType(view.state.schema.nodes.date)(view.state.selection);
+  const dateNode = findParentNodeOfType(view.state.schema.nodes.date)(
+    view.state.selection
+  );
   if (!dateNode) return false;
 
-  datePopupEmitter.emit('updatePopup', dateNode.node.textContent)
-})
+  datePopupEmitter.emit('updatePopup', dateNode.node.textContent);
+  return true;
+});
 
-function debounce(func, timeout = 300){
+function debounce(func, timeout = 300) {
   let timer;
   return (...args) => {
     clearTimeout(timer);
-    timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    timer = setTimeout(() => {
+      func.apply(this, args);
+    }, timeout);
   };
 }
