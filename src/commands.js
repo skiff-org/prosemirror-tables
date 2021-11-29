@@ -1,7 +1,10 @@
 // This file defines a number of table-related commands.
 import {TextSelection, Selection} from 'prosemirror-state';
 import {Fragment} from 'prosemirror-model';
-import {findParentNodeOfTypeClosestToPos} from 'prosemirror-utils';
+import {
+  findParentNodeOfTypeClosestToPos,
+  findParentNodeOfType,
+} from 'prosemirror-utils';
 import {Rect, TableMap} from './tablemap';
 import {CellSelection} from './cellselection';
 import {columnTypesMap} from './columnsTypes/types.config';
@@ -72,10 +75,15 @@ export function addColumn(tr, {map, tableStart, table}, col) {
       const pos = map.positionAt(row, col, table);
 
       // inherit row background color
-      const prevCell = tr.doc.resolve(tr.mapping.map(tableStart + pos + (col === 0 ? 1 : -1))).parent
+      const prevCell = tr.doc.resolve(
+        tr.mapping.map(tableStart + pos + (col === 0 ? 1 : -1))
+      ).parent;
       const background = prevCell.attrs.background;
 
-      tr.insert(tr.mapping.map(tableStart + pos), type.createAndFill({background}));
+      tr.insert(
+        tr.mapping.map(tableStart + pos),
+        type.createAndFill({background})
+      );
     }
   }
 
@@ -214,10 +222,12 @@ export function addRowAfter(state, dispatch) {
   return true;
 }
 
-export function addBottomRow(state, dispatch, pos) {
+export function addBottomRow(state, dispatch) {
   if (dispatch) {
-    const table = findParentNodeOfTypeClosestToPos(state.doc.resolve(pos + 1), state.schema.nodes.table)
-    if (!table) return;
+    const table = findParentNodeOfType(state.schema.nodes.table)(
+      state.selection
+    );
+    if (!table) return false;
     const rect = {
       tableStart: table.start,
       table: table.node,
@@ -229,10 +239,12 @@ export function addBottomRow(state, dispatch, pos) {
   return true;
 }
 
-export function addRightColumn(state, dispatch, pos) {
+export function addRightColumn(state, dispatch) {
   if (dispatch) {
-    const table = findParentNodeOfTypeClosestToPos(state.doc.resolve(pos + 1), state.schema.nodes.table)
-    if (!table) return;
+    const table = findParentNodeOfType(state.schema.nodes.table)(
+      state.selection
+    );
+    if (!table) return false;
     const rect = {
       tableStart: table.start,
       table: table.node,
@@ -286,7 +298,7 @@ export function deleteRow(state, dispatch, rect) {
       tr = state.tr;
     if (rect.top == 0 && rect.bottom == rect.map.height) return false;
     for (let i = rect.bottom - 1; ; i--) {
-      const row = rect.table.child(i)
+      const row = rect.table.child(i);
       if (row.attrs.hidden) continue;
       removeRow(tr, rect, i);
       if (i == rect.top) break;
@@ -860,14 +872,14 @@ export const deleteColAtPos = (pos, view) => {
 
   const {tr} = view.state;
   const colIndex = getColIndex(view.state, pos);
-  if(rect.map.width ===  1) {
-    tr.delete(rect.tableStart - 1 , rect.tableStart + rect.table.nodeSize);
+  if (rect.map.width === 1) {
+    tr.delete(rect.tableStart - 1, rect.tableStart + rect.table.nodeSize);
   } else {
     removeColumn(tr, rect, colIndex);
   }
 
   view.dispatch(tr);
-  return true
+  return true;
 };
 
 const getTableRect = (state) => {

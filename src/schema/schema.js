@@ -99,7 +99,7 @@ export function tableNodes(options) {
       parseDOM: [
         {tag: 'table', getAttrs: (dom) => getNodeAttrs(dom, tableExtraAttrs)},
       ],
-      toDOM() {
+      toDOM(node) {
         return ['table', setNodeAttrs(node, tableExtraAttrs), ['tbody', 0]];
       },
     },

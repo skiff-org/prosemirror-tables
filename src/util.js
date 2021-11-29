@@ -209,4 +209,4 @@ export const sortNumVsString = (direction, textA, textB, collator) => {
 
 // sometimes cells has invisible character when they are empty - remove it
 export const removeInvisibleCharacterFromText = (text) =>
-  text.replace(/[^\x00-\x7F]/g, '');
+  text.replace(/[\u200B]/g, '');

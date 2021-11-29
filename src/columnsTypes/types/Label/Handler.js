@@ -21,7 +21,7 @@ class LabelType extends CellDataType {
   renderContentNode(schema, cellTextContent, tr, pos) {
     let labels = [];
 
-    if (cellTextContent.replace(/[^\x00-\x7F]/g, '') !== '') {
+    if (cellTextContent.replace(/[\u200B]/g, '')) {
       const titles = Array.from(new Set(cellTextContent.split(','))).map((title) => title.trim()).filter((title) => title.length);
       const tableLabels = tr.doc.resolve(pos).node(1).attrs.labels
 

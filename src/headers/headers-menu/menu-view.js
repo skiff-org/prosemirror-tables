@@ -187,7 +187,7 @@ class TableHeadersMenuView {
   }
 
   updateHeaderTitle() {
-    const inputFieldValue = this.inputField.read().replace(/[^\x00-\x7F]/g, '');
+    const inputFieldValue = this.inputField.read().replace(/[\u200B]/g, '');
     const headerContent = this.headerData.node.textContent;
 
     if (headerContent === inputFieldValue) return;

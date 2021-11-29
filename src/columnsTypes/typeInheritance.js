@@ -11,7 +11,8 @@ export const typeInheritance = (view, node, pos) => {
     const colType = header.attrs.type;
 
     for (let row = tableMap.height - 1; row >= 0; row--) {
-      const cell = node.child(row).child(col);
+      if (!node.child(row) || !node.child(row).maybeChild(col)) continue
+      const cell = node.child(row).maybeChild(col);
       if (cell.attrs.type !== colType) {
         const cellPos = tableMap.map[row * tableMap.width + col] + pos + 1;
         const typeHandler = columnTypesMap[colType].handler;
