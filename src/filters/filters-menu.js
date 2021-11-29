@@ -6,8 +6,10 @@ import {
   displayPopup,
   calculateMenuPosition,
   executeFilters,
+  FILTERS_ACTIONS_MENU,
+  MANAGE_FILTERS_MENU,
 } from './utils';
-import {tableFiltersMenuKey} from '../PopupManager'
+import {tableFiltersMenuKey} from '../PopupManager';
 import {FiltersActionsComponent, TableFiltersComponent} from './Component.jsx';
 import {findParentNodeOfTypeClosestToPos} from 'prosemirror-utils';
 
@@ -92,33 +94,39 @@ class TableFiltersMenuView {
     this.updateMenu(view);
   }
 
-  onOpen(manage = false) {
+  onOpen(menu = FILTERS_ACTIONS_MENU) {
     document.querySelector('.tableScrollWrapper').classList.add('open');
 
-    if (this.tablesData.node.attrs.filters.length < 1 || manage) {
-      ReactDOM.render(
-        <TableFiltersComponent
-          dom={this.tablesData.dom}
-          headerPos={this.tablesData.headerPos}
-          pos={this.tablesData.pos}
-          table={this.tablesData.node}
-          view={this.view}
-        />,
-        this.popUpDOM
-      );
-    } else {
-      ReactDOM.render(
-        <FiltersActionsComponent
-          manageFilters={() => {
-            this.onOpen(true);
-          }}
-          pos={this.tablesData.pos}
-          table={this.tablesData.node}
-          view={this.view}
-        />,
-        this.popUpDOM
-      );
+    if (this.tablesData.node.attrs.filters.length < 1)
+      menu = MANAGE_FILTERS_MENU;
+
+    let menuElement;
+    switch (menu) {
+      case MANAGE_FILTERS_MENU:
+        menuElement = (
+          <TableFiltersComponent
+            dom={this.tablesData.dom}
+            headerPos={this.tablesData.headerPos}
+            pos={this.tablesData.pos}
+            table={this.tablesData.node}
+            view={this.view}
+          />
+        );
+        break;
+      case FILTERS_ACTIONS_MENU:
+        menuElement = (
+          <FiltersActionsComponent
+            manageFilters={() => {
+              this.onOpen(MANAGE_FILTERS_MENU);
+            }}
+            pos={this.tablesData.pos}
+            table={this.tablesData.node}
+            view={this.view}
+          />
+        );
+        break;
     }
+    ReactDOM.render(menuElement, this.popUpDOM);
   }
 
   onClose() {

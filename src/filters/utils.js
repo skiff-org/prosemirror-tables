@@ -1,6 +1,9 @@
 import {columnTypesMap, types} from '../columnsTypes/types.config';
 import {getColIndex, removeInvisibleCharacterFromText} from '../util';
-import {tableFiltersMenuKey} from '../PopupManager'
+import {tableFiltersMenuKey} from '../PopupManager';
+
+export const MANAGE_FILTERS_MENU = 'manage-filters';
+export const FILTERS_ACTIONS_MENU = 'filters-actions';
 
 export const generateMenuPopup = () => {
   const menuElement = document.createElement('div');

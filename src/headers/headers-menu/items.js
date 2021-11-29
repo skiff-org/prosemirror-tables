@@ -11,6 +11,7 @@ import {tableHeadersMenuKey} from '../../PopupManager';
 import {deleteColAtPos} from '../../commands';
 import {tableFiltersMenuKey} from '../../PopupManager';
 import PopupManager from '../../PopupManager';
+import {MANAGE_FILTERS_MENU} from '../../filters/utils';
 
 const createMenuItemWithIcon = (className, label, iconClassName) => {
   const item = createElementWithClass('div', className);
@@ -84,12 +85,12 @@ const filterItem = () => {
 
       const resolvedPos = state.doc.resolve(pos);
       PopupManager.open(tr, tableFiltersMenuKey, {
-        manageFilterPopup: true,
+        manageFilterPopup: MANAGE_FILTERS_MENU,
         dom: view.domAtPos(resolvedPos.start(-1)).node,
         node: resolvedPos.node(1),
         pos: resolvedPos.start(1),
         headerPos: pos,
-      })
+      });
 
       dispatch(tr);
     },
