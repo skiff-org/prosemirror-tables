@@ -289,7 +289,7 @@ export class CellView {
     const placeholders = this.dom.getElementsByClassName('empty-header');
     if (
       this.colHandle &&
-      this.node.textContent.replace(/[^\x00-\x7F]/g, '').length === 0 &&
+      this.node.textContent.replace(/[\u200B]/g, '').length === 0 &&
       tableAttrs.headers
     ) {
       if (placeholders.length === 0) {
