@@ -1,17 +1,13 @@
 import {NodeSelection} from 'prosemirror-state';
 import {addBottomRow, addRightColumn} from './commands';
-import {
-  createElementWithClass as cewc,
-  createElementWithClassAndChild as cewcac,
-} from './util';
+import {createElementWithClass, createElementWithClassAndChild} from './util';
 import {typeInheritance} from './headers/headers-menu/index';
 import {tableFiltersMenuKey} from './PopupManager';
-import {tableHeadersMenuKey} from './PopupManager';
 import PopupManager from './PopupManager';
 
 const createAddCellsButton = (type, view, pos) => {
   const isRow = type === 'row';
-  const newElement = cewc(
+  const newElement = createElementWithClass(
     'button',
     `tableButton ${isRow ? 'tableAddBottomRow' : 'tableAddRightColumn'}`
   );
@@ -33,17 +29,26 @@ export class TableView {
     this.view = view;
     this.getPos = getPos;
     this.cellMinWidth = cellMinWidth;
-    const tableScrollWrapper = cewc('div', 'tableScrollWrapper');
+    const tableScrollWrapper = createElementWithClass(
+      'div',
+      'tableScrollWrapper'
+    );
     this.tableWrapper = tableScrollWrapper.appendChild(
-      cewc('div', 'tableWrapper')
+      createElementWithClass('div', 'tableWrapper')
     );
     this.dom = tableScrollWrapper;
     this.dom.dataset.test = 'table-wrapper';
 
-    this.tableHandle = cewc('div', 'tableHandle');
+    this.tableHandle = createElementWithClass('div', 'tableHandle');
     this.tableHandle.dataset.test = 'table-handle';
-    this.tableHorizontalWrapper = cewc('div', 'tableHorizontalWrapper');
-    this.tableVerticalWrapper = cewc('div', 'tableVerticalWrapper');
+    this.tableHorizontalWrapper = createElementWithClass(
+      'div',
+      'tableHorizontalWrapper'
+    );
+    this.tableVerticalWrapper = createElementWithClass(
+      'div',
+      'tableVerticalWrapper'
+    );
 
     this.tableHandle.onclick = (e) => this.selectTable(e);
     this.tableHandle.onmousedown = (e) => e.preventDefault();
@@ -151,8 +156,11 @@ export class TableView {
   }
 
   buildActions() {
-    this.filterStatusIndicator = cewc('div', 'filterStatusIndicator');
-    const filterStatusIndicatorScrollContainer = cewc(
+    this.filterStatusIndicator = createElementWithClass(
+      'div',
+      'filterStatusIndicator'
+    );
+    const filterStatusIndicatorScrollContainer = createElementWithClass(
       'div',
       'filterStatusIndicatorScrollContainer'
     );
@@ -160,13 +168,13 @@ export class TableView {
       this.filterStatusIndicator
     );
 
-    this.openActionsBtn = cewcac(
+    this.openActionsBtn = createElementWithClassAndChild(
       'button',
       'open-actions-button',
       [
-        cewc('span', 'open-actions-filter-icon'),
-        cewc('span', 'open-actions-label'),
-        cewc('span', 'open-actions-arrow-icon'),
+        createElementWithClass('span', 'open-actions-filter-icon'),
+        createElementWithClass('span', 'open-actions-label'),
+        createElementWithClass('span', 'open-actions-arrow-icon'),
       ],
       'open-actions-filters'
     );
