@@ -493,17 +493,20 @@ export const getSelectedCellsCoords = (view) => {
     state.selection instanceof CellSelection &&
     state.selection.isRowSelection()
   ) {
-    const tableContainer = selectedCells[0].closest('.tableWrapper');
-    if (!tableContainer) return;
+    const tableDOM = selectedCells[0].closest('table');
+    const tableWrapperDOM = selectedCells[0].closest('.tableWrapper');
 
-    const tableContainerBox = tableContainer.getBoundingClientRect();
+    if (!tableDOM || !tableWrapperDOM) return;
+
+    const tableBox = tableDOM.getBoundingClientRect();
+    const tableWrapperBox = tableWrapperDOM.getBoundingClientRect();
 
     return {
       top: firstCellRect.top,
       bottom: lastCellRect.bottom,
-      left: tableContainerBox.left,
-      right: tableContainerBox.right,
-      width: tableContainerBox.width,
+      left: tableWrapperBox.left,
+      right: Math.min(tableWrapperBox.right, tableBox.right),
+      width:  Math.min(tableWrapperBox.width, tableBox.width),
       height: firstCellRect.height
     };
   }
