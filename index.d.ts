@@ -359,8 +359,18 @@ export function getDeleteCommand(
   dispatch: (tr: Transaction) => void,
 ) => void
 
-
 export function isCellColorActive(
   state: EditorState,
   color: string
 )
+
+export function getSelectedCellsCoords(
+  view: EditorView
+): {
+  top: number,
+  bottom: number,
+  right: number,
+  left: number,
+  width: number,
+  height: number
+}
