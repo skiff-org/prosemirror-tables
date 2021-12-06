@@ -62,8 +62,9 @@ class TableFiltersMenuView {
       // handle close
       if (this.tablesData) this.onClose();
       // hide menu
-      if (this.popUpDOM.style.display !== 'none')
+      if (this.popUpDOM.style.display !== 'none') {
         this.popUpDOM.style.display = 'none';
+      }
 
       return;
     }
@@ -142,7 +143,7 @@ export const TableFiltersMenu = () => {
 
         // check if the headers row has changed - if so we want to update the table state so we can update the filters popup
         const table = findParentNodeOfTypeClosestToPos(
-          newState.doc.resolve(value.pos),
+          newState.doc.resolve(value.pos + 1),
           newState.schema.nodes.table
         );
         if (!table) return null;
