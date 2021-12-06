@@ -134,7 +134,7 @@ export class TableView {
           tr.setMeta(tableFiltersMenuKey, {
             action: 'open',
             dom: this.contentDOM,
-            pos: this.getPos() + 1,
+            pos: this.getPos(),
             node: node,
             id: window.id,
           });

@@ -163,11 +163,17 @@ export const TableFiltersMenu = () => {
         for (let step = 0; step < steps.length; step++) {
           if (steps[step].from > newState.doc.nodeSize) continue; // when deleting rows the steps pos might be outside of the document
           const stepResFrom = newState.doc.resolve(steps[step].from);
-          const maybeTable = stepResFrom.node(1);
+          const maybeTable = findParentNodeOfTypeClosestToPos(
+            stepResFrom,
+            newState.schema.nodes.table
+          );
 
-          if (maybeTable && maybeTable.type.name === 'table') {
-            const tableStart = stepResFrom.start(1);
-            const tr = executeFilters(maybeTable, tableStart, newState);
+          if (maybeTable) {
+            const tr = executeFilters(
+              maybeTable.node,
+              maybeTable.start,
+              newState
+            );
             return tr;
           }
         }

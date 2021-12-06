@@ -171,7 +171,8 @@ export class CellView {
     this.colMarker = addColAfterContainer;
     this.dom.appendChild(addColAfterContainer);
 
-    const tableAttrs = resolvePos.node(1).attrs;
+    const tableNode = resolvePos.node(-1);
+    const tableAttrs = tableNode.attrs;
 
     // add sort and style only if headers allowed
     if (tableAttrs.headers) {
@@ -284,7 +285,7 @@ export class CellView {
 
   updatePlaceholder() {
     const resolvePos = this.view.state.doc.resolve(this.getPos());
-    const tableAttrs = resolvePos.node(1).attrs;
+    const tableAttrs = resolvePos.node(-1).attrs;
 
     const placeholders = this.dom.getElementsByClassName('empty-header');
     if (

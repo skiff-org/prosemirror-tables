@@ -128,15 +128,22 @@ export function columnIsHeader(map, table, col) {
 }
 
 export function getColIndex(state, pos) {
-  const resPos = state.doc.resolve(pos);
-  const tableStart = resPos.start(-1);
-  const map = TableMap.get(resPos.node(1));
-  const {pos: insertRowPos} = findParentNodeOfTypeClosestToPos(
-    state.doc.resolve(pos + 1),
+  const resPos = state.doc.resolve(pos + 1); // make sure we are in the table and not before it
+
+  const table = findParentNodeOfTypeClosestToPos(
+    state.schema.nodes.table,
+    resPos
+  );
+  if (!table) return 0;
+
+  const map = TableMap.get(table.node);
+
+  const {pos: insertCellPos} = findParentNodeOfTypeClosestToPos(
+    resPos,
     state.schema.nodes.table_cell
   );
 
-  const insertCellIndex = map.map.indexOf(insertRowPos - tableStart);
+  const insertCellIndex = map.map.indexOf(insertCellPos - table.pos);
 
   if (insertCellIndex === -1) return null;
 

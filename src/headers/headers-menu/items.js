@@ -10,6 +10,7 @@ import {getTypesItems} from '../../columnsTypes/typesMenuItems';
 import {tableHeadersMenuKey} from '../../columnsTypes/types.config';
 import {deleteColAtPos} from '../../commands';
 import {tableFiltersMenuKey} from '../../filters/utils';
+import {findParentNodeOfTypeClosestToPos} from 'prosemirror-utils';
 
 const createMenuItemWithIcon = (className, label, iconClassName) => {
   const item = createElementWithClass('div', className);
@@ -82,11 +83,17 @@ const filterItem = () => {
       const {tr} = state;
 
       const resolvedPos = state.doc.resolve(pos);
+      const table = findParentNodeOfTypeClosestToPos(
+        resolvedPos,
+        state.schema.nodes.table
+      );
+      if (!table) return;
+
       tr.setMeta(tableFiltersMenuKey, {
         action: 'open',
         dom: view.domAtPos(resolvedPos.start(-1)).node,
-        node: resolvedPos.node(1),
-        pos: resolvedPos.start(1),
+        node: table.node,
+        pos: table.start,
         id: window.id,
         headerPos: pos,
       });
