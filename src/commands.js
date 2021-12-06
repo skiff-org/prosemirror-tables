@@ -291,7 +291,7 @@ export function removeRow(tr, {map, table, tableStart}, row) {
 
 // :: (EditorState, dispatch: ?(tr: Transaction)) → bool
 // Remove the selected rows from a table.
-export function deleteRow(state, dispatch) {
+export function deleteRow(state, dispatch, rect) {
   if (!isInTable(state)) return false;
   if (dispatch) {
     const rect = selectedRect(state),
@@ -880,4 +880,110 @@ export const deleteColAtPos = (pos, view) => {
 
   view.dispatch(tr);
   return true;
+};
+
+const getTableRect = (state) => {
+  const resolvedPos = state.doc.resolve(state.selection.from);
+  const tableWithPos = findParentNodeOfTypeClosestToPos(resolvedPos, state.schema.nodes.table)
+  if (!tableWithPos) return false;
+  const map = TableMap.get(tableWithPos.node)
+  const rect = {
+    table: tableWithPos.node,
+    tableStart: tableWithPos.pos,
+    map
+  }
+
+  return rect
+}
+
+export const deleteLastRow = (state, dispatch) => {
+  const rect = getTableRect(state)
+  if (!rect) return false;
+
+  const {tr} = state;
+  removeRow(tr, rect, rect.map.height - 1);
+
+  tr.setSelection(TextSelection.create(tr.doc, rect.map.map[rect.map.map.length - (rect.map.width * 2)] + rect.tableStart))
+
+  dispatch(tr)
+}
+
+export const deleteLastCol = (state, dispatch) => {
+  const rect = getTableRect(state)
+  if (!rect) return false;
+
+  const {tr} = state;
+  removeColumn(tr, rect, rect.map.width - 1);
+
+  tr.setSelection(TextSelection.create(tr.doc, rect.map.map[rect.map.width * 2 - 3] + rect.tableStart))
+
+  dispatch(tr)
+}
+
+export const changeCellsBackgroundColor = (state, dispatch, color) => {
+  if (!(state.selection instanceof CellSelection)) return;
+
+  const {tr} = state;
+  state.selection.forEachCell((cell, pos, parent) => {
+    if(parent.attrs.hidden) return;
+    tr.setNodeMarkup(
+      pos,
+      undefined,
+      Object.assign({}, cell.attrs, {background: color})
+    );
+  });
+  dispatch(tr);
+};
+
+export const isCellColorActive = (state, color) => {
+  const { selection: sel } = state;
+  if (!(sel instanceof CellSelection)) return false;
+  let colorActive = true;
+  sel.forEachCell((node) => {
+    colorActive = colorActive && node.attrs.background === color;
+  })
+  return colorActive;
+}
+
+
+export const toggleTableHeaders = (state, dispatch, view) => {
+  const {map, tableStart, table} = selectedRect(state);
+  const {tr} = state;
+  tr.setNodeMarkup(tableStart - 1, table.type, {
+    headers: !table.attrs.headers,
+  });
+
+  if (table.attrs.headers) {
+    const cellsSelection = CellSelection.create(
+      tr.doc,
+      tableStart + map.map[0],
+      tableStart + map.map[map.map.length - 1]
+    );
+    const textType = columnTypesMap.text.handler;
+    const reversedCells = [];
+    cellsSelection.forEachCell((cell, pos) =>
+      reversedCells.unshift({cell, pos})
+    );
+
+    reversedCells.forEach(({cell, pos}) => {
+      tr.replaceRangeWith(
+        pos + 1,
+        pos + cell.nodeSize - 1,
+        textType.renderContentNode(
+          view.state.schema,
+          textType.convertContent(cell),
+          tr,
+          pos
+        )
+      );
+
+      const newAttrs = Object.assign(cell.attrs, {
+        type: 'text',
+      });
+
+      tr.setNodeMarkup(pos, undefined, newAttrs);
+    });
+  }
+
+  dispatch(tr);
 };

@@ -22,7 +22,7 @@ import {
   NodeType
 } from 'prosemirror-model';
 import { Mappable } from 'prosemirror-transform';
-import { NodeView } from 'prosemirror-view';
+import { EditorView, NodeView } from 'prosemirror-view';
 
 export interface TableEditingOptions {
   allowTableNodeSelection?: boolean;
@@ -315,3 +315,62 @@ export function fixTables<S extends Schema = any>(
   state: EditorState<S>,
   oldState?: EditorState<S>
 ): null | Transaction<S>;
+
+
+export function addBottomRow(
+  state: EditorState,   
+  dispatch: (tr: Transaction) => void,
+  pos: number
+): void
+  
+
+export function addRightColumn(
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+  pos: number
+): void
+
+export function deleteLastRow(
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): void
+
+export function deleteLastCol(
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): void
+
+export function changeCellsBackgroundColor(
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+  color: string
+): void
+
+export function toggleTableHeaders(
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+  view: EditorView
+): void
+
+export function getDeleteCommand(
+  state: EditorState
+): (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+) => void
+
+export function isCellColorActive(
+  state: EditorState,
+  color: string
+)
+
+export function getSelectedCellsCoords(
+  view: EditorView
+): {
+  top: number,
+  bottom: number,
+  right: number,
+  left: number,
+  width: number,
+  height: number
+}

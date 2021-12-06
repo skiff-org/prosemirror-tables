@@ -30,7 +30,7 @@ class TableFiltersMenuView {
     )[0];
 
     const existingPopUps = Array.from(
-      document.getElementsByClassName('tableFiltersMenu')
+      document.getElementsByClassName('table-filters-menu')
     );
 
     if (existingPopUps.length > 0) {

@@ -58,6 +58,8 @@ export const calculateMenuPosition = (menuDOM, {node, dom: headerDOM, pos}) => {
   const {style} = menuDOM;
 
   const {left, top, width: headerWidth} = headerDOM.getBoundingClientRect();
+  if (!left || !top) return
+
   const {width: menuWidth} = menuDOM.getBoundingClientRect();
 
   // scroll offset

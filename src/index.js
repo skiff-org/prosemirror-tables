@@ -120,7 +120,7 @@ export {
   columnIsHeader,
 } from './util';
 export {tableNodes, tableNodeTypes} from './schema/schema';
-export {CellSelection} from './cellselection';
+export {CellSelection, getSelectedCellsCoords} from './cellselection';
 export {columnHandles} from './columnhandles';
 export {TableMap} from './tablemap';
 export {tableEditingKey};
@@ -139,4 +139,4 @@ export {typesEnforcer} from './columnsTypes/typesEnforcer';
 export {TableDateMenu} from './columnsTypes/types/Date/datePopup';
 export {TableLabelMenu} from './columnsTypes/types/Label/labelPopup';
 export {TableFiltersMenu} from './filters/filters-menu';
-
+export {getDeleteCommand} from './input';

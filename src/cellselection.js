@@ -471,3 +471,78 @@ export function normalizeSelection(state, tr, allowTableNodeSelection) {
   if (normalize) (tr || (tr = state.tr)).setSelection(normalize);
   return tr;
 }
+
+
+export const getSelectedCellsCoords = (view) => {
+  const {state} = view;
+  // get all selected cells dom
+  const selectedCells = document.getElementsByClassName('selectedCell');
+
+  // get rects of first and last cells
+  const firstCellRect = selectedCells[0].getBoundingClientRect();
+  let lastCellRect;
+
+  if (state.selection.$anchorCell.pos === state.selection.$headCell.pos) {
+    lastCellRect = firstCellRect;
+  } else {
+    lastCellRect =
+      selectedCells[selectedCells.length - 1].getBoundingClientRect();
+  }
+  // RowSelection
+  if (
+    state.selection instanceof CellSelection &&
+    state.selection.isRowSelection()
+  ) {
+    const tableDOM = selectedCells[0].closest('table');
+    const tableWrapperDOM = selectedCells[0].closest('.tableWrapper');
+
+    if (!tableDOM || !tableWrapperDOM) return;
+
+    const tableBox = tableDOM.getBoundingClientRect();
+    const tableWrapperBox = tableWrapperDOM.getBoundingClientRect();
+
+    return {
+      top: firstCellRect.top,
+      bottom: lastCellRect.bottom,
+      left: tableWrapperBox.left,
+      right: Math.min(tableWrapperBox.right, tableBox.right),
+      width:  Math.min(tableWrapperBox.width, tableBox.width),
+      height: firstCellRect.height
+    };
+  }
+
+  // ColSelection
+  if (
+    state.selection instanceof CellSelection &&
+    state.selection.isColSelection()
+  ) {
+    let top, bottom;
+    // sometimes prose mirror switches anchor and head cells - fix it
+    if (state.selection.$anchorCell.pos > state.selection.$headCell.pos) {
+      top = view.coordsAtPos(state.selection.$headCell.pos).top;
+      bottom = view.coordsAtPos(state.selection.$anchorCell.pos).top;
+    } else {
+      top = view.coordsAtPos(state.selection.$anchorCell.pos).top;
+      bottom = view.coordsAtPos(state.selection.$headCell.pos).top;
+    }
+
+    return {
+      top: top,
+      left: firstCellRect.left,
+      bottom,
+      right: lastCellRect.right,
+      height: bottom - top,
+      width: lastCellRect.right - firstCellRect.left
+    }
+  }
+
+  // regular cell selection
+  return {
+    left: firstCellRect.left,
+    top: firstCellRect.top,
+    bottom: lastCellRect.bottom,
+    right: lastCellRect.right,
+    width: lastCellRect.right - firstCellRect.left,
+    height: lastCellRect.bottom - firstCellRect.top
+  }
+}
