@@ -134,6 +134,7 @@ export function getColIndex(state, pos) {
     state.schema.nodes.table,
     resPos
   );
+
   if (!table) return 0;
 
   const map = TableMap.get(table.node);
@@ -148,6 +149,15 @@ export function getColIndex(state, pos) {
   if (insertCellIndex === -1) return null;
 
   return insertCellIndex % map.width;
+}
+
+export const getColIndexFromSelectedRect = (state, pos) => {
+  const tableRect = selectedRect(state);
+  const cellIndex = tableRect.map.map.indexOf(pos - tableRect.tableStart);
+
+  if (cellIndex === -1) return null;
+
+  return cellIndex % tableRect.map.width;;
 }
 
 export const createElementWithClass = (type, className, datatest) => {
