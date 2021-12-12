@@ -18,7 +18,7 @@ export const cellExtraAttrs = {
       if (!(dom instanceof HTMLElement)) {
         return {};
       }
-      return dom.getAttribute('type') || '';
+      return dom.getAttribute('type');
     },
 
     setDOMAttr(value, attrs) {
@@ -32,7 +32,7 @@ export const cellExtraAttrs = {
       if (!(dom instanceof HTMLElement)) {
         return {};
       }
-      return dom.getAttribute('header') || '';
+      return dom.getAttribute('header');
     },
 
     setDOMAttr(value, attrs) {
