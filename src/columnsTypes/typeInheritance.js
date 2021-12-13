@@ -7,6 +7,7 @@ export const typeInheritance = (view, node, pos) => {
   const tableMap = TableMap.get(node);
   const {tr} = view.state;
   for (let col = tableMap.width - 1; col >= 0; col--) {
+    if (!node.child(0) || !node.child(0).maybeChild(col)) continue
     const header = node.child(0).child(col);
     const colType = header.attrs.type;
 
