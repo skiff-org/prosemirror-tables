@@ -62,8 +62,9 @@ class TableFiltersMenuView {
       // handle close
       if (this.tablesData) this.onClose();
       // hide menu
-      if (this.popUpDOM.style.display !== 'none')
+      if (this.popUpDOM.style.display !== 'none') {
         this.popUpDOM.style.display = 'none';
+      }
 
       return;
     }
@@ -142,7 +143,7 @@ export const TableFiltersMenu = () => {
 
         // check if the headers row has changed - if so we want to update the table state so we can update the filters popup
         const table = findParentNodeOfTypeClosestToPos(
-          newState.doc.resolve(value.pos),
+          newState.doc.resolve(value.pos + 1),
           newState.schema.nodes.table
         );
         if (!table) return null;
@@ -161,13 +162,19 @@ export const TableFiltersMenu = () => {
       const steps = transactions.map((tr) => tr.steps).flat();
       if (steps.length) {
         for (let step = 0; step < steps.length; step++) {
-          if (steps[step].from > newState.doc.nodeSize) continue; // when deleting rows the steps pos might be outside of the document
+          if (steps[step].from > newState.doc.content.size) continue; // when deleting rows the steps pos might be outside of the document
           const stepResFrom = newState.doc.resolve(steps[step].from);
-          const maybeTable = stepResFrom.node(1);
+          const maybeTable = findParentNodeOfTypeClosestToPos(
+            stepResFrom,
+            newState.schema.nodes.table
+          );
 
-          if (maybeTable && maybeTable.type.name === 'table') {
-            const tableStart = stepResFrom.start(1);
-            const tr = executeFilters(maybeTable, tableStart, newState);
+          if (maybeTable) {
+            const tr = executeFilters(
+              maybeTable.node,
+              maybeTable.start,
+              newState
+            );
             return tr;
           }
         }

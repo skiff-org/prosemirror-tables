@@ -1,6 +1,7 @@
 import {CellSelection} from '../../cellselection';
-import {createElementWithClass} from '../..//util';
+import {createElementWithClass, isInTable} from '../..//util';
 import {tableHeadersMenuKey} from '../../columnsTypes/types.config';
+import {findParentNodeOfType} from 'prosemirror-utils';
 
 export function enableDeleteItem(view) {
   const {selection: sel} = view.state;
@@ -58,7 +59,7 @@ export const calculateMenuPosition = (menuDOM, {node, dom: headerDOM, pos}) => {
   const {style} = menuDOM;
 
   const {left, top, width: headerWidth} = headerDOM.getBoundingClientRect();
-  if (!left || !top) return
+  if (!left || !top) return;
 
   const {width: menuWidth} = menuDOM.getBoundingClientRect();
 
@@ -110,8 +111,9 @@ export const isFirstRowSelected = (view) => {
 
 export const enableCellsColor = (view) => {
   const {selection: sel} = view.state;
-  if (!(sel instanceof CellSelection)) return false;
-  const tableAttrs = sel.$anchorCell.node(1).attrs;
+  if (!(sel instanceof CellSelection) || !isInTable(view.state)) return false;
+  const tableAttrs = findParentNodeOfType(view.state.schema.nodes.table)(sel)
+    .nodes.attrs;
 
   if (isFirstRowSelected(view)) return !tableAttrs.headers;
 

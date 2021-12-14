@@ -465,8 +465,6 @@ export function normalizeSelection(state, tr, allowTableNodeSelection) {
     }
   } else if (sel instanceof TextSelection && isCellBoundarySelection(sel)) {
     normalize = TextSelection.create(doc, sel.from);
-  } else if (sel instanceof TextSelection && isTextSelectionAcrossCells(sel)) {
-    normalize = TextSelection.create(doc, sel.$from.start(), sel.$from.end());
   }
   if (normalize) (tr || (tr = state.tr)).setSelection(normalize);
   return tr;

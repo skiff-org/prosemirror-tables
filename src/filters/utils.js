@@ -152,7 +152,10 @@ export const executeFilters = (table, tablePos, state, filters) => {
   const {tr} = state;
 
   tableRows.forEach((row) => {
-    tr.setNodeMarkup(row.pos, undefined, {hidden: !!row.hidden});
+    tr.setNodeMarkup(row.pos, undefined, {
+      ...row.node.attrs,
+      hidden: !!row.hidden,
+    });
   });
 
   // update table attrs with new filters

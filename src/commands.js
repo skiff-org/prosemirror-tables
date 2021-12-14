@@ -723,13 +723,25 @@ export function deleteTable(state, dispatch) {
   return false;
 }
 
-export function sortColumn(view, colNumber, pos, dir) {
-  const resolvedPos = view.state.doc.resolve(pos);
+const getRectFromPos = (pos, state) => {
+  const resPos = state.doc.resolve(pos);
+  const table = findParentNodeOfTypeClosestToPos(
+    resPos,
+    state.schema.nodes.table
+  );
+  if (!table) return null;
+
   const rect = {
-    tableStart: resolvedPos.start(-1),
-    table: resolvedPos.node(1),
-    map: TableMap.get(resolvedPos.node(1)),
+    tableStart: table.start,
+    table: table.node,
+    map: TableMap.get(table.node),
   };
+
+  return rect;
+};
+
+export function sortColumn(view, colNumber, pos, dir) {
+  const rect = getRectFromPos(pos, view.state);
   const header = rect.table.content.content[0];
   let newRowsArray = rect.table.content.content.slice(1);
   const {tr} = view.state;
@@ -770,12 +782,7 @@ export function sortColumn(view, colNumber, pos, dir) {
 }
 
 export const addRowBeforeButton = (view, pos) => {
-  const resPos = view.state.doc.resolve(pos);
-  const tableRect = {
-    tableStart: resPos.start(-1),
-    table: resPos.node(1),
-    map: TableMap.get(resPos.node(1)),
-  };
+  const tableRect = getRectFromPos(pos, view.state);
 
   const cellIndex = tableRect.map.map.indexOf(pos - tableRect.tableStart);
 
@@ -790,12 +797,7 @@ export const addRowBeforeButton = (view, pos) => {
 };
 
 export const addColBeforeButton = (view, pos) => {
-  const resPos = view.state.doc.resolve(pos);
-  const tableRect = {
-    tableStart: resPos.start(-1),
-    table: resPos.node(1),
-    map: TableMap.get(resPos.node(1)),
-  };
+  const tableRect = getRectFromPos(pos, view.state);
 
   const cellIndex = tableRect.map.map.indexOf(pos - tableRect.tableStart);
 
@@ -810,12 +812,7 @@ export const addColBeforeButton = (view, pos) => {
 };
 
 export const addColAfterButton = (view, pos) => {
-  const resPos = view.state.doc.resolve(pos);
-  const tableRect = {
-    tableStart: resPos.start(-1),
-    table: resPos.node(1),
-    map: TableMap.get(resPos.node(1)),
-  };
+  const tableRect = getRectFromPos(pos, view.state);
 
   const cellIndex = tableRect.map.map.indexOf(pos - tableRect.tableStart);
 
@@ -862,13 +859,7 @@ export const selectCol = (e, view, pos) => {
 };
 
 export const deleteColAtPos = (pos, view) => {
-  const resolvedPos = view.state.doc.resolve(pos);
-
-  const rect = {
-    tableStart: resolvedPos.start(-1),
-    table: resolvedPos.node(1),
-    map: TableMap.get(resolvedPos.node(1)),
-  };
+  const rect = getRectFromPos(pos, view.state);
 
   const {tr} = view.state;
   const colIndex = getColIndex(view.state, pos);
@@ -882,50 +873,63 @@ export const deleteColAtPos = (pos, view) => {
   return true;
 };
 
-const getTableRect = (state) => {
+const getTableRectBySelection = (state) => {
   const resolvedPos = state.doc.resolve(state.selection.from);
-  const tableWithPos = findParentNodeOfTypeClosestToPos(resolvedPos, state.schema.nodes.table)
+  const tableWithPos = findParentNodeOfTypeClosestToPos(
+    resolvedPos,
+    state.schema.nodes.table
+  );
   if (!tableWithPos) return false;
-  const map = TableMap.get(tableWithPos.node)
+  const map = TableMap.get(tableWithPos.node);
   const rect = {
     table: tableWithPos.node,
     tableStart: tableWithPos.pos,
-    map
-  }
+    map,
+  };
 
-  return rect
-}
+  return rect;
+};
 
 export const deleteLastRow = (state, dispatch) => {
-  const rect = getTableRect(state)
+  const rect = getTableRectBySelection(state);
   if (!rect) return false;
 
   const {tr} = state;
   removeRow(tr, rect, rect.map.height - 1);
 
-  tr.setSelection(TextSelection.create(tr.doc, rect.map.map[rect.map.map.length - (rect.map.width * 2)] + rect.tableStart))
+  tr.setSelection(
+    TextSelection.create(
+      tr.doc,
+      rect.map.map[rect.map.map.length - rect.map.width * 2] + rect.tableStart
+    )
+  );
 
-  dispatch(tr)
-}
+  dispatch(tr);
+};
 
 export const deleteLastCol = (state, dispatch) => {
-  const rect = getTableRect(state)
+  const rect = getTableRectBySelection(state);
   if (!rect) return false;
 
   const {tr} = state;
   removeColumn(tr, rect, rect.map.width - 1);
 
-  tr.setSelection(TextSelection.create(tr.doc, rect.map.map[rect.map.width * 2 - 3] + rect.tableStart))
+  tr.setSelection(
+    TextSelection.create(
+      tr.doc,
+      rect.map.map[rect.map.width * 2 - 3] + rect.tableStart
+    )
+  );
 
-  dispatch(tr)
-}
+  dispatch(tr);
+};
 
 export const changeCellsBackgroundColor = (state, dispatch, color) => {
   if (!(state.selection instanceof CellSelection)) return;
 
   const {tr} = state;
   state.selection.forEachCell((cell, pos, parent) => {
-    if(parent.attrs.hidden) return;
+    if (parent.attrs.hidden) return;
     tr.setNodeMarkup(
       pos,
       undefined,
@@ -936,15 +940,14 @@ export const changeCellsBackgroundColor = (state, dispatch, color) => {
 };
 
 export const isCellColorActive = (state, color) => {
-  const { selection: sel } = state;
+  const {selection: sel} = state;
   if (!(sel instanceof CellSelection)) return false;
   let colorActive = true;
   sel.forEachCell((node) => {
     colorActive = colorActive && node.attrs.background === color;
-  })
+  });
   return colorActive;
-}
-
+};
 
 export const toggleTableHeaders = (state, dispatch, view) => {
   const {map, tableStart, table} = selectedRect(state);

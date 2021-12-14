@@ -2,7 +2,7 @@ import {PluginKey, Plugin} from 'prosemirror-state';
 import {Decoration, DecorationSet} from 'prosemirror-view';
 import {CellSelection} from './cellselection';
 import {selectedRect} from './commands';
-import {getColIndex, getRowIndex} from './util';
+import {getColIndexFromSelectedRect, getRowIndex} from './util';
 
 export const selectionShadowPlugin = () => {
   return new Plugin({
@@ -19,10 +19,10 @@ export const selectionShadowPlugin = () => {
         const {
           $anchorCell: {pos: from},
           $headCell: {pos: to},
-        } = tr.selection;
+        } = newState.selection;
 
-        let anchorCol = getColIndex(newState, Math.min(from, to));
-        let headCol = getColIndex(newState, Math.max(from, to));
+        let anchorCol = getColIndexFromSelectedRect(newState, Math.min(from, to));
+        let headCol = getColIndexFromSelectedRect(newState, Math.max(from, to));
 
         // sometimes prosemirror replaces head and anchor cells
         if (anchorCol > headCol) {

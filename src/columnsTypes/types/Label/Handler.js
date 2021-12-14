@@ -1,5 +1,6 @@
 import CellDataType from '../Type';
 import {randomString, stringToColor, updateTablesLabels} from './utils';
+import {findParentNodeOfTypeClosestToPos} from 'prosemirror-utils';
 
 class LabelType extends CellDataType {
   /**
@@ -10,7 +11,9 @@ class LabelType extends CellDataType {
   }
 
   getLabelColor(tableLabels, title) {
-    const existingLabel = tableLabels.find((tableLabel) => tableLabel.title === title);
+    const existingLabel = tableLabels.find(
+      (tableLabel) => tableLabel.title === title
+    );
     if (!existingLabel) return stringToColor(randomString());
     return existingLabel.color;
   }
@@ -22,10 +25,21 @@ class LabelType extends CellDataType {
     let labels = [];
 
     if (cellTextContent.replace(/[\u200B]/g, '')) {
-      const titles = Array.from(new Set(cellTextContent.split(','))).map((title) => title.trim()).filter((title) => title.length);
-      const tableLabels = tr.doc.resolve(pos).node(1).attrs.labels
+      const titles = Array.from(new Set(cellTextContent.split(',')))
+        .map((title) => title.trim())
+        .filter((title) => title.length);
 
-      labels = titles.map((title) => ({title, color: this.getLabelColor(tableLabels, title)}))
+      const table = findParentNodeOfTypeClosestToPos(
+        tr.doc.resolve(pos),
+        schema.nodes.table
+      );
+
+      const tableLabels = table.node.attrs.labels;
+
+      labels = titles.map((title) => ({
+        title,
+        color: this.getLabelColor(tableLabels, title),
+      }));
 
       updateTablesLabels(tr, pos, 'add', labels);
     }
