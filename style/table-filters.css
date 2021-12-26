@@ -242,12 +242,12 @@
   width: 100%;
   display: flex;
   justify-content: flex-end;
-  top: -35px;
+  top: -10px;
   right: -7px;
 }
 
 .tableFocus .filterStatusIndicatorScrollContainer {
-  top: -50px;
+  top: -40px;
 }
 
 .filterStatusIndicator {
@@ -259,7 +259,7 @@
   border: 0;
   border-radius: 3px;
   padding: 4px 8px;
-  right: -10px;
+  right: -45px;
 }
 
 .active-filters-icon {
