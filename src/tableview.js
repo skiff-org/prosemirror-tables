@@ -39,8 +39,9 @@ export class TableView {
     );
     this.dom = tableScrollWrapper;
     this.dom.dataset.test = 'table-wrapper';
-
+    this.tableHandleContainer = createElementWithClass('div', 'tableHandleContainer');
     this.tableHandle = createElementWithClass('div', 'tableHandle');
+    this.tableHandleContainer.appendChild(this.tableHandle)
     this.tableHandle.dataset.test = 'table-handle';
     this.tableHorizontalWrapper = createElementWithClass(
       'div',
@@ -54,8 +55,8 @@ export class TableView {
     this.tableHandle.onclick = (e) => this.selectTable(e);
     this.tableHandle.onmousedown = (e) => e.preventDefault();
     this.tableHandle.contentEditable = false;
-
-    this.tableWrapper.appendChild(this.tableHandle);
+    
+    this.tableVerticalWrapper.appendChild(this.tableHandleContainer);
     this.tableWrapper.appendChild(this.tableHorizontalWrapper);
     this.tableHorizontalWrapper.appendChild(this.tableVerticalWrapper);
 
