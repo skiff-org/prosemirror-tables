@@ -12,9 +12,10 @@ import {createElementWithClass} from '../../util';
  * and where to place him according to the selection.
  */
 class TableHeadersMenuView {
-  constructor(items, view) {
+  constructor(items, view, baseName) {
     this.view = view;
     this.items = items;
+    this.baseName = baseName;
 
     this.buildMenuDOM();
 
@@ -68,7 +69,7 @@ class TableHeadersMenuView {
 
     // the dom element that contains the popup - should be css relative
     this.popUpRelativeContainer = document.getElementsByClassName(
-      'czi-editor-frame-body'
+      `${this.baseName}-editor-frame-body`
     )[0];
 
     const existingPopUps = Array.from(

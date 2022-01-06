@@ -13,8 +13,9 @@ import {DatePickerComponent, datePopupEmitter} from './Component.jsx';
 import {findParentNodeOfType} from 'prosemirror-utils';
 
 class TableDateMenuView {
-  constructor(view) {
+  constructor(view, baseName) {
     this.view = view;
+    this.baseName = baseName;
 
     this.buildMenuDOM();
 
@@ -27,7 +28,7 @@ class TableDateMenuView {
 
     // the dom element that contains the popup - should be css relative
     this.popUpRelativeContainer = document.getElementsByClassName(
-      'czi-editor-frame-body'
+      `${this.baseName}-editor-frame-body`
     )[0];
 
     const existingPopUps = Array.from(
@@ -105,12 +106,12 @@ class TableDateMenuView {
   destroy() {}
 }
 
-export const TableDateMenu = (dateFormat) => {
+export const TableDateMenu = (dateFormat, baseName = 'czi') => {
   setDateFormat(dateFormat);
   return new Plugin({
     key: tableDateMenuKey,
     view(view) {
-      const menuView = new TableDateMenuView(view);
+      const menuView = new TableDateMenuView(view, baseName);
 
       return menuView;
     },

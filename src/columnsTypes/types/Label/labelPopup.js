@@ -10,8 +10,9 @@ import {
 import {LabelsChooser} from './Component.jsx';
 
 class TableLabelsMenu {
-  constructor(view) {
+  constructor(view, baseName) {
     this.view = view;
+    this.baseName = baseName;
 
     this.buildMenuDOM();
 
@@ -24,7 +25,7 @@ class TableLabelsMenu {
 
     // the dom element that contains the popup - should be css relative
     this.popUpRelativeContainer = document.getElementsByClassName(
-      'czi-editor-frame-body'
+      `${this.baseName}-editor-frame-body`
     )[0];
 
     const existingPopUps = Array.from(
@@ -103,11 +104,11 @@ class TableLabelsMenu {
   destroy() {}
 }
 
-export const TableLabelMenu = () => {
+export const TableLabelMenu = (baseName = 'czi') => {
   return new Plugin({
     key: tableLabelsMenuKey,
     view(view) {
-      const menuView = new TableLabelsMenu(view);
+      const menuView = new TableLabelsMenu(view, baseName);
 
       return menuView;
     },
