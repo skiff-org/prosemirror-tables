@@ -71,7 +71,7 @@ export const displayPopup = (view, popupDOM) => {
   return true;
 };
 
-export const calculatePopupPosition = (view, popupDOM) => {
+export const calculatePopupPosition = (view, popupDOM, baseName = 'czi') => {
   const {state} = view;
   // get all selected cells dom
   const selectedCells = document.getElementsByClassName('selectedCell');
@@ -90,7 +90,9 @@ export const calculatePopupPosition = (view, popupDOM) => {
   const offsetParentBox = popupDOM.offsetParent.getBoundingClientRect();
 
   // scroll offset
-  const [scrolledEl] = document.getElementsByClassName('czi-editor-frame-body');
+  const [scrolledEl] = document.getElementsByClassName(
+    `${baseName}-editor-frame-body`
+  );
   const {x: EDITOR_LEFT_OFFSET, y: EDITOR_TOP_OFFSET} =
     scrolledEl.getBoundingClientRect();
 

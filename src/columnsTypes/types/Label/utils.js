@@ -142,7 +142,11 @@ export const displayPopup = (view, popupDOM) => {
   return null;
 };
 
-export const calculateMenuPosition = (menuDOM, {node, dom: cellDOM, pos}) => {
+export const calculateMenuPosition = (
+  menuDOM,
+  {node, dom: cellDOM, pos},
+  baseName = 'czi'
+) => {
   const {style} = menuDOM;
 
   const {left, top, height: cellHeight} = cellDOM.getBoundingClientRect();
@@ -150,7 +154,9 @@ export const calculateMenuPosition = (menuDOM, {node, dom: cellDOM, pos}) => {
   if (left === 0 || top === 0) return;
 
   // scroll offset
-  const [scrolledEl] = document.getElementsByClassName('czi-editor-frame-body');
+  const [scrolledEl] = document.getElementsByClassName(
+    `${baseName}-editor-frame-body`
+  );
   const {x: EDITOR_LEFT_OFFSET, y: EDITOR_TOP_OFFSET} =
     scrolledEl.getBoundingClientRect();
 
