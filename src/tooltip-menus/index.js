@@ -4,11 +4,11 @@ import {popUpItems} from './items';
 
 export const tablePopUpMenuKey = new PluginKey('tablePopUpMenu');
 
-const tablePopUpMenu = () => {
+const tablePopUpMenu = (baseName = 'czi') => {
   return new Plugin({
     key: tablePopUpMenuKey,
     view(view) {
-      const menuView = new TablePopUpMenuView(popUpItems, view);
+      const menuView = new TablePopUpMenuView(popUpItems, view, baseName);
 
       return menuView;
     },

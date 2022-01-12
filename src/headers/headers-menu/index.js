@@ -5,11 +5,11 @@ import {tableHeadersMenuKey} from '../../columnsTypes/types.config';
 
 window.id = `user_${new Date().getTime()}`;
 
-export const tableHeadersMenu = () => {
+export const tableHeadersMenu = (baseName = 'czi') => {
   return new Plugin({
     key: tableHeadersMenuKey,
     view(view) {
-      const menuView = new TableHeadersMenuView(menuItems, view);
+      const menuView = new TableHeadersMenuView(menuItems, view, baseName);
 
       return menuView;
     },
