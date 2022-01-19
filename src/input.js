@@ -54,7 +54,9 @@ function checkIfParentIsCell(state) {
   const parent = $head.node($head.depth - 1);
 
   // if parent is not a table cell - let the editor handle key down
-  if (parent.type.name !== 'table_cell') return false;
+  if (!parent || !parent.type || parent.type.name !== 'table_cell') {
+    return false;
+  }
 
   return true;
 }
