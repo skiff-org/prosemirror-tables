@@ -39,7 +39,8 @@ class TableLabelsMenu {
     }
   }
 
-  updateMenu(view) {
+  updateMenu(view, baseName) {
+    this._baseName = baseName;
     // determine whether to display or hide popup - and change style accordingly
     const cellData = displayPopup(view, this.popUpDOM);
 
@@ -65,12 +66,12 @@ class TableLabelsMenu {
     }
 
     // calculate popup position
-    calculateMenuPosition(this.popUpDOM, cellData);
+    calculateMenuPosition(this.popUpDOM, cellData, baseName);
 
     return;
   }
 
-  update(view) {
+  update(view, baseName) {
     const {state, readOnly} = view;
     if (!state || readOnly) {
       if (this.popUpDOM.style.display !== 'none') {
@@ -78,7 +79,7 @@ class TableLabelsMenu {
       }
     }
 
-    this.updateMenu(view);
+    this.updateMenu(view, baseName);
   }
 
   onOpen() {

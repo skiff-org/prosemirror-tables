@@ -145,7 +145,7 @@ export const displayPopup = (view, popupDOM) => {
 export const calculateMenuPosition = (
   menuDOM,
   {node, dom: cellDOM, pos},
-  baseName = 'czi'
+  baseName
 ) => {
   const {style} = menuDOM;
 
