@@ -131,8 +131,8 @@ export function getColIndex(state, pos) {
   const resPos = state.doc.resolve(pos + 1); // make sure we are in the table and not before it
 
   const table = findParentNodeOfTypeClosestToPos(
-    state.schema.nodes.table,
-    resPos
+    resPos,
+    state.schema.nodes.table
   );
 
   if (!table) return 0;
@@ -144,7 +144,7 @@ export function getColIndex(state, pos) {
     state.schema.nodes.table_cell
   );
 
-  const insertCellIndex = map.map.indexOf(insertCellPos - table.pos);
+  const insertCellIndex = map.map.indexOf(insertCellPos - table.start);
 
   if (insertCellIndex === -1) return null;
 
@@ -157,8 +157,8 @@ export const getColIndexFromSelectedRect = (state, pos) => {
 
   if (cellIndex === -1) return null;
 
-  return cellIndex % tableRect.map.width;;
-}
+  return cellIndex % tableRect.map.width;
+};
 
 export const createElementWithClass = (type, className, datatest) => {
   const el = document.createElement(type);
