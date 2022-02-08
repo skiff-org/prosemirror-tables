@@ -118,6 +118,12 @@ const deleteItem = () => {
     },
     run(state, dispatch, view) {
       const {pos} = tableHeadersMenuKey.getState(state);
+      view.dispatch(
+        view.state.tr.setMeta(tableHeadersMenuKey, {
+          action: 'close',
+          id: window.id,
+        })
+      );
       return deleteColAtPos(pos, view);
     },
   });
