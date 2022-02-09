@@ -710,7 +710,7 @@ export function goToNextCell(direction) {
 // Selects the current cell the cursor is in
 export function selectCurrentCell(state, dispatch) {
   const currentCell = selectionCell(state);
-  if (!currentCell) {
+  if (!currentCell || !dispatch) {
     return false;
   }
   if (dispatch) {
@@ -718,9 +718,7 @@ export function selectCurrentCell(state, dispatch) {
     dispatch(state.tr.setSelection(selection));
     return true;
   }
-  return false;
 }
-
 // :: (EditorState, ?(tr: Transaction)) → bool
 // Deletes the table around the selection, if any.
 export function deleteTable(state, dispatch) {
