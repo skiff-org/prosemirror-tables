@@ -1,5 +1,5 @@
 // This file defines a number of table-related commands.
-import {TextSelection, Selection} from 'prosemirror-state';
+import {TextSelection, Selection, NodeSelection} from 'prosemirror-state';
 import {Fragment} from 'prosemirror-model';
 import {
   findParentNodeOfTypeClosestToPos,
@@ -704,6 +704,18 @@ export function goToNextCell(direction) {
     }
     return true;
   };
+}
+export function selectCurrentCell(state, dispatch) {
+  const currentCell = selectionCell(state);
+  if (!currentCell) {
+    return false;
+  }
+  if (dispatch) {
+    const selection = new NodeSelection(currentCell);
+    dispatch(state.tr.setSelection(selection));
+    return true;
+  }
+  return false;
 }
 
 // :: (EditorState, ?(tr: Transaction)) → bool
