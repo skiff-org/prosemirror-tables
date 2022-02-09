@@ -713,11 +713,9 @@ export function selectCurrentCell(state, dispatch) {
   if (!currentCell || !dispatch) {
     return false;
   }
-  if (dispatch) {
-    const selection = new CellSelection(currentCell);
-    dispatch(state.tr.setSelection(selection));
-    return true;
-  }
+  const selection = new CellSelection(currentCell);
+  dispatch(state.tr.setSelection(selection));
+  return true;
 }
 // :: (EditorState, ?(tr: Transaction)) → bool
 // Deletes the table around the selection, if any.
