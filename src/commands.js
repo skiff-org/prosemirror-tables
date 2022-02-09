@@ -705,6 +705,9 @@ export function goToNextCell(direction) {
     return true;
   };
 }
+
+// :: (EditorState, ?(tr: Transaction)) → bool
+// Selects the current cell the cursor is in
 export function selectCurrentCell(state, dispatch) {
   const currentCell = selectionCell(state);
   if (!currentCell) {
