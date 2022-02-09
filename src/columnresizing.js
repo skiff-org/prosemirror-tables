@@ -38,6 +38,9 @@ export function columnResizing({
 
       handleDOMEvents: {
         mousemove(view, event) {
+          if (view.readOnly) {
+            return;
+          }
           handleMouseMove(
             view,
             event,
@@ -47,12 +50,21 @@ export function columnResizing({
           );
         },
         mouseleave(view) {
+          if (view.readOnly) {
+            return;
+          }
           handleMouseLeave(view);
         },
         mousedown(view, event) {
+          if (view.readOnly) {
+            return;
+          }
           handleMouseDown(view, event, cellMinWidth);
         },
         dblclick(view, event) {
+          if (view.readOnly) {
+            return;
+          }
           handleDoubleClick(view, event, cellMinWidth);
         },
       },
