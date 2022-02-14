@@ -7,6 +7,7 @@ import {
   labelsExtraAttrs,
 } from './cellTypeAttrs';
 import {tableExtraAttrs} from './tableAttrs';
+import {NodeNames} from './nodeNames';
 
 function getNodeAttrs(dom, extraAttrs) {
   const attrsFromNode = {};
@@ -85,7 +86,7 @@ export function tableNodes(options) {
     cellAttrs[prop] = {default: tableCellExtraAttrs[prop].default};
 
   return {
-    table: {
+    [NodeNames.TABLE]: {
       content: 'table_row+',
       tableRole: 'table',
       isolating: true,
@@ -103,7 +104,7 @@ export function tableNodes(options) {
         return ['table', setNodeAttrs(node, tableExtraAttrs), ['tbody', 0]];
       },
     },
-    table_row: {
+    [NodeNames.TABLE_ROW]: {
       content: '(table_cell | table_header)*',
       tableRole: 'row',
       attrs: {
@@ -115,7 +116,7 @@ export function tableNodes(options) {
         return ['tr', {class: hidden ? 'hiddenRow' : ''}, 0];
       },
     },
-    table_cell: {
+    [NodeNames.TABLE_CELL]: {
       content: `${options.cellContent}`,
       attrs: cellAttrs,
       tableRole: 'cell',
@@ -128,7 +129,7 @@ export function tableNodes(options) {
         return ['td', setNodeAttrs(node, tableCellExtraAttrs), 0];
       },
     },
-    table_header: {
+    [NodeNames.TABLE_HEADER]: {
       content: options.cellContent,
       attrs: cellAttrs,
       tableRole: 'header_cell',
@@ -140,7 +141,7 @@ export function tableNodes(options) {
         return ['th', setNodeAttrs(node, tableCellExtraAttrs), 0];
       },
     },
-    checkbox: {
+    [NodeNames.CHECKBOX]: {
       attrs: {checked: {default: false}},
       group: options.cellContentGroup,
       draggable: false,
@@ -163,7 +164,7 @@ export function tableNodes(options) {
         ];
       },
     },
-    date: {
+    [NodeNames.DATE]: {
       attrs: {value: {default: -1}},
       content: 'inline*',
       group: options.cellContentGroup,
@@ -186,7 +187,7 @@ export function tableNodes(options) {
         ];
       },
     },
-    label: {
+    [NodeNames.LABEL]: {
       attrs: {labels: {default: []}},
       group: options.cellContentGroup,
       selectable: false,

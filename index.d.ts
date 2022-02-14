@@ -43,15 +43,27 @@ export interface CellAttributes {
   getFromDOM?: getFromDOM;
   setDOMAttr?: setDOMAttr;
 }
-
+export interface NodeNames {
+  TABLE: string,
+  TABLE_ROW: string,
+  TABLE_CELL: string,
+  TABLE_HEADER: string,
+  CHECKBOX: string,
+  DATE: string,
+  LABEL: string,
+}
 export interface TableNodes {
   table: NodeSpec;
   table_row: NodeSpec;
   table_cell: NodeSpec;
   table_header: NodeSpec;
+  checkbox:NodeSpec;
+  date:NodeSpec;
+  label:NodeSpec;
 }
 
 export function tableNodes(options: TableNodesOptions): TableNodes;
+export function getTableNodeNames():NodeNames;
 
 export interface CellSelectionJSON {
   type: string;
