@@ -65,7 +65,7 @@ export class TableView {
     setTimeout(() => {
       this.updateMarkers();
     }, 0);
-    if (!this.view.readOnly) {
+    if (this.view.editable) {
       this.tableVerticalWrapper.appendChild(createAddCellsButton('row', view));
       this.tableHorizontalWrapper.appendChild(
         createAddCellsButton('column', view)

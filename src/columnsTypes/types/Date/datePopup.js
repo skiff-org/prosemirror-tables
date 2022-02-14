@@ -72,8 +72,8 @@ class TableDateMenuView {
   }
 
   update(view) {
-    const {state, readOnly} = view;
-    if (!state || readOnly) {
+    const {state, editable} = view;
+    if (!state || !editable) {
       if (this.popUpDOM.style.display !== 'none') {
         this.popUpDOM.style.display = 'none';
       }

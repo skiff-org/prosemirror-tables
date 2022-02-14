@@ -31,7 +31,7 @@ const generateClassName = createGenerateClassName({
 
 const DateComponent = ({view, node, getPos, editorContentRef, dom}) => {
   const openChooser = (e) => {
-    if (view.readOnly) return;
+    if (!view.editable) return;
     const {tr} = view.state;
     tr.setMeta(tableDateMenuKey, {
       pos: getPos(),

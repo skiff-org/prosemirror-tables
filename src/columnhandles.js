@@ -213,7 +213,7 @@ export class CellView {
         if (this.colMarker.contains(e.target)) return;
         if (this.colHandle.contains(e.target)) return;
         if (this.rowHandle && this.rowHandle.contains(e.target)) return;
-        if (view.readOnly) return;
+        if (!view.editable) return;
 
         const {tr} = this.view.state;
         tr.setMeta(tableHeadersMenuKey, {
