@@ -30,6 +30,7 @@ export class ColDragHandler {
   }
 
   onmousedown(e) {
+    if (!this.view.editable) return;
     const tableRect =
       this.cellDom.parentElement.parentElement.getBoundingClientRect();
 
