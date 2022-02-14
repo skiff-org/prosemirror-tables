@@ -7,4 +7,3 @@ export const NodeNames = {
   DATE: 'date',
   LABEL: 'label',
 };
-export const getTableNodeNames = () => NodeNames;

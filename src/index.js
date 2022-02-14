@@ -120,7 +120,7 @@ export {
   columnIsHeader,
 } from './util';
 export {tableNodes, tableNodeTypes} from './schema/schema';
-export {getTableNodeNames} from './schema/nodeNames';
+export {NodeNames} from './schema/nodeNames';
 export {CellSelection, getSelectedCellsCoords} from './cellselection';
 export {columnHandles} from './columnhandles';
 export {TableMap} from './tablemap';
