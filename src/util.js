@@ -8,9 +8,13 @@ import {selectedRect} from './commands';
 import {CellSelection} from './cellselection';
 
 export const key = new PluginKey('selectingCells');
+let baseName = 'czi';
 
-export function getBaseName(name = 'czi') {
-  return name;
+export function setBaseName(name) {
+  baseName = name;
+}
+export function getBaseName() {
+  return baseName;
 }
 
 export function cellAround($pos) {
