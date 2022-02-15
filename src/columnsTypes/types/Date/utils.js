@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import {PluginKey} from 'prosemirror-state';
+import {getBaseName} from '../../../util';
 
 export let DATE_FORMAT = 'DD/MM/YYYY';
 export const setDateFormat = (format) => (DATE_FORMAT = format);
@@ -39,7 +40,9 @@ export const calculateMenuPosition = (menuDOM, {node, dom: cellDOM, pos}) => {
   if (left === 0 || bottom === 0 || cellHeight === 0 || top === 0) return;
 
   // scroll offset
-  const [scrolledEl] = document.getElementsByClassName('czi-editor-frame-body');
+  const [scrolledEl] = document.getElementsByClassName(
+    `${getBaseName()}-editor-frame-body`
+  );
   const {x: EDITOR_LEFT_OFFSET, y: EDITOR_TOP_OFFSET} =
     scrolledEl.getBoundingClientRect();
   let {height: menuHeight} = menuDOM.getBoundingClientRect();

@@ -10,6 +10,7 @@ import {
 } from './utils';
 import {TableFiltersComponent} from './Component.jsx';
 import {findParentNodeOfTypeClosestToPos} from 'prosemirror-utils';
+import {getBaseName} from '../util';
 
 class TableFiltersMenuView {
   constructor(view) {
@@ -26,7 +27,7 @@ class TableFiltersMenuView {
 
     // the dom element that contains the popup - should be css relative
     this.popUpRelativeContainer = document.getElementsByClassName(
-      'czi-editor-frame-body'
+      `${getBaseName()}-editor-frame-body`
     )[0];
 
     const existingPopUps = Array.from(

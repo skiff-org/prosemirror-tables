@@ -8,6 +8,7 @@ import {
   calculateMenuPosition
 } from './utils';
 import {LabelsChooser} from './Component.jsx';
+import {getBaseName} from '../../../util';
 
 class TableLabelsMenu {
   constructor(view) {
@@ -24,7 +25,7 @@ class TableLabelsMenu {
 
     // the dom element that contains the popup - should be css relative
     this.popUpRelativeContainer = document.getElementsByClassName(
-      'czi-editor-frame-body'
+      `${getBaseName()}-editor-frame-body`
     )[0];
 
     const existingPopUps = Array.from(

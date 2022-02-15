@@ -9,6 +9,10 @@ import {CellSelection} from './cellselection';
 
 export const key = new PluginKey('selectingCells');
 
+export function getBaseName(name = 'czi') {
+  return name;
+}
+
 export function cellAround($pos) {
   for (let d = $pos.depth - 1; d > 0; d--)
     if ($pos.node(d).type.spec.tableRole == 'row')

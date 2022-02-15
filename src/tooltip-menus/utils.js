@@ -1,5 +1,5 @@
 import {CellSelection} from '../cellselection';
-import {createElementWithClass} from '../util';
+import {createElementWithClass, getBaseName} from '../util';
 
 export function enableDeleteItem(view) {
   const {selection: sel} = view.state;
@@ -90,7 +90,9 @@ export const calculatePopupPosition = (view, popupDOM) => {
   const offsetParentBox = popupDOM.offsetParent.getBoundingClientRect();
 
   // scroll offset
-  const [scrolledEl] = document.getElementsByClassName('czi-editor-frame-body');
+  const [scrolledEl] = document.getElementsByClassName(
+    `${getBaseName()}-editor-frame-body`
+  );
   const {x: EDITOR_LEFT_OFFSET, y: EDITOR_TOP_OFFSET} =
     scrolledEl.getBoundingClientRect();
 

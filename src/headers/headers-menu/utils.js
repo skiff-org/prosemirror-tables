@@ -3,6 +3,7 @@ import {createElementWithClass, isInTable} from '../..//util';
 import {tableHeadersMenuKey} from '../../columnsTypes/types.config';
 import {findParentNodeOfType} from 'prosemirror-utils';
 import {isCellInFirstRow} from '../../columnsTypes/utils';
+import {getBaseName} from '../../util';
 
 export function enableDeleteItem(view) {
   const {selection: sel} = view.state;
@@ -65,7 +66,9 @@ export const calculateMenuPosition = (menuDOM, {node, dom: headerDOM, pos}) => {
   const {width: menuWidth} = menuDOM.getBoundingClientRect();
 
   // scroll offset
-  const [scrolledEl] = document.getElementsByClassName('czi-editor-frame-body');
+  const [scrolledEl] = document.getElementsByClassName(
+    `${getBaseName()}-editor-frame-body`
+  );
   const {x: EDITOR_LEFT_OFFSET, y: EDITOR_TOP_OFFSET} =
     scrolledEl.getBoundingClientRect();
 
