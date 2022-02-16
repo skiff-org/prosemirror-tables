@@ -1,13 +1,13 @@
 import {TextSelection} from 'prosemirror-state';
 import ReactNodeView from '../../../ReactNodeView/ReactNodeView';
-import { labelsExtraAttrs } from '../../../schema/cellTypeAttrs';
-import { setNodeAttrs } from '../../../schema/schema';
+import {labelsExtraAttrs} from '../../../schema/cellTypeAttrs';
+import {setNodeAttrs} from '../../../schema/schema';
 import {createElementWithClass} from '../../../util';
 
 class LabelTypeNodeView extends ReactNodeView {
   constructor(node, view, getPos, decorations, component, componentProps) {
     super(node, view, getPos, decorations, component, componentProps);
-    this.setDOMAttrsFromNode(node)
+    this.setDOMAttrsFromNode(node);
   }
 
   setDOMAttrsFromNode(node) {
@@ -15,12 +15,12 @@ class LabelTypeNodeView extends ReactNodeView {
     this.dom.style = `${extraAttrs.style}`;
     Object.keys(extraAttrs).forEach((attr) => {
       this.dom.setAttribute(attr, extraAttrs[attr]);
-    })
+    });
   }
 
   createDOM() {
     const dom = createElementWithClass('div', 'cell-label');
-    dom.contentEditable= "false";
+    dom.contentEditable = 'false';
     return dom;
   }
 
@@ -35,7 +35,7 @@ class LabelTypeNodeView extends ReactNodeView {
   }
 
   update(node) {
-     if (this.node.type.name !== node.type.name) {
+    if (this.node.type.name !== node.type.name) {
       return false;
     }
 
@@ -49,7 +49,6 @@ class LabelTypeNodeView extends ReactNodeView {
 
     return true;
   }
-
 }
 
 export default LabelTypeNodeView;

@@ -317,32 +317,31 @@ export function insertCells(state, dispatch, tableStart, rect, cells) {
   dispatch(tr);
 }
 
-
 const extractLabelsFromTableNode = (tableNode) => {
-  const labelsMap = new Map()
+  const labelsMap = new Map();
   tableNode.descendants((node) => {
-    if(node.type.name === 'label') {
+    if (node.type.name === 'label') {
       node.attrs.labels.forEach((label) => {
-        if(!labelsMap.get(label.title)) {
+        if (!labelsMap.get(label.title)) {
           labelsMap.set(label.title, label);
         }
-      })
+      });
       return false;
     }
-    return true
-  })
+    return true;
+  });
 
-  return Array.from(labelsMap.values())
-}
+  return Array.from(labelsMap.values());
+};
 
 export const addLabelsToPastedTable = (slice) => {
   slice.content.descendants((node) => {
-    if(node.type.name === 'table') {
+    if (node.type.name === 'table') {
       const tableLabels = extractLabelsFromTableNode(node);
-      node.attrs.labels = tableLabels
+      node.attrs.labels = tableLabels;
 
-      return false
+      return false;
     }
-  })
+  });
   return slice;
-}
+};

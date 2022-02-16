@@ -36,8 +36,8 @@ export const tableHeadersMenu = () => {
         }
 
         return value;
-      },
-    },
+      }
+    }
   });
 };
 

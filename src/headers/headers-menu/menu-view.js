@@ -51,7 +51,7 @@ class TableHeadersMenuView {
     const textInput = new TextField({
       id: 'headerInput',
       placeholder: 'Untitled',
-      class: 'headerInputField',
+      class: 'headerInputField'
     });
 
     this.inputField = textInput;

@@ -33,7 +33,7 @@ import {
   labelsIsAny,
   labelsIsNone,
   labelsIsEmpty,
-  labelsIsNotEmpty,
+  labelsIsNotEmpty
 } from './filtersLogic';
 
 export const filterConfigByType = {
@@ -44,41 +44,41 @@ export const filterConfigByType = {
       logic: textEquality,
       defaultValue: '',
       default: true,
-      inputType: 'input',
+      inputType: 'input'
     },
     {
       id: 'text-in-equality',
       label: 'Is not',
       logic: textInequality,
       defaultValue: '',
-      inputType: 'input',
+      inputType: 'input'
     },
     {
       id: 'text-contains',
       label: 'Contains',
       logic: textContains,
       defaultValue: '',
-      inputType: 'input',
+      inputType: 'input'
     },
     {
       id: 'text-not-contains',
       label: 'Does not contain',
       logic: textNotContains,
       defaultValue: '',
-      inputType: 'input',
+      inputType: 'input'
     },
     {
       id: 'text-empty',
       label: 'Is empty',
       logic: isTextEmpty,
-      defaultValue: null,
+      defaultValue: null
     },
     {
       id: 'text-not-empty',
       label: 'Is not empty',
       logic: isTextNotEmpty,
-      defaultValue: null,
-    },
+      defaultValue: null
+    }
   ],
   number: [
     {
@@ -87,55 +87,55 @@ export const filterConfigByType = {
       logic: numberEquality,
       defaultValue: '',
       default: true,
-      inputType: 'input',
+      inputType: 'input'
     },
     {
       id: 'number-in-equality',
       label: '≠',
       logic: numberInequality,
       defaultValue: '',
-      inputType: 'input',
+      inputType: 'input'
     },
     {
       id: 'number-smaller-or-equal',
       label: '≤',
       logic: smallerOrEquals,
       defaultValue: '',
-      inputType: 'input',
+      inputType: 'input'
     },
     {
       id: 'number-smaller',
       label: '<',
       logic: smaller,
       defaultValue: '',
-      inputType: 'input',
+      inputType: 'input'
     },
     {
       id: 'number-greater',
       label: '>',
       logic: greater,
       defaultValue: '',
-      inputType: 'input',
+      inputType: 'input'
     },
     {
       id: 'number-greater-or-equal',
       label: '≥',
       logic: greaterOrEquals,
       defaultValue: '',
-      inputType: 'input',
+      inputType: 'input'
     },
     {
       id: 'number-is-empty',
       label: 'Is empty',
       logic: isNumberEmpty,
-      defaultValue: null,
+      defaultValue: null
     },
     {
       id: 'number-not-empty',
       label: 'Is not empty',
       logic: isNumberNotEmpty,
-      defaultValue: null,
-    },
+      defaultValue: null
+    }
   ],
   date: [
     {
@@ -144,34 +144,34 @@ export const filterConfigByType = {
       logic: isOn,
       defaultValue: new Date().getTime(),
       default: true,
-      inputType: 'date-picker',
+      inputType: 'date-picker'
     },
     {
       id: 'is-before',
       label: 'Is before',
       logic: isBefore,
       defaultValue: new Date().getTime(),
-      inputType: 'date-picker',
+      inputType: 'date-picker'
     },
     {
       id: 'is-after',
       label: 'Is after',
       logic: isAfter,
       defaultValue: new Date().getTime(),
-      inputType: 'date-picker',
+      inputType: 'date-picker'
     },
     {
       id: 'date-is-empty',
       label: 'Is empty',
       logic: isDateEmpty,
-      defaultValue: null,
+      defaultValue: null
     },
     {
       id: 'date-not-empty',
       label: 'Is not empty',
       logic: isDateNotEmpty,
-      defaultValue: null,
-    },
+      defaultValue: null
+    }
   ],
   labels: [
     {
@@ -180,43 +180,43 @@ export const filterConfigByType = {
       logic: labelsEquality,
       defaultValue: [],
       default: true,
-      inputType: 'labels-dropdown',
+      inputType: 'labels-dropdown'
     },
     {
       id: 'labels-not-equal',
       label: 'Is not',
       logic: labelsInEquality,
       defaultValue: [],
-      inputType: 'labels-dropdown',
+      inputType: 'labels-dropdown'
     },
     {
       id: 'label-is-any',
       label: 'Is any of',
       logic: labelsIsAny,
       defaultValue: [],
-      inputType: 'labels-dropdown',
+      inputType: 'labels-dropdown'
     },
     {
       id: 'label-is-none',
       label: 'Is none of',
       logic: labelsIsNone,
       defaultValue: [],
-      inputType: 'labels-dropdown',
+      inputType: 'labels-dropdown'
     },
     {
       id: 'label-is-empty',
       label: 'Is empty',
       logic: labelsIsEmpty,
       defaultValue: 'checked',
-      inputType: null,
+      inputType: null
     },
     {
       id: 'label-is-not-empty',
       label: 'Is not empty',
       logic: labelsIsNotEmpty,
       defaultValue: null,
-      inputType: null,
-    },
+      inputType: null
+    }
   ],
   currency: [
     {
@@ -225,43 +225,43 @@ export const filterConfigByType = {
       logic: currencyEquality,
       defaultValue: '',
       default: true,
-      inputType: 'input',
+      inputType: 'input'
     },
     {
       id: 'currency-in-equality',
       label: '≠',
       logic: currencyInequality,
       defaultValue: '',
-      inputType: 'input',
+      inputType: 'input'
     },
     {
       id: 'currency-smaller-or-equal',
       label: '≤',
       logic: currencySmallerOrEquals,
       defaultValue: '',
-      inputType: 'input',
+      inputType: 'input'
     },
     {
       id: 'currency-smaller',
       label: '<',
       logic: currencySmaller,
       defaultValue: '',
-      inputType: 'input',
+      inputType: 'input'
     },
     {
       id: 'currency-greater',
       label: '>',
       logic: currencyGreater,
       defaultValue: '',
-      inputType: 'input',
+      inputType: 'input'
     },
     {
       id: 'currency-greater-or-equal',
       label: '≥',
       logic: currencyGreaterOrEquals,
       defaultValue: '',
-      inputType: 'input',
-    },
+      inputType: 'input'
+    }
   ],
   checkbox: [
     {
@@ -271,7 +271,7 @@ export const filterConfigByType = {
       defaultValue: CHECKED_ITEM_VALUE,
       default: true,
       inputType: 'dropdown',
-      inputDropdownItems: () => CHECKBOX_DROPDOWN_ITEMS,
+      inputDropdownItems: () => CHECKBOX_DROPDOWN_ITEMS
     },
     {
       id: 'checkbox-not-equal',
@@ -279,7 +279,7 @@ export const filterConfigByType = {
       logic: checkboxInequality,
       defaultValue: CHECKED_ITEM_VALUE,
       inputType: 'dropdown',
-      inputDropdownItems: () => CHECKBOX_DROPDOWN_ITEMS,
-    },
-  ],
+      inputDropdownItems: () => CHECKBOX_DROPDOWN_ITEMS
+    }
+  ]
 };

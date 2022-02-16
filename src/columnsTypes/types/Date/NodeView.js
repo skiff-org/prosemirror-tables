@@ -1,13 +1,13 @@
 import ReactNodeView from '../../../ReactNodeView/ReactNodeView';
-import { dateExtraAttrs } from '../../../schema/cellTypeAttrs';
-import { setNodeAttrs } from '../../../schema/schema';
+import {dateExtraAttrs} from '../../../schema/cellTypeAttrs';
+import {setNodeAttrs} from '../../../schema/schema';
 import {createElementWithClass} from '../../../util';
 
 class DateTypeNodeView extends ReactNodeView {
   constructor(node, view, getPos, decorations, component, componentProps) {
     super(node, view, getPos, decorations, component, componentProps);
     this.addEmptyClass();
-    this.setDOMAttrsFromNode(node)
+    this.setDOMAttrsFromNode(node);
   }
 
   createDOM() {
@@ -25,7 +25,7 @@ class DateTypeNodeView extends ReactNodeView {
     this.dom.style = `${extraAttrs.style}`;
     Object.keys(extraAttrs).forEach((attr) => {
       this.dom.setAttribute(attr, extraAttrs[attr]);
-    })
+    });
   }
 
   update(node) {
@@ -44,7 +44,7 @@ class DateTypeNodeView extends ReactNodeView {
     }
 
     this.addEmptyClass();
-    this.setDOMAttrsFromNode(node)
+    this.setDOMAttrsFromNode(node);
 
     return true;
   }

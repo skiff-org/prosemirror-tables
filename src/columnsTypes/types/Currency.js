@@ -1,4 +1,4 @@
-import { parseTextToCurrency } from '../utils';
+import {parseTextToCurrency} from '../utils';
 import CellDataType from './Type';
 
 export const CURRENCY = '$';

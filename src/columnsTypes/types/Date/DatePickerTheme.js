@@ -1,10 +1,10 @@
-import { createTheme } from '@material-ui/core';
+import {createTheme} from '@material-ui/core';
 
 /**
  * customizes/overrides the mui-picker theme
  * to match the rest of the app color scheme,
  * typography, and sizing.
-*/
+ */
 const DatePickerTheme = createTheme({
   overrides: {
     MuiPickersToolbar: {

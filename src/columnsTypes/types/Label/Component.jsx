@@ -8,7 +8,7 @@ import {
   tableLabelsMenuKey,
   updateTablesLabels,
   removeLabelsFromTableCells,
-  randomString,
+  randomString
 } from './utils';
 import useClickOutside from '../../../useClickOutside.jsx';
 
@@ -44,7 +44,7 @@ const LabelOption = ({
   onChange,
   checked,
   onDelete,
-  inFilters,
+  inFilters
 }) => {
   const [selected, setSelected] = useState(checked);
 
@@ -92,7 +92,7 @@ export const LabelsChooser = ({
   inFilters,
   handleLabelChoose,
   initialChosenLabels,
-  onClose,
+  onClose
 }) => {
   const [tableLabels, setTableLabels] = useState([]);
   const [chosenLabels, setChosenLabels] = useState([]);
@@ -109,7 +109,7 @@ export const LabelsChooser = ({
     if (typeof currentChosenLabels === 'string') {
       addLabel(view, pos, node, {
         title: currentChosenLabels,
-        color: newLabelColor,
+        color: newLabelColor
       });
     } else {
       updateCellLabels(view, pos, node, currentChosenLabels);
@@ -260,7 +260,7 @@ const LabelComponent = ({view, node, getPos, dom}) => {
       dom: dom,
       node: node,
       id: window.id,
-      action: 'open',
+      action: 'open'
     });
     setTimeout(() => view.dispatch(tr), 0);
 

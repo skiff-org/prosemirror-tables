@@ -32,7 +32,7 @@ const DropdownItem = ({
   selected,
   separate,
   itemStyleClass,
-  hasIcon,
+  hasIcon
 }) => {
   return (
     <button
@@ -53,7 +53,7 @@ export const SelectDropdownButton = ({
   disableDropdown,
   openDropdown,
   itemStyleClass,
-  label,
+  label
 }) => {
   return (
     <button
@@ -74,7 +74,7 @@ const SelectDropdown = ({
   initialValue,
   onValueChange,
   parentRef,
-  className,
+  className
 }) => {
   const [value, setValue] = useState(initialValue);
   const [showDropdown, setShowDropdown] = useState(false);

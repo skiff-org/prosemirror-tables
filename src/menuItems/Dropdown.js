@@ -63,7 +63,7 @@ export class HoverDropdown {
       'div',
       {
         class: prefix + '-dropdown ' + (this.options.class || ''),
-        style: this.options.css,
+        style: this.options.css
       },
       translate(view, this.options.label)
     );

@@ -13,7 +13,7 @@ export function columnResizing({
   handleWidth = 5,
   cellMinWidth = 75,
   View = TableView,
-  lastColumnResizable = true,
+  lastColumnResizable = true
 } = {}) {
   const plugin = new Plugin({
     key,
@@ -28,7 +28,7 @@ export function columnResizing({
       },
       apply(tr, prev) {
         return prev.apply(tr);
-      },
+      }
     },
     props: {
       attributes(state) {
@@ -65,7 +65,7 @@ export function columnResizing({
             return;
           }
           handleDoubleClick(view, event, cellMinWidth);
-        },
+        }
       },
 
       decorations(state) {
@@ -76,8 +76,8 @@ export function columnResizing({
         return null;
       },
 
-      nodeViews: {},
-    },
+      nodeViews: {}
+    }
   });
   return plugin;
 }
@@ -161,7 +161,7 @@ function handleMouseDown(view, event, cellMinWidth) {
   const width = currentColWidth(view, pluginState.activeHandle, cell.attrs);
   view.dispatch(
     view.state.tr.setMeta(key, {
-      setDragging: {startX: event.clientX, startWidth: width},
+      setDragging: {startX: event.clientX, startWidth: width}
     })
   );
 

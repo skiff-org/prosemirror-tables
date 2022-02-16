@@ -4,7 +4,7 @@ import {columnTypesMap, tableHeadersMenuKey} from '../types.config';
 class CellDataType {
   convert(view, typeId) {
     const headerState = tableHeadersMenuKey.getState(view.state);
-    if(!headerState) return;
+    if (!headerState) return;
     const {pos, node, dom} = headerState;
     if (typeId === node.attrs.type) return;
 
@@ -14,28 +14,24 @@ class CellDataType {
     const {tr} = view.state;
 
     // save old type before changing attrs
-    const oldType = node.attrs.type
+    const oldType = node.attrs.type;
 
     // change header type
     tr.setNodeMarkup(pos, undefined, Object.assign(node.attrs, {type: typeId}));
 
     cells.reverse().forEach(({node: cell, pos}) => {
-      const convertedContent =  this.convertContent(cell, oldType);
-      const oldTypeContentToAttrs = columnTypesMap[oldType].handler.parseContentToAttrsMemory(cell);
+      const convertedContent = this.convertContent(cell, oldType);
+      const oldTypeContentToAttrs =
+        columnTypesMap[oldType].handler.parseContentToAttrsMemory(cell);
 
       tr.replaceRangeWith(
         pos + 1,
         pos + cell.nodeSize - 1,
-        this.renderContentNode(
-          view.state.schema,
-          convertedContent,
-          tr,
-          pos
-        )
+        this.renderContentNode(view.state.schema, convertedContent, tr, pos)
       );
 
       const newAttrs = {
-        ...cell.attrs, 
+        ...cell.attrs,
         type: typeId,
         typesValues: {
           ...cell.attrs.typesValues,
@@ -46,7 +42,7 @@ class CellDataType {
       tr.setNodeMarkup(pos, undefined, newAttrs);
     });
 
-    tr.setMeta(tableHeadersMenuKey, {action: 'close', id: window.id})
+    tr.setMeta(tableHeadersMenuKey, {action: 'close', id: window.id});
 
     view.dispatch(tr);
   }
@@ -67,7 +63,7 @@ class CellDataType {
 
   /** should return same value type as `convertContent`*/
   parseContentFromAttrsMemory(attrsValue) {
-    return attrsValue
+    return attrsValue;
   }
 
   /**

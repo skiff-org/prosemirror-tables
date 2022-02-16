@@ -7,7 +7,7 @@ import {
   tableDateMenuKey,
   calculateMenuPosition,
   getSelectedNode,
-  setDateFormat,
+  setDateFormat
 } from './utils';
 import {DatePickerComponent, datePopupEmitter} from './Component.jsx';
 import {findParentNodeOfType} from 'prosemirror-utils';
@@ -129,7 +129,7 @@ export const TableDateMenu = (dateFormat) => {
         }
 
         return value;
-      },
+      }
     },
     appendTransaction(transactions, oldState, newState) {
       const sel = newState.selection;
@@ -146,7 +146,7 @@ export const TableDateMenu = (dateFormat) => {
           const {tr} = newState;
           tr.setMeta(tableDateMenuKey, {
             id: window.id,
-            action: 'close',
+            action: 'close'
           });
           return tr;
         }
@@ -170,8 +170,8 @@ export const TableDateMenu = (dateFormat) => {
       handleKeyPress(view, event) {
         emitPopupUpdate(view);
         return false;
-      },
-    },
+      }
+    }
   });
 };
 

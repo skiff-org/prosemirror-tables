@@ -10,7 +10,7 @@ import {
   cellAround,
   inSameTable,
   isInTable,
-  selectionCell,
+  selectionCell
 } from './util';
 import {CellSelection} from './cellselection';
 import {TableMap} from './tablemap';
@@ -23,7 +23,7 @@ import {
   deleteRow,
   deleteTable,
   selectedRect,
-  selectCurrentCell,
+  selectCurrentCell
 } from './commands';
 import {columnTypesMap} from './columnsTypes/types.config';
 
@@ -48,7 +48,7 @@ export const handleKeyDown = keydownHandler({
   Backspace: deleteCellSelection,
   'Mod-Backspace': deleteCellSelection,
   Delete: deleteCellSelection,
-  'Mod-Delete': deleteCellSelection,
+  'Mod-Delete': deleteCellSelection
 });
 
 function checkIfParentIsCell(state) {
@@ -347,10 +347,8 @@ export function handlePaste(view, _, slice) {
         width: 1,
         height: 1,
         rows: [
-          Fragment.from(
-            fitSlice(tableNodeTypes(view.state.schema).cell, slice)
-          ),
-        ],
+          Fragment.from(fitSlice(tableNodeTypes(view.state.schema).cell, slice))
+        ]
       };
     const table = sel.$anchorCell.node(-1),
       start = sel.$anchorCell.start(-1);

@@ -4,7 +4,7 @@ import {
   calculatePopupPosition,
   addTooltips,
   addDeleteHoverClass,
-  removeDeleteHoverClass,
+  removeDeleteHoverClass
 } from './utils';
 import {renderGrouped} from 'prosemirror-menu';
 import {tooltips} from './items';

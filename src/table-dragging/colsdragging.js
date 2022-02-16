@@ -47,7 +47,7 @@ export class ColDragHandler {
 
     const originMousePos = this.view.posAtCoords({
       left: e.clientX + 20,
-      top: e.clientY,
+      top: e.clientY
     });
 
     this.originCellPos = originMousePos.inside;
@@ -94,7 +94,7 @@ export class ColDragHandler {
 
     const mousePos = this.view.posAtCoords({
       left: e.clientX,
-      top: e.clientY + 20,
+      top: e.clientY + 20
     });
     if (!mousePos) return;
 

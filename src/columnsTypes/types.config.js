@@ -12,7 +12,7 @@ import {
   deleteDateContent,
   deleteEditableTypeContent,
   deleteLabelsContent,
-  deleteCurrencyContent,
+  deleteCurrencyContent
 } from './deleteCommands';
 
 export const tableHeadersMenuKey = new PluginKey('headersMenu');
@@ -44,21 +44,21 @@ export const types = [
     handler: new TextCellType(),
     dontForce: true,
     filters: filterConfigByType.text,
-    deleteContentCommand: deleteEditableTypeContent,
+    deleteContentCommand: deleteEditableTypeContent
   },
   {
     id: 'number',
     displayName: 'Number',
     handler: new NumberCellType(),
     filters: filterConfigByType.number,
-    deleteContentCommand: deleteEditableTypeContent,
+    deleteContentCommand: deleteEditableTypeContent
   },
   {
     id: 'date',
     displayName: 'Date',
     handler: new DateType(),
     filters: filterConfigByType.date,
-    deleteContentCommand: deleteDateContent,
+    deleteContentCommand: deleteDateContent
   },
   {
     id: 'checkbox',
@@ -72,14 +72,14 @@ export const types = [
       const cellAChecked = getCellCheckState(cellA);
       const cellBChecked = getCellCheckState(cellB);
       return direction * (cellBChecked > cellAChecked ? 1 : -1);
-    },
+    }
   },
   {
     id: 'currency',
     displayName: 'Currency',
     handler: new CurrencyCellType(),
     filters: filterConfigByType.currency,
-    deleteContentCommand: deleteCurrencyContent,
+    deleteContentCommand: deleteCurrencyContent
   },
   {
     id: 'labels',
@@ -98,8 +98,8 @@ export const types = [
       const textB = cellBLabel ? cellBLabel.title : null;
 
       return sortNumVsString(direction, textA, textB);
-    },
-  },
+    }
+  }
 ];
 
 export const columnTypesMap = types.reduce((map, type) => {

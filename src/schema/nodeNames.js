@@ -5,5 +5,5 @@ export const NodeNames = {
   TABLE_HEADER: 'table_header',
   CHECKBOX: 'checkbox',
   DATE: 'date',
-  LABEL: 'label',
+  LABEL: 'label'
 };

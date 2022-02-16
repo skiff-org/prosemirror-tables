@@ -45,7 +45,7 @@ export class RowDragHandler {
 
     const originMousePos = this.view.posAtCoords({
       left: e.clientX + 20,
-      top: e.clientY,
+      top: e.clientY
     });
 
     this.originCellPos = originMousePos.inside;
@@ -92,7 +92,7 @@ export class RowDragHandler {
 
     const mousePos = this.view.posAtCoords({
       left: e.clientX + 20,
-      top: e.clientY,
+      top: e.clientY
     });
     if (!mousePos) return;
 

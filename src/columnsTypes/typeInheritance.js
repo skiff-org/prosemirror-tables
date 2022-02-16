@@ -7,12 +7,12 @@ export const typeInheritance = (view, node, pos) => {
   const tableMap = TableMap.get(node);
   const {tr} = view.state;
   for (let col = tableMap.width - 1; col >= 0; col--) {
-    if (!node.child(0) || !node.child(0).maybeChild(col)) continue
+    if (!node.child(0) || !node.child(0).maybeChild(col)) continue;
     const header = node.child(0).child(col);
     const colType = header.attrs.type;
 
     for (let row = tableMap.height - 1; row >= 0; row--) {
-      if (!node.child(row) || !node.child(row).maybeChild(col)) continue
+      if (!node.child(row) || !node.child(row).maybeChild(col)) continue;
       const cell = node.child(row).maybeChild(col);
       if (cell.attrs.type !== colType) {
         const cellPos = tableMap.map[row * tableMap.width + col] + pos + 1;
@@ -30,7 +30,7 @@ export const typeInheritance = (view, node, pos) => {
         );
 
         const newAttrs = Object.assign(cell.attrs, {
-          type: colType,
+          type: colType
         });
 
         tr.setNodeMarkup(cellPos, undefined, newAttrs);

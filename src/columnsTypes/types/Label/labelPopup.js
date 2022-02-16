@@ -5,7 +5,7 @@ import {
   generateMenuPopup,
   displayPopup,
   tableLabelsMenuKey,
-  calculateMenuPosition,
+  calculateMenuPosition
 } from './utils';
 import {LabelsChooser} from './Component.jsx';
 
@@ -134,7 +134,7 @@ export const TableLabelMenu = () => {
         }
 
         return value;
-      },
-    },
+      }
+    }
   });
 };

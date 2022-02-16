@@ -4,7 +4,7 @@ import {
   generateColorItemDOM,
   getCellsBackgroundColor,
   isFirstRowSelected,
-  enableCellsColor,
+  enableCellsColor
 } from './utils';
 import {changeCellsBackgroundColor, toggleTableHeaders} from './commands';
 import {createElementWithClass} from '../util';
@@ -18,7 +18,7 @@ const toggleHeader = () => {
         'span',
         'toggleTableHeaderButton',
         'toggle-header'
-      ),
+      )
     },
     select(view) {
       return isFirstRowSelected(view);
@@ -28,7 +28,7 @@ const toggleHeader = () => {
     },
     run(state, dispatch, view) {
       toggleTableHeaders(state, dispatch, view);
-    },
+    }
   });
 };
 
@@ -36,7 +36,7 @@ const deleteMenuItem = () => {
   return new MenuItem({
     class: 'tablePopUpMenuItem',
     icon: {
-      dom: createElementWithClass('span', 'deleteMenuButton', 'table-delete'),
+      dom: createElementWithClass('span', 'deleteMenuButton', 'table-delete')
     },
     select(view) {
       return enableDeleteItem(view);
@@ -47,7 +47,7 @@ const deleteMenuItem = () => {
     run(state, dispatch) {
       const command = getDeleteCommand(state);
       command(state, dispatch);
-    },
+    }
   });
 };
 
@@ -57,14 +57,14 @@ const colors = [
   'rgb(181, 220, 175)',
   'rgb(214, 232, 250)',
   'rgb(216, 195, 255)',
-  'transparent',
+  'transparent'
 ];
 
 const cellBackgroundColorItem = (color) => {
   return new MenuItem({
     class: 'CellColorItem',
     icon: {
-      dom: generateColorItemDOM(color),
+      dom: generateColorItemDOM(color)
     },
     active(view) {
       return getCellsBackgroundColor(view) === color;
@@ -79,7 +79,7 @@ const cellBackgroundColorItem = (color) => {
       if (getCellsBackgroundColor(view) !== color || color === 'transparent') {
         changeCellsBackgroundColor(state, dispatch, color);
       }
-    },
+    }
   });
 };
 
@@ -87,7 +87,7 @@ const cellBackgroundColorDropDown = () => {
   return new Dropdown(
     colors.map((color) => cellBackgroundColorItem(color)),
     {
-      class: 'cellColorDropDown',
+      class: 'cellColorDropDown'
     }
   );
 };
@@ -95,20 +95,20 @@ const cellBackgroundColorDropDown = () => {
 export const popUpItems = [
   [toggleHeader()],
   [cellBackgroundColorDropDown()],
-  [deleteMenuItem()],
+  [deleteMenuItem()]
 ];
 
 export const tooltips = [
   {
     className: 'toggleTableHeaderButton',
-    text: 'Toggle Headers',
+    text: 'Toggle Headers'
   },
   {
     className: 'deleteMenuButton',
-    text: 'Delete Selection',
+    text: 'Delete Selection'
   },
   {
     className: 'cellColorDropDown',
-    text: 'Color Selection',
-  },
+    text: 'Color Selection'
+  }
 ];

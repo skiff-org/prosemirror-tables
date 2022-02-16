@@ -43,14 +43,15 @@ export interface CellAttributes {
   getFromDOM?: getFromDOM;
   setDOMAttr?: setDOMAttr;
 }
+
 export enum NodeNames {
     TABLE= 'table',
-    TABLE_ROW='table_row',
+    TABLE_ROW= 'table_row',
     TABLE_CELL= 'table_cell',
     TABLE_HEADER= 'table_header',
-    CHECKBOX='checkbox',
-    DATE='date',
-    LABEL= 'label',
+    CHECKBOX= 'checkbox',
+    DATE= 'date',
+    LABEL= 'label'
 }
 
 export interface TableNodes {

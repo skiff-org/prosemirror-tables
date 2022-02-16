@@ -4,7 +4,7 @@ import {
   createDefaultFilter,
   getColsOptions,
   executeFilters,
-  tableFiltersMenuKey,
+  tableFiltersMenuKey
 } from './utils';
 import SelectDropdown, {SelectDropdownButton} from './Dropdown.jsx';
 import useClickOutside from '../useClickOutside.jsx';
@@ -12,7 +12,7 @@ import {DatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 import DateUtilDayJS from '@date-io/dayjs';
 import {
   StylesProvider,
-  createGenerateClassName,
+  createGenerateClassName
 } from '@material-ui/core/styles';
 import DatePickerTheme from '../columnsTypes/types/Date/DatePickerTheme';
 import {ThemeProvider} from '@material-ui/core/styles';
@@ -20,7 +20,7 @@ import {DATE_FORMAT} from '../columnsTypes/types/Date/utils';
 import {LabelsChooser} from '../columnsTypes/types/Label/Component.jsx';
 
 const generateClassName = createGenerateClassName({
-  seed: 'sgo-tables-plugin-',
+  seed: 'sgo-tables-plugin-'
 });
 
 const FiltersDatePicker = ({onFilterChange, filterHandler}) => {
@@ -35,7 +35,7 @@ const FiltersDatePicker = ({onFilterChange, filterHandler}) => {
               setDate(newValue.toDate().getTime());
               onFilterChange({
                 ...filterHandler.toAttrsValue(),
-                filterValue: newValue.toDate().getTime(),
+                filterValue: newValue.toDate().getTime()
               });
             }}
             openTo="date"
@@ -58,7 +58,7 @@ const FiltersInputDropdown = ({filterHandler, onFilterChange}) => {
       onValueChange={(filterValue) =>
         onFilterChange({
           ...filterHandler.toAttrsValue(),
-          filterValue,
+          filterValue
         })
       }
     />
@@ -79,7 +79,7 @@ const FiltersTextInput = ({filterHandler, onFilterChange}) => {
       onChange={(e) =>
         onFilterChange({
           ...filterHandler.toAttrsValue(),
-          filterValue: e.target.value,
+          filterValue: e.target.value
         })
       }
       ref={inputRef}
@@ -102,7 +102,7 @@ const FiltersLabelsDropdown = ({filterHandler, onFilterChange}) => {
 
     onFilterChange({
       ...filterHandler.toAttrsValue(),
-      filterValue: newChosenLabels,
+      filterValue: newChosenLabels
     });
   };
 
@@ -154,7 +154,7 @@ const FilterRule = ({
   colsDropdownOptions,
   onFilterRemove,
   index,
-  isFirstGroup,
+  isFirstGroup
 }) => {
   const FilterInput = getInputElement(filterHandler);
 
@@ -213,7 +213,7 @@ const FiltersGroup = ({
   isFirstGroup,
   table,
   addNewGroup,
-  view,
+  view
 }) => {
   const createFilterRemover = (filterIndex) => () => {
     const newFilters = filters.map((filter) => filter.toAttrsValue());
@@ -233,7 +233,7 @@ const FiltersGroup = ({
     const colDefaultFilter = createDefaultFilter(view.state, table);
     onGroupChange([
       ...filters.map((filter) => filter.toAttrsValue()),
-      colDefaultFilter,
+      colDefaultFilter
     ]);
   };
 
@@ -299,7 +299,7 @@ const closeFiltersPopup = (view, tr) => {
   tr = tr || view.state.tr;
   tr.setMeta(tableFiltersMenuKey, {
     action: 'close',
-    id: window.id,
+    id: window.id
   });
 
   return tr;
