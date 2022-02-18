@@ -23,6 +23,7 @@ import {
   deleteRow,
   deleteTable,
   selectedRect,
+  selectCurrentCell,
 } from './commands';
 import {columnTypesMap} from './columnsTypes/types.config';
 
@@ -42,6 +43,7 @@ export const handleKeyDown = keydownHandler({
   'Shift-ArrowRight': shiftArrow('horiz', 1),
   'Shift-ArrowUp': shiftArrow('vert', -1),
   'Shift-ArrowDown': shiftArrow('vert', 1),
+  'Mod-a': selectCurrentCell,
 
   Backspace: deleteCellSelection,
   'Mod-Backspace': deleteCellSelection,

@@ -707,6 +707,17 @@ export function goToNextCell(direction) {
 }
 
 // :: (EditorState, ?(tr: Transaction)) → bool
+// Selects the current cell the cursor is in
+export function selectCurrentCell(state, dispatch) {
+  const currentCell = selectionCell(state);
+  if (!currentCell || !dispatch) {
+    return false;
+  }
+  const selection = new CellSelection(currentCell);
+  dispatch(state.tr.setSelection(selection));
+  return true;
+}
+// :: (EditorState, ?(tr: Transaction)) → bool
 // Deletes the table around the selection, if any.
 export function deleteTable(state, dispatch) {
   const $pos = state.selection.$anchor;
