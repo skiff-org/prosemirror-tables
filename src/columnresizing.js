@@ -38,9 +38,8 @@ export function columnResizing({
 
       handleDOMEvents: {
         mousemove(view, event) {
-          if (!view.editable) {
-            return;
-          }
+          if (!view.editable) return;
+
           handleMouseMove(
             view,
             event,
