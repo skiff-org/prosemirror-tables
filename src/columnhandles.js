@@ -195,7 +195,6 @@ export class CellView {
 
       sortButton.onclick = (e) => {
         if (colIndex === null) return;
-
         if (sortedCol !== colIndex || tableAttrs.sort.dir === 'up') {
           sortColumn(view, colIndex, this.getPos(), 1); // sort down
         } else {
@@ -214,6 +213,7 @@ export class CellView {
         if (this.colMarker.contains(e.target)) return;
         if (this.colHandle.contains(e.target)) return;
         if (this.rowHandle && this.rowHandle.contains(e.target)) return;
+        if (!view.editable) return;
 
         const {tr} = this.view.state;
         tr.setMeta(tableHeadersMenuKey, {

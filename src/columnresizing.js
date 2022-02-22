@@ -38,6 +38,8 @@ export function columnResizing({
 
       handleDOMEvents: {
         mousemove(view, event) {
+          if (!view.editable) return;
+
           handleMouseMove(
             view,
             event,
@@ -47,12 +49,21 @@ export function columnResizing({
           );
         },
         mouseleave(view) {
+          if (!view.editable) {
+            return;
+          }
           handleMouseLeave(view);
         },
         mousedown(view, event) {
+          if (!view.editable) {
+            return;
+          }
           handleMouseDown(view, event, cellMinWidth);
         },
         dblclick(view, event) {
+          if (!view.editable) {
+            return;
+          }
           handleDoubleClick(view, event, cellMinWidth);
         },
       },

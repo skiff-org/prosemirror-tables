@@ -65,10 +65,12 @@ export class TableView {
     setTimeout(() => {
       this.updateMarkers();
     }, 0);
-    this.tableVerticalWrapper.appendChild(createAddCellsButton('row', view));
-    this.tableHorizontalWrapper.appendChild(
-      createAddCellsButton('column', view)
-    );
+    if (this.view.editable) {
+      this.tableVerticalWrapper.appendChild(createAddCellsButton('row', view));
+      this.tableHorizontalWrapper.appendChild(
+        createAddCellsButton('column', view)
+      );
+    }
 
     this.colgroup = this.table.appendChild(document.createElement('colgroup'));
     updateColumns(node, this.colgroup, this.table, cellMinWidth);
