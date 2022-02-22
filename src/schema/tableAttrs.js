@@ -5,12 +5,13 @@ export const tableExtraAttrs = {
       if (!(dom instanceof HTMLElement)) {
         return {};
       }
-      return dom.getAttribute('sort') ? JSON.parse(dom.getAttribute('sort')) : [];
+      return dom.getAttribute('sort')
+        ? JSON.parse(dom.getAttribute('sort'))
+        : [];
     },
 
     setDOMAttr(value, attrs) {
-      if (value)
-        attrs.sort = JSON.stringify(value);
+      if (value) attrs.sort = JSON.stringify(value);
     }
   },
   headers: {
@@ -23,8 +24,7 @@ export const tableExtraAttrs = {
     },
 
     setDOMAttr(value, attrs) {
-      if (value)
-        attrs.headers = value;
+      if (value) attrs.headers = value;
     }
   },
   labels: {
@@ -33,26 +33,28 @@ export const tableExtraAttrs = {
       if (!(dom instanceof HTMLElement)) {
         return {};
       }
-      return dom.getAttribute('labels') ? JSON.parse(dom.getAttribute('labels')) : [];
+      return dom.getAttribute('labels')
+        ? JSON.parse(dom.getAttribute('labels'))
+        : [];
     },
 
     setDOMAttr(value, attrs) {
-      if (value)
-        attrs.labels = JSON.stringify(value);
+      if (value) attrs.labels = JSON.stringify(value);
     }
   },
   filters: {
     default: [],
-     getFromDOM(dom) {
+    getFromDOM(dom) {
       if (!(dom instanceof HTMLElement)) {
         return {};
       }
-      return dom.getAttribute('filters') ? JSON.parse(dom.getAttribute('filters')) : [];
+      return dom.getAttribute('filters')
+        ? JSON.parse(dom.getAttribute('filters'))
+        : [];
     },
 
     setDOMAttr(value, attrs) {
-      if (value)
-        attrs.filters = JSON.stringify(value);
+      if (value) attrs.filters = JSON.stringify(value);
     }
-  },
-}
+  }
+};

@@ -114,13 +114,13 @@ export class TableMap {
       left: leftA,
       right: rightA,
       top: topA,
-      bottom: bottomA,
+      bottom: bottomA
     } = this.findCell(a);
     const {
       left: leftB,
       right: rightB,
       top: topB,
-      bottom: bottomB,
+      bottom: bottomB
     } = this.findCell(b);
     return new Rect(
       Math.min(leftA, leftB),
@@ -201,7 +201,7 @@ function computeMap(table) {
           (problems || (problems = [])).push({
             type: 'overlong_rowspan',
             pos,
-            n: rowspan - h,
+            n: rowspan - h
           });
           break;
         }
@@ -213,7 +213,7 @@ function computeMap(table) {
               type: 'collision',
               row,
               pos,
-              n: colspan - w,
+              n: colspan - w
             });
           const colW = colwidth && colwidth[w];
           if (colW) {

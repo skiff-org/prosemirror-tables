@@ -2,7 +2,7 @@ import {MenuItem} from '../../menuItems/MenuItem';
 import {
   sortColumn,
   addColAfterButton,
-  addColBeforeButton,
+  addColBeforeButton
 } from '../../commands';
 import {HoverDropdown} from '../../menuItems/Dropdown';
 import {createElementWithClass, getColIndex} from '../../util';
@@ -29,7 +29,7 @@ const columnTypesItems = getTypesItems();
 const columnTypeDropdown = () => {
   return new HoverDropdown(columnTypesItems, {
     class: dropdownClassName,
-    dataTest: 'column-type-dropdown',
+    dataTest: 'column-type-dropdown'
   });
 };
 
@@ -47,7 +47,7 @@ const sortItem = (direction) => {
       const {pos} = tableHeadersMenuKey.getState(state);
       const colIndex = getColIndex(state, pos);
       sortColumn(view, colIndex, pos, direction);
-    },
+    }
   });
 };
 
@@ -65,7 +65,7 @@ const insertColumnItem = (direction) => {
       const command = direction === 1 ? addColAfterButton : addColBeforeButton;
       const {pos} = tableHeadersMenuKey.getState(state);
       command(view, pos);
-    },
+    }
   });
 };
 
@@ -95,15 +95,15 @@ const filterItem = () => {
         node: table.node,
         pos: table.start,
         id: window.id,
-        headerPos: pos,
+        headerPos: pos
       });
       tr.setMeta(tableHeadersMenuKey, {
         action: 'close',
-        id: window.id,
+        id: window.id
       });
 
       dispatch(tr);
-    },
+    }
   });
 };
 
@@ -121,11 +121,11 @@ const deleteItem = () => {
       view.dispatch(
         view.state.tr.setMeta(tableHeadersMenuKey, {
           action: 'close',
-          id: window.id,
+          id: window.id
         })
       );
       return deleteColAtPos(pos, view);
-    },
+    }
   });
 };
 
@@ -137,6 +137,6 @@ export const menuItems = [
     sortItem(-1),
     insertColumnItem(1),
     insertColumnItem(-1),
-    deleteItem(),
-  ],
+    deleteItem()
+  ]
 ];

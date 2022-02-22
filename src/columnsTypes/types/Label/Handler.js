@@ -38,14 +38,14 @@ class LabelType extends CellDataType {
 
       labels = titles.map((title) => ({
         title,
-        color: this.getLabelColor(tableLabels, title),
+        color: this.getLabelColor(tableLabels, title)
       }));
 
       updateTablesLabels(tr, pos, 'add', labels);
     }
 
     return schema.nodes.label.create({
-      labels,
+      labels
     });
   }
 }

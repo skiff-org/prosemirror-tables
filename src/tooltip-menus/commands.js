@@ -7,7 +7,7 @@ export const changeCellsBackgroundColor = (state, dispatch, color) => {
 
   const {tr} = state;
   state.selection.forEachCell((cell, pos, parent) => {
-    if(parent.attrs.hidden) return;
+    if (parent.attrs.hidden) return;
     tr.setNodeMarkup(
       pos,
       undefined,
@@ -21,7 +21,7 @@ export const toggleTableHeaders = (state, dispatch, view) => {
   const {map, tableStart, table} = selectedRect(state);
   const {tr} = state;
   tr.setNodeMarkup(tableStart - 1, table.type, {
-    headers: !table.attrs.headers,
+    headers: !table.attrs.headers
   });
 
   if (table.attrs.headers) {
@@ -49,7 +49,7 @@ export const toggleTableHeaders = (state, dispatch, view) => {
       );
 
       const newAttrs = Object.assign(cell.attrs, {
-        type: 'text',
+        type: 'text'
       });
 
       tr.setNodeMarkup(pos, undefined, newAttrs);

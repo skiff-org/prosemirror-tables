@@ -22,8 +22,7 @@ export const cellExtraAttrs = {
     },
 
     setDOMAttr(value, attrs) {
-      if (value)
-        attrs.type = value;
+      if (value) attrs.type = value;
     }
   },
   header: {
@@ -36,8 +35,7 @@ export const cellExtraAttrs = {
     },
 
     setDOMAttr(value, attrs) {
-      if (value)
-        attrs.header = value;
+      if (value) attrs.header = value;
     }
   },
   colspan: {
@@ -82,23 +80,22 @@ export const cellExtraAttrs = {
     },
 
     setDOMAttr(value, attrs) {
-      if (value)
-        attrs['data-colwidth'] = value.join(',');
+      if (value) attrs['data-colwidth'] = value.join(',');
     }
   },
-    background: {
-      default: 'transparent',
+  background: {
+    default: 'transparent',
 
-      getFromDOM(dom) {
-        if (!(dom instanceof HTMLElement)) {
-          return {};
-        }
-        return dom.style?.backgroundColor || null;
-      },
-
-      setDOMAttr(value, attrs) {
-        if (value)
-          attrs.style = `${attrs.style || ''}background-color: ${value};`;
+    getFromDOM(dom) {
+      if (!(dom instanceof HTMLElement)) {
+        return {};
       }
+      return dom.style?.backgroundColor || null;
     },
-}
+
+    setDOMAttr(value, attrs) {
+      if (value)
+        attrs.style = `${attrs.style || ''}background-color: ${value};`;
+    }
+  }
+};

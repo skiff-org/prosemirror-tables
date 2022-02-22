@@ -79,12 +79,12 @@ export const CHECKED_ITEM_VALUE = 'checked';
 export const CHECKBOX_DROPDOWN_ITEMS = [
   {
     value: CHECKED_ITEM_VALUE,
-    label: 'Checked',
+    label: 'Checked'
   },
   {
     value: 'not-checked',
-    label: 'Not Checked',
-  },
+    label: 'Not Checked'
+  }
 ];
 
 export const checkboxEquality = (cell, value) => {

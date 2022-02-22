@@ -24,7 +24,7 @@ class Filter {
     return this.colType.filters.map((filterConfig) => ({
       value: filterConfig.id,
       label: filterConfig.label,
-      className: `logicItem`,
+      className: `logicItem`
     }));
   }
 
@@ -65,7 +65,7 @@ class Filter {
     return {
       headerId: this.headerId,
       filterId: this.getLogicId(),
-      filterValue: this.filterValue,
+      filterValue: this.filterValue
     };
   }
 

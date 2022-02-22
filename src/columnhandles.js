@@ -6,7 +6,7 @@ import {
   addColBeforeButton,
   sortColumn,
   selectRow,
-  selectCol,
+  selectCol
 } from './commands';
 import {TableMap} from './tablemap';
 import {TableView} from './tableview';
@@ -221,7 +221,7 @@ export class CellView {
           dom: this.dom,
           node: this.node,
           id: window.id,
-          action: 'open',
+          action: 'open'
         });
         setTimeout(() => this.view.dispatch(tr), 0);
 
@@ -250,7 +250,7 @@ export class CellView {
       if (!this.node.attrs.header) {
         this.view.dispatch(
           this.view.state.tr.setNodeMarkup(this.getPos(), undefined, {
-            header: true,
+            header: true
           })
         );
       }
@@ -312,7 +312,7 @@ export function columnHandles({} = {}) {
     props: {
       nodeViews: {
         table_cell: (node, view, getPos) => new CellView(node, view, getPos),
-        table: (node, view, getPos) => new TableView(node, 200, view, getPos),
+        table: (node, view, getPos) => new TableView(node, 200, view, getPos)
       },
       decorations(state) {
         const sel = state.selection;
@@ -350,8 +350,8 @@ export function columnHandles({} = {}) {
         }
 
         return DecorationSet.create(state.doc, decorations);
-      },
-    },
+      }
+    }
   });
   return plugin;
 }

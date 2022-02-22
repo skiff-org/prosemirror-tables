@@ -7,7 +7,7 @@ import {
   Selection,
   TextSelection,
   NodeSelection,
-  SelectionRange,
+  SelectionRange
 } from 'prosemirror-state';
 import {Decoration, DecorationSet} from 'prosemirror-view';
 import {Fragment, Slice} from 'prosemirror-model';
@@ -171,10 +171,14 @@ export class CellSelection extends Selection {
     const cells = map.cellsInRect(
       map.rectBetween(this.$anchorCell.pos - start, this.$headCell.pos - start)
     );
-    
+
     for (let i = 0; i < cells.length; i++) {
       const cellIndex = map.map.findIndex((cellPos) => cellPos === cells[i]);
-      f(table.nodeAt(cells[i]), start + cells[i], cellIndex !== -1 ? table.child(Math.floor(cellIndex / map.width)) : null);
+      f(
+        table.nodeAt(cells[i]),
+        start + cells[i],
+        cellIndex !== -1 ? table.child(Math.floor(cellIndex / map.width)) : null
+      );
     }
   }
 
@@ -270,7 +274,7 @@ export class CellSelection extends Selection {
     return {
       type: 'cell',
       anchor: this.$anchorCell.pos,
-      head: this.$headCell.pos,
+      head: this.$headCell.pos
     };
   }
 
@@ -318,7 +322,7 @@ class CellBookmark {
 function addDecoration(decoArray, classString, pos, nodeSize) {
   decoArray.push(
     Decoration.node(pos, pos + nodeSize, {
-      class: classString,
+      class: classString
     })
   );
 }
@@ -380,14 +384,14 @@ export function drawCellSelection(state) {
 
     cells.push(
       Decoration.node(pos, pos + node.nodeSize, {
-        class: 'selectedCell',
+        class: 'selectedCell'
       })
     );
 
     if (state.selection.isRowSelection()) {
       cells.push(
         Decoration.node(pos, pos + node.nodeSize, {
-          class: 'inRowSelection',
+          class: 'inRowSelection'
         })
       );
     }
@@ -395,7 +399,7 @@ export function drawCellSelection(state) {
     if (state.selection.isColSelection()) {
       cells.push(
         Decoration.node(pos, pos + node.nodeSize, {
-          class: 'inColSelection',
+          class: 'inColSelection'
         })
       );
     }
@@ -470,7 +474,6 @@ export function normalizeSelection(state, tr, allowTableNodeSelection) {
   return tr;
 }
 
-
 export const getSelectedCellsCoords = (view) => {
   const {state} = view;
   // get all selected cells dom
@@ -504,7 +507,7 @@ export const getSelectedCellsCoords = (view) => {
       bottom: lastCellRect.bottom,
       left: tableWrapperBox.left,
       right: Math.min(tableWrapperBox.right, tableBox.right),
-      width:  Math.min(tableWrapperBox.width, tableBox.width),
+      width: Math.min(tableWrapperBox.width, tableBox.width),
       height: firstCellRect.height
     };
   }
@@ -531,7 +534,7 @@ export const getSelectedCellsCoords = (view) => {
       right: lastCellRect.right,
       height: bottom - top,
       width: lastCellRect.right - firstCellRect.left
-    }
+    };
   }
 
   // regular cell selection
@@ -542,5 +545,5 @@ export const getSelectedCellsCoords = (view) => {
     right: lastCellRect.right,
     width: lastCellRect.right - firstCellRect.left,
     height: lastCellRect.bottom - firstCellRect.top
-  }
-}
+  };
+};

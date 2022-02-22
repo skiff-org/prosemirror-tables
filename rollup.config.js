@@ -11,23 +11,23 @@ export default {
   output: [
     {
       file: pkg.main,
-      format: 'cjs',
+      format: 'cjs'
     },
     {
       file: pkg.module,
-      format: 'esm',
-    },
+      format: 'esm'
+    }
   ],
   plugins: [
     external(),
     postcss(),
     babel({
-      exclude: 'node_modules/**',
+      exclude: 'node_modules/**'
     }),
     resolve(),
     commonjs({
-      include: 'node_modules/**',
+      include: 'node_modules/**'
     }),
-    image(),
-  ],
+    image()
+  ]
 };

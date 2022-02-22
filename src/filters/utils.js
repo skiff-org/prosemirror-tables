@@ -53,7 +53,7 @@ export const createDefaultFilter = (state, table, headerPos) => {
   return {
     headerId: colHeader.attrs.id,
     filterId: typeFirstFilter.id,
-    filterValue: typeFirstFilter.defaultValue,
+    filterValue: typeFirstFilter.defaultValue
   };
 };
 
@@ -66,7 +66,7 @@ export const getColsOptions = (table) => {
         : 'Untitled',
       value: headerNode.attrs.id,
       itemStyleClass: `colItem ${headerNode.attrs.type}Type`,
-      hasIcon: true,
+      hasIcon: true
     };
   });
   return headers;
@@ -154,7 +154,7 @@ export const executeFilters = (table, tablePos, state, filters) => {
   tableRows.forEach((row) => {
     tr.setNodeMarkup(row.pos, undefined, {
       ...row.node.attrs,
-      hidden: !!row.hidden,
+      hidden: !!row.hidden
     });
   });
 
@@ -162,7 +162,7 @@ export const executeFilters = (table, tablePos, state, filters) => {
   if (filters) {
     tr.setNodeMarkup(tablePos - 1, undefined, {
       ...table.attrs,
-      filters: tableFilterGroups,
+      filters: tableFilterGroups
     });
   } else {
     const headers = headersRow.content.content;
@@ -189,7 +189,7 @@ export const executeFilters = (table, tablePos, state, filters) => {
 
     tr.setNodeMarkup(tablePos - 1, undefined, {
       ...table.attrs,
-      filters: relevantFilters,
+      filters: relevantFilters
     });
   }
   return tr;
@@ -198,12 +198,12 @@ export const executeFilters = (table, tablePos, state, filters) => {
 const CONCATENATION_ITEMS = [
   {
     value: 'and',
-    label: 'And',
+    label: 'And'
   },
   {
     value: 'or',
-    label: 'Or',
-  },
+    label: 'Or'
+  }
 ];
 
 export const getConcatenationItems = () => {

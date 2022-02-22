@@ -10,7 +10,7 @@ import {
   handleTripleClick,
   handleKeyDown,
   handlePaste,
-  handleMouseDown,
+  handleMouseDown
 } from './input';
 import {key as tableEditingKey} from './util';
 import {drawCellSelection, normalizeSelection} from './cellselection';
@@ -52,14 +52,14 @@ export function tableEditing({allowTableNodeSelection = false} = {}) {
         if (cur == null || !tr.docChanged) return cur;
         const {deleted, pos} = tr.mapping.mapResult(cur);
         return deleted ? null : pos;
-      },
+      }
     },
 
     props: {
       decorations: drawCellSelection,
 
       handleDOMEvents: {
-        mousedown: handleMouseDown,
+        mousedown: handleMouseDown
       },
 
       createSelectionBetween(view) {
@@ -81,16 +81,10 @@ export function tableEditing({allowTableNodeSelection = false} = {}) {
         date: (node, view, getPos, decorations) =>
           new DateTypeNodeView(node, view, getPos, decorations, DateComponent),
         label: (node, view, getPos, decorations) =>
-          new LabelTypeNodeView(
-            node,
-            view,
-            getPos,
-            decorations,
-            LabelComponent
-          ),
+          new LabelTypeNodeView(node, view, getPos, decorations, LabelComponent)
       },
 
-      transformPasted: addLabelsToPastedTable,
+      transformPasted: addLabelsToPastedTable
     },
 
     appendTransaction(_, oldState, state) {
@@ -99,7 +93,7 @@ export function tableEditing({allowTableNodeSelection = false} = {}) {
         fixTables(state, oldState),
         allowTableNodeSelection
       );
-    },
+    }
   });
 }
 
@@ -117,9 +111,10 @@ export {
   pointsAtCell,
   removeColSpan,
   addColSpan,
-  columnIsHeader,
+  columnIsHeader
 } from './util';
 export {tableNodes, tableNodeTypes} from './schema/schema';
+export {NodeNames} from './schema/nodeNames';
 export {CellSelection, getSelectedCellsCoords} from './cellselection';
 export {columnHandles} from './columnhandles';
 export {TableMap} from './tablemap';
@@ -130,7 +125,7 @@ export {updateColumns as updateColumnsOnResize, TableView} from './tableview';
 export {
   pastedCells as __pastedCells,
   insertCells as __insertCells,
-  clipCells as __clipCells,
+  clipCells as __clipCells
 } from './copypaste';
 export {tablePopUpMenu, tablePopUpMenuKey};
 export {tableHeadersMenu} from './headers/headers-menu/index';

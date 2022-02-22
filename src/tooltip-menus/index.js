@@ -11,7 +11,7 @@ const tablePopUpMenu = () => {
       const menuView = new TablePopUpMenuView(popUpItems, view);
 
       return menuView;
-    },
+    }
   });
 };
 

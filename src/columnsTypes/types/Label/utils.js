@@ -37,7 +37,7 @@ export const addLabel = (view, pos, node, newLabel) => {
 
   const newAttrs = {
     ...node.attrs,
-    labels: [...currentLabels, newLabel],
+    labels: [...currentLabels, newLabel]
   };
 
   tr.replaceRangeWith(
@@ -59,7 +59,7 @@ export const removeLabel = (view, pos, node, labelTitle) => {
 
   const newAttrs = {
     ...node.attrs,
-    labels: currentLabels.filter((label) => label.title !== labelTitle),
+    labels: currentLabels.filter((label) => label.title !== labelTitle)
   };
 
   tr.replaceRangeWith(
@@ -85,7 +85,7 @@ export const updateTablesLabels = (tr, pos, action = 'add', newLabels) => {
       labels: getUniqueListBy(
         [...table.node.attrs.labels, ...newLabels],
         'title'
-      ),
+      )
     };
   }
   if (action === 'remove') {
@@ -93,7 +93,7 @@ export const updateTablesLabels = (tr, pos, action = 'add', newLabels) => {
       ...table.node.attrs,
       labels: table.node.attrs.labels.filter(
         (label) => !newLabels.find((newLabel) => newLabel === label.title)
-      ),
+      )
     };
   }
 
@@ -105,7 +105,7 @@ export const updateCellLabels = (view, pos, node, labels) => {
 
   const newAttrs = {
     ...node.attrs,
-    labels,
+    labels
   };
 
   tr.replaceRangeWith(
@@ -169,7 +169,7 @@ export const removeLabelsFromTableCells = (state, pos, deletedLabel, tr) => {
     );
     tr.setNodeMarkup(cell.pos + 1, undefined, {
       ...dateNode.attrs,
-      labels: updatedLabels,
+      labels: updatedLabels
     });
   });
 };

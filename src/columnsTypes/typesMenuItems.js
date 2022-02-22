@@ -22,7 +22,7 @@ export const getTypesItems = () => {
       class: 'typeItem',
       run(state, dispatch, view) {
         return type.handler.convert(view, type.id);
-      },
+      }
     });
   });
 };

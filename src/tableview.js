@@ -138,18 +138,18 @@ export class TableView {
             dom: this.contentDOM,
             pos: this.getPos() + 1,
             node: node,
-            id: window.id,
+            id: window.id
           });
         } else {
           tr.setMeta(tableFiltersMenuKey, {
             action: 'close',
-            id: window.id,
+            id: window.id
           });
         }
 
         tr.setMeta(tableHeadersMenuKey, {
           action: 'close',
-          id: window.id,
+          id: window.id
         });
 
         dispatch(tr);
@@ -195,7 +195,7 @@ export class TableView {
     if (firstRowOrderChanged(node.nodeAt(0), this.node.nodeAt(0))) {
       node.attrs.sort = {
         col: null,
-        dir: null,
+        dir: null
       };
       this.node = node;
       return false;

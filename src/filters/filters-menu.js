@@ -6,7 +6,7 @@ import {
   displayPopup,
   tableFiltersMenuKey,
   calculateMenuPosition,
-  executeFilters,
+  executeFilters
 } from './utils';
 import {TableFiltersComponent} from './Component.jsx';
 import {findParentNodeOfTypeClosestToPos} from 'prosemirror-utils';
@@ -151,12 +151,12 @@ export const TableFiltersMenu = () => {
         if (table.node.firstChild.nodeSize !== value.node.firstChild.nodeSize) {
           return {
             ...value,
-            node: table.node,
+            node: table.node
           };
         }
 
         return value;
-      },
+      }
     },
     appendTransaction(transactions, oldState, newState) {
       const steps = transactions.map((tr) => tr.steps).flat();
@@ -180,6 +180,6 @@ export const TableFiltersMenu = () => {
         }
       }
       return null;
-    },
+    }
   });
 };

@@ -9,11 +9,10 @@ export const checkboxExtraAttrs = {
     },
 
     setDOMAttr(value, attrs) {
-      if (value)
-        attrs.checked = value;
+      if (value) attrs.checked = value;
     }
-  },
-}
+  }
+};
 
 export const dateExtraAttrs = {
   value: {
@@ -26,11 +25,10 @@ export const dateExtraAttrs = {
     },
 
     setDOMAttr(value, attrs) {
-      if (value)
-        attrs.value = value;
+      if (value) attrs.value = value;
     }
-  },
-}
+  }
+};
 
 export const labelsExtraAttrs = {
   labels: {
@@ -39,12 +37,13 @@ export const labelsExtraAttrs = {
       if (!(dom instanceof HTMLElement)) {
         return {};
       }
-      return dom.getAttribute('labels') ? JSON.parse(dom.getAttribute('labels')) : [];
+      return dom.getAttribute('labels')
+        ? JSON.parse(dom.getAttribute('labels'))
+        : [];
     },
 
     setDOMAttr(value, attrs) {
-      if (value)
-        attrs.labels = JSON.stringify(value);
+      if (value) attrs.labels = JSON.stringify(value);
     }
-  },
-}
+  }
+};

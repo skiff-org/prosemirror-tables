@@ -29,7 +29,12 @@ export const displayPopup = (view, popupDOM) => {
 
 export const calculateMenuPosition = (menuDOM, {node, dom: cellDOM, pos}) => {
   const {style} = menuDOM;
-  const {left, bottom, height: cellHeight, top} = cellDOM.getBoundingClientRect();
+  const {
+    left,
+    bottom,
+    height: cellHeight,
+    top
+  } = cellDOM.getBoundingClientRect();
 
   if (left === 0 || bottom === 0 || cellHeight === 0 || top === 0) return;
 
@@ -38,11 +43,15 @@ export const calculateMenuPosition = (menuDOM, {node, dom: cellDOM, pos}) => {
   const {x: EDITOR_LEFT_OFFSET, y: EDITOR_TOP_OFFSET} =
     scrolledEl.getBoundingClientRect();
   let {height: menuHeight} = menuDOM.getBoundingClientRect();
-  if(menuHeight === 0) menuHeight = 407;
-  let topCord = bottom - EDITOR_TOP_OFFSET + (scrolledEl.scrollTop || 0) + 8
+  if (menuHeight === 0) menuHeight = 407;
+  let topCord = bottom - EDITOR_TOP_OFFSET + (scrolledEl.scrollTop || 0) + 8;
 
-  if(topCord + menuHeight > window.innerHeight + (scrolledEl?.scrollTop || 0)){
-    topCord = top - EDITOR_TOP_OFFSET + (scrolledEl.scrollTop || 0) - 8 -  menuHeight;
+  if (
+    topCord + menuHeight >
+    window.innerHeight + (scrolledEl?.scrollTop || 0)
+  ) {
+    topCord =
+      top - EDITOR_TOP_OFFSET + (scrolledEl.scrollTop || 0) - 8 - menuHeight;
   }
 
   style.top = `${topCord}px`;
@@ -66,13 +75,14 @@ export const formatDate = (date, format) => {
   return formattedDate;
 };
 
-const breakTextContentBySeparators = (text) => text
+const breakTextContentBySeparators = (text) =>
+  text
     .split(/(\/|\.)/gi)
     .filter((char) => char !== '/' && char !== '.' && char.length);
 
 export const buildDateObjectFromText = (text, format) => {
   const brokenFormat = format.split('/');
-  const brokenContent = breakTextContentBySeparators(text)
+  const brokenContent = breakTextContentBySeparators(text);
 
   if (brokenContent.length < 3) return null;
 
@@ -120,11 +130,14 @@ export const getSelectedNode = () => {
 export const getClosestDate = (textContent, format) => {
   const brokenContent = breakTextContentBySeparators(textContent);
   const currentDateBroken = formatDate(dayjs().toDate(), format).split('/');
-  
+
   for (let i = 0; i < brokenContent.length; i++) {
     currentDateBroken[i] = brokenContent[i];
   }
 
-  const dateFromTextContent = buildDateObjectFromText(currentDateBroken.join('/'), format);
+  const dateFromTextContent = buildDateObjectFromText(
+    currentDateBroken.join('/'),
+    format
+  );
   return dateFromTextContent;
-}
+};

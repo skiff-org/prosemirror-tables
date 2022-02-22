@@ -19,6 +19,6 @@ export const deleteLabelsContent = (cell, pos, tr) => {
 export const deleteCheckboxContent = (cell, pos, tr) => {
   tr.setNodeMarkup(pos + 1, undefined, {
     ...cell.firstChild.attrs,
-    checked: false,
+    checked: false
   });
 };

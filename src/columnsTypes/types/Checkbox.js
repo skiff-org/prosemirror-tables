@@ -13,7 +13,7 @@ class CheckboxType extends CellDataType {
    */
   renderContentNode(schema, checked) {
     return schema.nodes.checkbox.create({
-      checked: typeof checked === 'boolean' ? checked : false,
+      checked: typeof checked === 'boolean' ? checked : false
     });
   }
 }

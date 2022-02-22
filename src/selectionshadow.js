@@ -18,10 +18,13 @@ export const selectionShadowPlugin = () => {
 
         const {
           $anchorCell: {pos: from},
-          $headCell: {pos: to},
+          $headCell: {pos: to}
         } = newState.selection;
 
-        let anchorCol = getColIndexFromSelectedRect(newState, Math.min(from, to));
+        let anchorCol = getColIndexFromSelectedRect(
+          newState,
+          Math.min(from, to)
+        );
         let headCol = getColIndexFromSelectedRect(newState, Math.max(from, to));
 
         // sometimes prosemirror replaces head and anchor cells
@@ -60,12 +63,12 @@ export const selectionShadowPlugin = () => {
           );
         }
         return DecorationSet.create(newState.doc, decorations);
-      },
+      }
     },
     props: {
       decorations(state) {
         return this.getState(state);
-      },
-    },
+      }
+    }
   });
 };

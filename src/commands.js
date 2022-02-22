@@ -3,7 +3,7 @@ import {TextSelection, Selection} from 'prosemirror-state';
 import {Fragment} from 'prosemirror-model';
 import {
   findParentNodeOfTypeClosestToPos,
-  findParentNodeOfType,
+  findParentNodeOfType
 } from 'prosemirror-utils';
 import {Rect, TableMap} from './tablemap';
 import {CellSelection} from './cellselection';
@@ -18,7 +18,7 @@ import {
   removeColSpan,
   selectionCell,
   setAttr,
-  sortNumVsString,
+  sortNumVsString
 } from './util';
 import {tableNodeTypes} from './schema/schema';
 
@@ -231,7 +231,7 @@ export function addBottomRow(state, dispatch) {
     const rect = {
       tableStart: table.start,
       table: table.node,
-      map: TableMap.get(table.node),
+      map: TableMap.get(table.node)
     };
     const tr = addRow(state.tr, rect, rect.map.height);
     dispatch(tr);
@@ -248,7 +248,7 @@ export function addRightColumn(state, dispatch) {
     const rect = {
       tableStart: table.start,
       table: table.node,
-      map: TableMap.get(table.node),
+      map: TableMap.get(table.node)
     };
     const tr = addColumn(state.tr, rect, rect.map.width);
     dispatch(tr);
@@ -561,7 +561,7 @@ function isHeaderEnabledByType(type, rect, types) {
     left: 0,
     top: 0,
     right: type == 'row' ? rect.map.width : 1,
-    bottom: type == 'column' ? rect.map.height : 1,
+    bottom: type == 'column' ? rect.map.height : 1
   });
 
   for (let i = 0; i < cellPositions.length; i++) {
@@ -645,13 +645,13 @@ export const toggleHeaderRow = toggleHeader('row', {useDeprecatedLogic: true});
 // :: (EditorState, dispatch: ?(tr: Transaction)) → bool
 // Toggles whether the selected column contains header cells.
 export const toggleHeaderColumn = toggleHeader('column', {
-  useDeprecatedLogic: true,
+  useDeprecatedLogic: true
 });
 
 // :: (EditorState, dispatch: ?(tr: Transaction)) → bool
 // Toggles whether the selected cells are header cells.
 export const toggleHeaderCell = toggleHeader('cell', {
-  useDeprecatedLogic: true,
+  useDeprecatedLogic: true
 });
 
 function findNextCell($cell, dir) {
@@ -745,7 +745,7 @@ const getRectFromPos = (pos, state) => {
   const rect = {
     tableStart: table.start,
     table: table.node,
-    map: TableMap.get(table.node),
+    map: TableMap.get(table.node)
   };
 
   return rect;
@@ -778,11 +778,11 @@ export function sortColumn(view, colNumber, pos, dir) {
 
   tr.replaceWith(rect.tableStart, rect.tableStart + rect.table.content.size, [
     header,
-    ...newRowsArray,
+    ...newRowsArray
   ]);
   tr.setNodeMarkup(rect.tableStart - 1, rect.table.type, {
     ...rect.table.attrs,
-    sort: {col: colNumber, dir: dir === 1 ? 'down' : 'up'},
+    sort: {col: colNumber, dir: dir === 1 ? 'down' : 'up'}
   });
 
   tr.setSelection(Selection.near(tr.doc.resolve(pos)));
@@ -895,7 +895,7 @@ const getTableRectBySelection = (state) => {
   const rect = {
     table: tableWithPos.node,
     tableStart: tableWithPos.pos,
-    map,
+    map
   };
 
   return rect;
@@ -964,7 +964,7 @@ export const toggleTableHeaders = (state, dispatch, view) => {
   const {map, tableStart, table} = selectedRect(state);
   const {tr} = state;
   tr.setNodeMarkup(tableStart - 1, table.type, {
-    headers: !table.attrs.headers,
+    headers: !table.attrs.headers
   });
 
   if (table.attrs.headers) {
@@ -992,7 +992,7 @@ export const toggleTableHeaders = (state, dispatch, view) => {
       );
 
       const newAttrs = Object.assign(cell.attrs, {
-        type: 'text',
+        type: 'text'
       });
 
       tr.setNodeMarkup(pos, undefined, newAttrs);

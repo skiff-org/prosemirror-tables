@@ -14,7 +14,7 @@ import DateUtilDayJS from '@date-io/dayjs';
 import {findParentNodeOfTypeClosestToPos} from 'prosemirror-utils';
 import {
   StylesProvider,
-  createGenerateClassName,
+  createGenerateClassName
 } from '@material-ui/core/styles';
 import DatePickerTheme from './DatePickerTheme';
 import {ThemeProvider} from '@material-ui/core/styles';
@@ -26,7 +26,7 @@ ee(DateEventEmitter.prototype);
 export const datePopupEmitter = new DateEventEmitter();
 
 const generateClassName = createGenerateClassName({
-  seed: 'sgo-tables-plugin-',
+  seed: 'sgo-tables-plugin-'
 });
 
 const DateComponent = ({view, node, getPos, editorContentRef, dom}) => {
@@ -38,7 +38,7 @@ const DateComponent = ({view, node, getPos, editorContentRef, dom}) => {
       dom: dom,
       node: node,
       id: window.id,
-      action: 'open',
+      action: 'open'
     });
 
     view.dispatch(tr);
@@ -86,7 +86,7 @@ export const DatePickerComponent = ({view, node, pos}) => {
     const {tr} = view.state;
     tr.setMeta(tableDateMenuKey, {
       id: window.id,
-      action: 'close',
+      action: 'close'
     });
     view.dispatch(tr);
   });
@@ -112,7 +112,7 @@ export const DatePickerComponent = ({view, node, pos}) => {
 
         tr.setNodeMarkup(dateNode.pos, undefined, {
           ...dateNode.node.attrs,
-          value: newDate.getTime(),
+          value: newDate.getTime()
         });
 
         view.dispatch(tr);
