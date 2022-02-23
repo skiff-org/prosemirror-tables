@@ -1,6 +1,7 @@
 import {Plugin, PluginKey} from 'prosemirror-state';
 import {findParentNodeOfTypeClosestToPos} from 'prosemirror-utils';
 import {columnTypesMap} from './types.config';
+import {isCellInFirstRow} from './utils';
 
 const typesEnforcerKey = new PluginKey('typesEnforcer');
 
@@ -39,10 +40,8 @@ export const typesEnforcer = () => {
 
       const newSel = newState.selection;
 
-      if (
-        (newSel.from < from || newSel.from > to) &&
-        !oldParentCell.node.attrs.header
-      ) {
+      const cellInFirstRow = isCellInFirstRow(oldState, oldParentCell.pos);
+      if ((newSel.from < from || newSel.from > to) && !cellInFirstRow) {
         const type = columnTypesMap[oldParentCell.node.attrs.type];
         if (type.dontForce) return null;
 

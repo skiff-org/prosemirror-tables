@@ -2,6 +2,7 @@ import {CellSelection} from '../../cellselection';
 import {createElementWithClass, isInTable} from '../..//util';
 import {tableHeadersMenuKey} from '../../columnsTypes/types.config';
 import {findParentNodeOfType} from 'prosemirror-utils';
+import {isCellInFirstRow} from '../../columnsTypes/utils';
 
 export function enableDeleteItem(view) {
   const {selection: sel} = view.state;
@@ -99,11 +100,8 @@ export const isFirstRowSelected = (view) => {
   let onlyFirstRow = true;
 
   sel.forEachCell((cell, pos) => {
-    const resolvePos = view.state.doc.resolve(pos);
-    const rowStart = pos - resolvePos.parentOffset - 1;
-    const rowResolvedPos = view.state.doc.resolve(rowStart);
-
-    onlyFirstRow = rowResolvedPos.parentOffset === 0 && onlyFirstRow;
+    const cellInFirstRow = isCellInFirstRow(view.state, pos);
+    onlyFirstRow = cellInFirstRow && onlyFirstRow;
   });
 
   return onlyFirstRow;

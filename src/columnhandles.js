@@ -17,6 +17,7 @@ import {setNodeAttrs} from './schema/schema';
 import {cellExtraAttrs} from './schema/cellAttrs';
 import {CellSelection} from './cellselection';
 import {tableHeadersMenuKey} from './columnsTypes/types.config';
+import {isCellInFirstRow} from './columnsTypes/utils';
 
 export const key = new PluginKey('tableColumnHandles');
 
@@ -116,8 +117,11 @@ export class CellView {
     const resolvePos = view.state.doc.resolve(pos);
     const rowStart = pos - resolvePos.parentOffset - 1;
     const rowResolvedPos = view.state.doc.resolve(rowStart);
+    rowResolvedPos.parentOffset === 0;
+    // const cellInFirstRow = isCellInFirstRow(view.state, pos);
+    const cellInFirstRow = rowResolvedPos.parentOffset === 0;
 
-    if (rowResolvedPos.parentOffset !== 0 || this.colHandle) return;
+    if (!cellInFirstRow || this.colHandle) return;
 
     const colHandle = createElementWithClass('div', 'tableColHandle');
     const colHandleButton = createElementWithClass(
@@ -246,14 +250,6 @@ export class CellView {
       this.dom.prepend(typeIcon);
 
       this.updatePlaceholder();
-
-      if (!this.node.attrs.header) {
-        this.view.dispatch(
-          this.view.state.tr.setNodeMarkup(this.getPos(), undefined, {
-            header: true
-          })
-        );
-      }
     }
   }
 

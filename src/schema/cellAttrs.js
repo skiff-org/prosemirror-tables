@@ -26,6 +26,7 @@ export const cellExtraAttrs = {
     }
   },
   header: {
+    // TODO: remove at some point
     default: false,
     getFromDOM(dom) {
       if (!(dom instanceof HTMLElement)) {

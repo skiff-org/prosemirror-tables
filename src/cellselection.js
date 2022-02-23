@@ -459,13 +459,19 @@ export function normalizeSelection(state, tr, allowTableNodeSelection) {
     if (role == 'cell' || role == 'header_cell') {
       normalize = CellSelection.create(doc, sel.from);
     } else if (role == 'row') {
-      const $cell = doc.resolve(sel.from + 1);
-      normalize = CellSelection.rowSelection($cell, $cell);
+      if (sel.node.childCount < 100) {
+        // Don't select row with more than 100 cols (infinity cols bug)
+        const $cell = doc.resolve(sel.from + 1);
+        normalize = CellSelection.rowSelection($cell, $cell);
+      }
     } else if (!allowTableNodeSelection) {
-      const map = TableMap.get(sel.node),
-        start = sel.from + 1;
-      const lastCell = start + map.map[map.width * map.height - 1];
-      normalize = CellSelection.create(doc, start + 1, lastCell);
+      if (sel.node.firstChild.childCount < 100) {
+        // Don't select table with more than 100 cols (infinity cols bug)
+        const map = TableMap.get(sel.node),
+          start = sel.from + 1;
+        const lastCell = start + map.map[map.width * map.height - 1];
+        normalize = CellSelection.create(doc, start + 1, lastCell);
+      }
     }
   } else if (sel instanceof TextSelection && isCellBoundarySelection(sel)) {
     normalize = TextSelection.create(doc, sel.from);
