@@ -17,6 +17,10 @@ function changedDescendants(old, cur, offset, f) {
   const oldSize = old.childCount,
     curSize = cur.childCount;
   outer: for (let i = 0, j = 0; i < curSize; i++) {
+    if (cur.type.name === 'table_row' && cur.childCount > 100) {
+      // Don't loop on row with more than 100 cols (infinity cols bug)
+      continue outer;
+    }
     const child = cur.child(i);
     for (let scan = j, e = Math.min(oldSize, i + 3); scan < e; scan++) {
       if (old.child(scan) == child) {

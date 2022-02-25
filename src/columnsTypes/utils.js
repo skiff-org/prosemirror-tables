@@ -28,3 +28,10 @@ export const parseTextToNumber = (text) => {
     : '';
   return leftNumber + rightNumber;
 };
+
+export const isCellInFirstRow = (state, cellPos) => {
+  const resolvePos = state.doc.resolve(cellPos);
+  const rowStart = cellPos - resolvePos.parentOffset - 1;
+  const rowResolvedPos = state.doc.resolve(rowStart);
+  return rowResolvedPos.parentOffset === 0;
+};

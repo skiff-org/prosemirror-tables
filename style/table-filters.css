@@ -246,9 +246,6 @@
   right: -7px;
 }
 
-.tableFocus .filterStatusIndicatorScrollContainer {
-  top: -50px;
-}
 
 .filterStatusIndicator {
   width: fit-content;
