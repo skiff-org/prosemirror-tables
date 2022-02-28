@@ -384,3 +384,7 @@ export function getSelectedCellsCoords(
   width: number,
   height: number
 }
+
+export function setBaseName(
+  name: string
+)

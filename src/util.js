@@ -8,6 +8,14 @@ import {selectedRect} from './commands';
 import {CellSelection} from './cellselection';
 
 export const key = new PluginKey('selectingCells');
+let baseName = 'czi';
+
+export function setBaseName(name) {
+  baseName = name;
+}
+export function getBaseName() {
+  return baseName;
+}
 
 export function cellAround($pos) {
   for (let d = $pos.depth - 1; d > 0; d--)

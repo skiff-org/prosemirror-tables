@@ -1,6 +1,10 @@
 import {PluginKey} from 'prosemirror-state';
 import {columnTypesMap, types} from '../columnsTypes/types.config';
-import {getColIndex, removeInvisibleCharacterFromText} from '../util';
+import {
+  getBaseName,
+  getColIndex,
+  removeInvisibleCharacterFromText,
+} from '../util';
 
 export const tableFiltersMenuKey = new PluginKey('TableFiltersMenu');
 
@@ -33,7 +37,9 @@ export const calculateMenuPosition = (menuDOM, {dom: tableDOM}) => {
   if (left === 0 || top === 0 || cellHeight === 0) return;
 
   // scroll offset
-  const [scrolledEl] = document.getElementsByClassName('czi-editor-frame-body');
+  const [scrolledEl] = document.getElementsByClassName(
+    `${getBaseName()}-editor-frame-body`
+  );
   const {x: EDITOR_LEFT_OFFSET, y: EDITOR_TOP_OFFSET} =
     scrolledEl.getBoundingClientRect();
 

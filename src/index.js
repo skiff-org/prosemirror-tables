@@ -111,7 +111,8 @@ export {
   pointsAtCell,
   removeColSpan,
   addColSpan,
-  columnIsHeader
+  columnIsHeader,
+  setBaseName
 } from './util';
 export {tableNodes, tableNodeTypes} from './schema/schema';
 export {NodeNames} from './schema/nodeNames';

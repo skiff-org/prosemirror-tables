@@ -4,7 +4,7 @@ import {dropdownClassName} from './items';
 import {TextField} from './textField/text-field.prosemirror';
 import {tableHeadersMenuKey} from '../../columnsTypes/types.config';
 import {columnTypesMap} from '../../columnsTypes/types.config';
-import {createElementWithClass} from '../../util';
+import {createElementWithClass, getBaseName} from '../../util';
 
 /**
  * class attached to the editor and update table tooltip on every view update.
@@ -68,7 +68,7 @@ class TableHeadersMenuView {
 
     // the dom element that contains the popup - should be css relative
     this.popUpRelativeContainer = document.getElementsByClassName(
-      'czi-editor-frame-body'
+      `${getBaseName()}-editor-frame-body`
     )[0];
 
     const existingPopUps = Array.from(

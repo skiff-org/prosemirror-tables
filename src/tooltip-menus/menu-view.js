@@ -8,6 +8,7 @@ import {
 } from './utils';
 import {renderGrouped} from 'prosemirror-menu';
 import {tooltips} from './items';
+import {getBaseName} from '../util';
 
 /**
  * class attached to the editor and update table tooltip on every view update.
@@ -22,7 +23,7 @@ class TablePopUpMenuView {
 
     // the dom element that contains the popup - should be css relative
     this.popUpRelativeContainer = document.getElementsByClassName(
-      'czi-editor-frame-body'
+      `${getBaseName()}-editor-frame-body`
     )[0];
 
     // sometimes there is already an instance of the popup - TODO: understand why...
