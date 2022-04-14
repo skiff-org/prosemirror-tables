@@ -170,7 +170,8 @@ export const TableFiltersMenu = () => {
             newState.schema.nodes.table
           );
 
-          if (maybeTable) {
+          // execute filters if any changes made in the table and the table has active filters
+          if (maybeTable && maybeTable.node.attrs.filters.length) {
             const tr = executeFilters(
               maybeTable.node,
               maybeTable.start,

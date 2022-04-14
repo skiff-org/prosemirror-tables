@@ -3,7 +3,7 @@ import {columnTypesMap, types} from '../columnsTypes/types.config';
 import {
   getBaseName,
   getColIndex,
-  removeInvisibleCharacterFromText,
+  removeInvisibleCharacterFromText
 } from '../util';
 
 export const tableFiltersMenuKey = new PluginKey('TableFiltersMenu');
