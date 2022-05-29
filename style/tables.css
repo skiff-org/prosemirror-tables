@@ -97,7 +97,7 @@
   display: flex;
   flex-direction: row;
   width: fit-content;
-  padding-bottom: 10px;
+  padding: 0px 16px 10px 38px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -417,7 +417,7 @@
   position: absolute;
   width: 14px;
   height: 14px;
-  left: -22px;
+  left: 13px;
   border-radius: 50%;
   border: 1px solid #c1c7cd;
   background-color: transparent;
