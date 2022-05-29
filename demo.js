@@ -1,10 +1,10 @@
-import { EditorView } from 'prosemirror-view';
-import { EditorState } from 'prosemirror-state';
-import { DOMParser, Schema } from 'prosemirror-model';
-import { schema as baseSchema } from 'prosemirror-schema-basic';
-import { keymap } from 'prosemirror-keymap';
-import { exampleSetup, buildMenuItems } from 'prosemirror-example-setup';
-import { MenuItem, Dropdown } from 'prosemirror-menu';
+import {EditorView} from 'prosemirror-view';
+import {EditorState} from 'prosemirror-state';
+import {DOMParser, Schema} from 'prosemirror-model';
+import {schema as baseSchema} from 'prosemirror-schema-basic';
+import {keymap} from 'prosemirror-keymap';
+import {exampleSetup, buildMenuItems} from 'prosemirror-example-setup';
+import {MenuItem, Dropdown} from 'prosemirror-menu';
 
 import {
   addColumnAfter,
@@ -20,11 +20,11 @@ import {
   toggleHeaderColumn,
   toggleHeaderCell,
   goToNextCell,
-  deleteTable,
+  deleteTable
 } from './src/commands';
-import { tableEditing, columnResizing, tableNodes, fixTables } from './src';
+import {tableEditing, columnResizing, tableNodes, fixTables} from './src';
 
-let schema = new Schema({
+const schema = new Schema({
   nodes: baseSchema.spec.nodes.append(
     tableNodes({
       tableGroup: 'block',
@@ -38,19 +38,19 @@ let schema = new Schema({
           setDOMAttr(value, attrs) {
             if (value)
               attrs.style = (attrs.style || '') + `background-color: ${value};`;
-          },
-        },
-      },
-    }),
+          }
+        }
+      }
+    })
   ),
-  marks: baseSchema.spec.marks,
+  marks: baseSchema.spec.marks
 });
 
-let menu = buildMenuItems(schema).fullMenu;
+const menu = buildMenuItems(schema).fullMenu;
 function item(label, cmd) {
-  return new MenuItem({ label, select: cmd, run: cmd });
+  return new MenuItem({label, select: cmd, run: cmd});
 }
-let tableMenu = [
+const tableMenu = [
   item('Insert column before', addColumnBefore),
   item('Insert column after', addColumnAfter),
   item('Delete column', deleteColumn),
@@ -64,12 +64,12 @@ let tableMenu = [
   item('Toggle header row', toggleHeaderRow),
   item('Toggle header cells', toggleHeaderCell),
   item('Make cell green', setCellAttr('background', '#dfd')),
-  item('Make cell not-green', setCellAttr('background', null)),
+  item('Make cell not-green', setCellAttr('background', null))
 ];
-menu.splice(2, 0, [new Dropdown(tableMenu, { label: 'Table' })]);
+menu.splice(2, 0, [new Dropdown(tableMenu, {label: 'Table'})]);
 
-let doc = DOMParser.fromSchema(schema).parse(
-  document.querySelector('#content'),
+const doc = DOMParser.fromSchema(schema).parse(
+  document.querySelector('#content')
 );
 let state = EditorState.create({
   doc,
@@ -78,14 +78,14 @@ let state = EditorState.create({
     tableEditing(),
     keymap({
       Tab: goToNextCell(1),
-      'Shift-Tab': goToNextCell(-1),
-    }),
-  ].concat(exampleSetup({ schema, menuContent: menu })),
+      'Shift-Tab': goToNextCell(-1)
+    })
+  ].concat(exampleSetup({schema, menuContent: menu}))
 });
-let fix = fixTables(state);
+const fix = fixTables(state);
 if (fix) state = state.apply(fix.setMeta('addToHistory', false));
 
-window.view = new EditorView(document.querySelector('#editor'), { state });
+window.view = new EditorView(document.querySelector('#editor'), {state});
 
 document.execCommand('enableObjectResizing', false, false);
 document.execCommand('enableInlineTableEditing', false, false);
