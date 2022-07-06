@@ -22,7 +22,7 @@ import {
   NodeType,
 } from 'prosemirror-model';
 import { Mappable } from 'prosemirror-transform';
-import { NodeView } from 'prosemirror-view';
+import { EditorView, NodeView } from 'prosemirror-view';
 
 export interface TableEditingOptions {
   allowTableNodeSelection?: boolean;
@@ -32,6 +32,7 @@ export interface TableNodesOptions {
   tableGroup?: string;
   cellContent: string;
   cellAttributes: { [key: string]: CellAttributes };
+  cellContentGroup: string;
 }
 
 export type getFromDOM = (dom: Element) => any;
@@ -41,6 +42,16 @@ export interface CellAttributes {
   default: any;
   getFromDOM?: getFromDOM;
   setDOMAttr?: setDOMAttr;
+}
+
+export enum NodeNames {
+    TABLE= 'table',
+    TABLE_ROW= 'table_row',
+    TABLE_CELL= 'table_cell',
+    TABLE_HEADER= 'table_header',
+    CHECKBOX= 'checkbox',
+    DATE= 'date',
+    LABEL= 'label'
 }
 
 export interface TableNodes {
@@ -134,10 +145,16 @@ export class TableMap {
 }
 
 export function tableEditing(options?: TableEditingOptions): Plugin;
+export function columnHandles(): Plugin;
 
 export function deleteTable<S extends Schema = any>(
   state: EditorState<S>,
   dispatch?: (tr: Transaction<S>) => void,
+): boolean;
+
+export function sortColumn<S extends Schema = any>(
+  state: EditorState<S>,
+  dispatch?: (tr: Transaction<S>) => void
 ): boolean;
 
 export function goToNextCell<S extends Schema = any>(
@@ -319,3 +336,66 @@ export function fixTables<S extends Schema = any>(
   state: EditorState<S>,
   oldState?: EditorState<S>,
 ): null | Transaction<S>;
+
+
+export function addBottomRow(
+  state: EditorState,   
+  dispatch: (tr: Transaction) => void,
+  pos: number
+): void
+  
+
+export function addRightColumn(
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+  pos: number
+): void
+
+export function deleteLastRow(
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): void
+
+export function deleteLastCol(
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): void
+
+export function changeCellsBackgroundColor(
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+  color: string
+): void
+
+export function toggleTableHeaders(
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+  view: EditorView
+): void
+
+export function getDeleteCommand(
+  state: EditorState
+): (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+) => void
+
+export function isCellColorActive(
+  state: EditorState,
+  color: string
+)
+
+export function getSelectedCellsCoords(
+  view: EditorView
+): {
+  top: number,
+  bottom: number,
+  right: number,
+  left: number,
+  width: number,
+  height: number
+}
+
+export function setBaseName(
+  name: string
+)

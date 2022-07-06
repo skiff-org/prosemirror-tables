@@ -3,10 +3,10 @@
 // rowspans) and that each row has the same width. Uses the problems
 // reported by `TableMap`.
 
-import { PluginKey } from 'prosemirror-state';
-import { TableMap } from './tablemap';
-import { setAttr, removeColSpan } from './util';
-import { tableNodeTypes } from './schema';
+import {PluginKey} from 'prosemirror-state';
+import {TableMap} from './tablemap';
+import {setAttr, removeColSpan} from './util';
+import {tableNodeTypes} from './schema/schema';
 
 export const fixTablesKey = new PluginKey('fix-tables');
 
@@ -14,10 +14,14 @@ export const fixTablesKey = new PluginKey('fix-tables');
 // compared to the given previous document. Useful for avoiding
 // duplicate work on each transaction.
 function changedDescendants(old, cur, offset, f) {
-  let oldSize = old.childCount,
+  const oldSize = old.childCount,
     curSize = cur.childCount;
   outer: for (let i = 0, j = 0; i < curSize; i++) {
-    let child = cur.child(i);
+    if (cur.type.name === 'table_row' && cur.childCount > 100) {
+      // Don't loop on row with more than 100 cols (infinity cols bug)
+      continue outer;
+    }
+    const child = cur.child(i);
     for (let scan = j, e = Math.min(oldSize, i + 3); scan < e; scan++) {
       if (old.child(scan) == child) {
         j = scan + 1;
@@ -40,11 +44,11 @@ function changedDescendants(old, cur, offset, f) {
 // which will be used to avoid re-scanning unchanged parts of the
 // document.
 export function fixTables(state, oldState) {
-  let tr,
-    check = (node, pos) => {
-      if (node.type.spec.tableRole == 'table')
-        tr = fixTable(state, node, pos, tr);
-    };
+  let tr;
+  const check = (node, pos) => {
+    if (node.type.spec.tableRole == 'table')
+      tr = fixTable(state, node, pos, tr);
+  };
   if (!oldState) state.doc.descendants(check);
   else if (oldState.doc != state.doc)
     changedDescendants(oldState.doc, state.doc, 0, check);
@@ -55,40 +59,40 @@ export function fixTables(state, oldState) {
 // Fix the given table, if necessary. Will append to the transaction
 // it was given, if non-null, or create a new one if necessary.
 export function fixTable(state, table, tablePos, tr) {
-  let map = TableMap.get(table);
+  const map = TableMap.get(table);
   if (!map.problems) return tr;
   if (!tr) tr = state.tr;
 
   // Track which rows we must add cells to, so that we can adjust that
   // when fixing collisions.
-  let mustAdd = [];
+  const mustAdd = [];
   for (let i = 0; i < map.height; i++) mustAdd.push(0);
   for (let i = 0; i < map.problems.length; i++) {
-    let prob = map.problems[i];
+    const prob = map.problems[i];
     if (prob.type == 'collision') {
-      let cell = table.nodeAt(prob.pos);
+      const cell = table.nodeAt(prob.pos);
       for (let j = 0; j < cell.attrs.rowspan; j++)
         mustAdd[prob.row + j] += prob.n;
       tr.setNodeMarkup(
         tr.mapping.map(tablePos + 1 + prob.pos),
         null,
-        removeColSpan(cell.attrs, cell.attrs.colspan - prob.n, prob.n),
+        removeColSpan(cell.attrs, cell.attrs.colspan - prob.n, prob.n)
       );
     } else if (prob.type == 'missing') {
       mustAdd[prob.row] += prob.n;
     } else if (prob.type == 'overlong_rowspan') {
-      let cell = table.nodeAt(prob.pos);
+      const cell = table.nodeAt(prob.pos);
       tr.setNodeMarkup(
         tr.mapping.map(tablePos + 1 + prob.pos),
         null,
-        setAttr(cell.attrs, 'rowspan', cell.attrs.rowspan - prob.n),
+        setAttr(cell.attrs, 'rowspan', cell.attrs.rowspan - prob.n)
       );
     } else if (prob.type == 'colwidth mismatch') {
-      let cell = table.nodeAt(prob.pos);
+      const cell = table.nodeAt(prob.pos);
       tr.setNodeMarkup(
         tr.mapping.map(tablePos + 1 + prob.pos),
         null,
-        setAttr(cell.attrs, 'colwidth', prob.colwidth),
+        setAttr(cell.attrs, 'colwidth', prob.colwidth)
       );
     }
   }
@@ -103,21 +107,21 @@ export function fixTable(state, table, tablePos, tr) {
   // was taken out of the table, add cells at the start of the row
   // after the bite. Otherwise add them at the end).
   for (let i = 0, pos = tablePos + 1; i < map.height; i++) {
-    let row = table.child(i);
-    let end = pos + row.nodeSize;
-    let add = mustAdd[i];
+    const row = table.child(i);
+    const end = pos + row.nodeSize;
+    const add = mustAdd[i];
     if (add > 0) {
       let tableNodeType = 'cell';
       if (row.firstChild) {
         tableNodeType = row.firstChild.type.spec.tableRole;
       }
-      let nodes = [];
+      const nodes = [];
       for (let j = 0; j < add; j++)
         nodes.push(tableNodeTypes(state.schema)[tableNodeType].createAndFill());
-      let side = (i == 0 || first == i - 1) && last == i ? pos + 1 : end - 1;
+      const side = (i == 0 || first == i - 1) && last == i ? pos + 1 : end - 1;
       tr.insert(tr.mapping.map(side), nodes);
     }
     pos = end;
   }
-  return tr.setMeta(fixTablesKey, { fixTables: true });
+  return tr.setMeta(fixTablesKey, {fixTables: true});
 }

@@ -4,21 +4,21 @@ import commonJS from 'rollup-plugin-commonjs';
 
 export default {
   input: 'demo.js',
-  output: { format: 'iife', file: 'demo_bundle.js' },
+  output: {format: 'iife', file: 'demo_bundle.js'},
   plugins: [
     buble({
       exclude: 'node_modules/**',
-      namedFunctionExpressions: false,
+      namedFunctionExpressions: false
     }),
 
     nodeResolve({
       main: true,
-      browser: true,
+      browser: true
     }),
 
     commonJS({
       include: '../**',
-      sourceMap: false,
-    }),
-  ],
+      sourceMap: false
+    })
+  ]
 };
