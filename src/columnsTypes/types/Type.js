@@ -2,49 +2,55 @@ import {getColCells} from '../../util';
 import {columnTypesMap, tableHeadersMenuKey} from '../types.config';
 
 class CellDataType {
-  convert(view, typeId) {
+  convert(dispatch, view, typeId) {
     const headerState = tableHeadersMenuKey.getState(view.state);
-    if (!headerState) return;
+    if (!headerState) return false;
     const {pos, node, dom} = headerState;
-    if (typeId === node.attrs.type) return;
+    if (typeId === node.attrs.type) return false;
 
-    const cells = getColCells(pos, view.state);
-    dom.firstChild.className = `${typeId}ItemIcon typeIcon`;
+    if (dispatch) {
+      const cells = getColCells(pos, view.state);
+      dom.firstChild.className = `${typeId}ItemIcon typeIcon`;
 
-    const {tr} = view.state;
+      const {tr} = view.state;
 
-    // save old type before changing attrs
-    const oldType = node.attrs.type;
+      // save old type before changing attrs
+      const oldType = node.attrs.type;
 
-    // change header type
-    tr.setNodeMarkup(pos, undefined, Object.assign(node.attrs, {type: typeId}));
-
-    cells.reverse().forEach(({node: cell, pos}) => {
-      const convertedContent = this.convertContent(cell, oldType);
-      const oldTypeContentToAttrs =
-        columnTypesMap[oldType].handler.parseContentToAttrsMemory(cell);
-
-      tr.replaceRangeWith(
-        pos + 1,
-        pos + cell.nodeSize - 1,
-        this.renderContentNode(view.state.schema, convertedContent, tr, pos)
+      // change header type
+      tr.setNodeMarkup(
+        pos,
+        undefined,
+        Object.assign(node.attrs, {type: typeId})
       );
 
-      const newAttrs = {
-        ...cell.attrs,
-        type: typeId,
-        typesValues: {
-          ...cell.attrs.typesValues,
-          [oldType]: oldTypeContentToAttrs
-        }
-      };
+      cells.reverse().forEach(({node: cell, pos}) => {
+        const convertedContent = this.convertContent(cell, oldType);
+        const oldTypeContentToAttrs =
+          columnTypesMap[oldType].handler.parseContentToAttrsMemory(cell);
 
-      tr.setNodeMarkup(pos, undefined, newAttrs);
-    });
+        tr.replaceRangeWith(
+          pos + 1,
+          pos + cell.nodeSize - 1,
+          this.renderContentNode(view.state.schema, convertedContent, tr, pos)
+        );
 
-    tr.setMeta(tableHeadersMenuKey, {action: 'close', id: window.id});
+        const newAttrs = {
+          ...cell.attrs,
+          type: typeId,
+          typesValues: {
+            ...cell.attrs.typesValues,
+            [oldType]: oldTypeContentToAttrs
+          }
+        };
 
-    view.dispatch(tr);
+        tr.setNodeMarkup(pos, undefined, newAttrs);
+      });
+
+      tr.setMeta(tableHeadersMenuKey, {action: 'close', id: window.id});
+      dispatch(tr);
+    }
+    return true;
   }
 
   /**

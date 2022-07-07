@@ -20,8 +20,8 @@ export const getTypesItems = () => {
     return new MenuItem({
       render: () => dom,
       class: 'typeItem',
-      run(state, dispatch, view) {
-        return type.handler.convert(view, type.id);
+      run(_state, dispatch, view) {
+        return type.handler.convert(dispatch, view, type.id);
       }
     });
   });
