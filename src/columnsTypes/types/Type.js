@@ -48,9 +48,11 @@ class CellDataType {
   }
 
   /**
-   * convert the content to the type format, should return content that the renderContentNode of the same type can render to node
+   * Convert the content to the type format, should return content that the renderContentNode of the same type can render to node.
+   * isPaste (boolean) is true if the cell comes from a paste; for some types (e.g. Date) in that case
+   * you need to use the attrs instead of the textContent.
    */
-  convertContent(cell, convertFromType) {
+  convertContent(cell, convertFromType, isPaste = false) {
     return cell.textContent;
   }
 

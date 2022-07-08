@@ -314,6 +314,8 @@ export function insertCells(state, dispatch, tableStart, rect, cells) {
       tr.doc.resolve(tableStart + map.positionAt(bottom - 1, right - 1, table))
     )
   );
+  // Indicate that tr is from a paste, so typesEnforcer will act on the pasted cells.
+  tr.setMeta('uiEvent', 'paste');
   dispatch(tr);
 }
 

@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback} from 'react';
 import useClickOutside from '../../../useClickOutside.jsx';
 import EditorContent from '../../../ReactNodeView/EditorContent.jsx';
 import {
@@ -6,7 +6,7 @@ import {
   tableDateMenuKey,
   DATE_FORMAT,
   buildDateObjectFromText,
-  getClosestDate,
+  getClosestDate
 } from './utils';
 
 import {DatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
@@ -43,20 +43,6 @@ const DateComponent = ({view, node, getPos, editorContentRef, dom}) => {
 
     view.dispatch(tr);
   };
-
-  const pos = getPos();
-
-  useEffect(() => {
-    const dateFromAttrs = node.attrs.value;
-    if (dateFromAttrs === -1 || !pos) return;
-    const formattedDate = formatDate(new Date(dateFromAttrs), DATE_FORMAT);
-    if (formattedDate !== node.textContent) {
-      const {tr} = view.state;
-      tr.insertText(formattedDate, pos + 1, pos + node.nodeSize - 1);
-
-      view.dispatch(tr);
-    }
-  }, [pos]);
 
   return (
     <div
