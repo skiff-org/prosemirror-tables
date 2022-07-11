@@ -18,8 +18,6 @@ const enforceOneCell = (newState, cell, pos, tr, isPaste) => {
   const type = columnTypesMap[columnType];
   if (type.dontForce) return;
 
-  console.log(cell);
-
   const typeHandler = type.handler;
 
   const typeContent = typeHandler.convertContent(cell, undefined, isPaste);
