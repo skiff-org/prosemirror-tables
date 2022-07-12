@@ -22,7 +22,9 @@ const enforceOneCell = (newState, cell, pos, tr, isPaste) => {
 
   const typeContent = typeHandler.convertContent(cell, undefined, isPaste);
 
-  // from and to are the start & end positions of cell in newState.apply(tr)
+  // from and to are the start & end positions of cell in newState.apply(tr).
+  // We replace the range [from + 1, to - 1] because we want to replace cell's
+  // contents (children), not the cell itself.
   const from = tr.mapping.map(pos, -1);
   const to = tr.mapping.map(pos + cell.nodeSize, 1);
   tr.replaceRangeWith(
