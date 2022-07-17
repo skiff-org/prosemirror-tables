@@ -12,10 +12,10 @@ import {DatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 import DateUtilDayJS from '@date-io/dayjs';
 import {
   StylesProvider,
-  createGenerateClassName
+  createGenerateClassName,
+  ThemeProvider
 } from '@material-ui/core/styles';
 import DatePickerTheme from '../columnsTypes/types/Date/DatePickerTheme';
-import {ThemeProvider} from '@material-ui/core/styles';
 import {DATE_FORMAT} from '../columnsTypes/types/Date/utils';
 import {LabelsChooser} from '../columnsTypes/types/Label/Component.jsx';
 
