@@ -3,17 +3,10 @@
   "version": "3.4.21",
   "description": "ProseMirror's rowspan/colspan tables component",
   "type": "module",
-  "main": "dist/index.cjs",
-  "module": "dist/index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
   "style": "style/tables.css",
   "typings": "./index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    },
-    "./style/tables.css": "./style/tables.css"
-  },
   "license": "MIT",
   "repository": {
     "type": "git",
