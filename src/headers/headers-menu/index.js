@@ -40,5 +40,3 @@ export const tableHeadersMenu = () => {
     }
   });
 };
-
-export {typeInheritance} from '../../columnsTypes/typeInheritance';

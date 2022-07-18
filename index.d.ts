@@ -231,6 +231,7 @@ export function addRowBefore(
 ): boolean;
 
 export function addRow(
+  schema: Schema,
   transaction: Transaction,
   rect: TableRect,
   row: number,

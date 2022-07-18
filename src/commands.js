@@ -46,6 +46,38 @@ export function selectedRect(state) {
   return rect;
 }
 
+/**
+ * Helper function that renders content into cells in the range [from, to], adding to tr.
+ *
+ * It is assumed that the cells already have the correct cell.attrs, in particular,
+ * cell.attrs.type, which is used to know which node type to render.
+ * (If not present, defaults to 'text').
+ */
+function renderCellsBetween(schema, tr, from, to) {
+  // It is convenient to render cells in reverse order, so that we don't have to map later
+  // positions past earlier changes.
+  const reversedCells = [];
+  tr.doc.nodesBetween(from, to, (node, pos) => {
+    if (node.type === schema.nodes.table_cell) {
+      reversedCells.unshift({cell: node, pos});
+    }
+  });
+
+  reversedCells.forEach(({cell, pos}) => {
+    const typeHandler = columnTypesMap[cell.attrs.type ?? 'text'].handler;
+    tr.replaceRangeWith(
+      pos + 1,
+      pos + cell.nodeSize - 1,
+      typeHandler.renderContentNode(
+        schema,
+        typeHandler.convertContent(cell),
+        tr,
+        pos
+      )
+    );
+  });
+}
+
 // Add a column at the given position in a table.
 export function addColumn(tr, {map, tableStart, table}, col) {
   const firstRow = table.firstChild;
@@ -165,7 +197,7 @@ export function rowIsHeader(map, table, row) {
   return true;
 }
 
-export function addRow(tr, {map, tableStart, table}, row) {
+export function addRow(schema, tr, {map, tableStart, table}, row) {
   let rowPos = tableStart;
   for (let i = 0; i < row; i++) rowPos += table.child(i).nodeSize;
   const cells = [];
@@ -188,14 +220,23 @@ export function addRow(tr, {map, tableStart, table}, row) {
       );
       col += attrs.colspan - 1;
     } else {
-      const type =
-        refRow == null
-          ? tableNodeTypes(table.type.schema).cell
-          : table.nodeAt(map.map[index + refRow * map.width]).type;
-      cells.push(type.createAndFill({}));
+      let nodeType, type;
+      if (refRow === null) {
+        nodeType = tableNodeTypes(table.type.schema).cell;
+      } else {
+        const refCell = table.nodeAt(map.map[index + refRow * map.width]);
+        nodeType = refCell.type;
+        type = refCell.attrs?.type;
+      }
+      const cell = nodeType.createAndFill({});
+      // Direct mutation okay because it cell not yet inserted anywhere
+      cell.attrs.type = type ?? 'text';
+      cells.push(cell);
     }
   }
-  tr.insert(rowPos, tableNodeTypes(table.type.schema).row.create(null, cells));
+  const newRow = tableNodeTypes(table.type.schema).row.create(null, cells);
+  tr.insert(rowPos, newRow);
+  renderCellsBetween(schema, tr, rowPos, rowPos + newRow.nodeSize);
   tr.setSelection(TextSelection.near(tr.doc.resolve(rowPos)));
   return tr;
 }
@@ -206,7 +247,7 @@ export function addRowBefore(state, dispatch) {
   if (!isInTable(state)) return false;
   if (dispatch) {
     const rect = selectedRect(state);
-    dispatch(addRow(state.tr, rect, rect.top));
+    dispatch(addRow(state.schema, state.tr, rect, rect.top));
   }
   return true;
 }
@@ -217,7 +258,7 @@ export function addRowAfter(state, dispatch) {
   if (!isInTable(state)) return false;
   if (dispatch) {
     const rect = selectedRect(state);
-    dispatch(addRow(state.tr, rect, rect.bottom));
+    dispatch(addRow(state.schema, state.tr, rect, rect.bottom));
   }
   return true;
 }
@@ -233,7 +274,7 @@ export function addBottomRow(state, dispatch) {
       table: table.node,
       map: TableMap.get(table.node)
     };
-    const tr = addRow(state.tr, rect, rect.map.height);
+    const tr = addRow(state.schema, state.tr, rect, rect.map.height);
     dispatch(tr);
   }
   return true;
@@ -801,7 +842,7 @@ export const addRowBeforeButton = (view, pos) => {
 
   const rowNumber = cellIndex / tableRect.map.width;
 
-  const tr = addRow(view.state.tr, tableRect, rowNumber);
+  const tr = addRow(view.state.schema, view.state.tr, tableRect, rowNumber);
 
   view.dispatch(tr);
   view.focus();
