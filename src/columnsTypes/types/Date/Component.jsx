@@ -14,10 +14,10 @@ import DateUtilDayJS from '@date-io/dayjs';
 import {findParentNodeOfTypeClosestToPos} from 'prosemirror-utils';
 import {
   StylesProvider,
-  createGenerateClassName
+  createGenerateClassName,
+  ThemeProvider
 } from '@material-ui/core/styles';
 import DatePickerTheme from './DatePickerTheme';
-import {ThemeProvider} from '@material-ui/core/styles';
 import ee from 'event-emitter';
 
 const DateEventEmitter = function () {};
