@@ -21,6 +21,7 @@ import {
   sortNumVsString
 } from './util';
 import {tableNodeTypes} from './schema/schema';
+import {typeInheritance} from './columnsTypes/typeInheritance';
 
 const MAX_COLS = 500;
 
@@ -165,6 +166,8 @@ export function rowIsHeader(map, table, row) {
   return true;
 }
 
+// Note: tableStart is the start of the first row, not the position
+// of table itself.
 export function addRow(tr, {map, tableStart, table}, row) {
   let rowPos = tableStart;
   for (let i = 0; i < row; i++) rowPos += table.child(i).nodeSize;
@@ -196,6 +199,9 @@ export function addRow(tr, {map, tableStart, table}, row) {
     }
   }
   tr.insert(rowPos, tableNodeTypes(table.type.schema).row.create(null, cells));
+  // Need to subtract 1 from tableStart to get the actual table node position.
+  // (We get it from tr.doc instead of using table b/c we want the new tr.doc version.)
+  typeInheritance(tr, tr.doc.nodeAt(tableStart - 1), tableStart);
   tr.setSelection(TextSelection.near(tr.doc.resolve(rowPos)));
   return tr;
 }
