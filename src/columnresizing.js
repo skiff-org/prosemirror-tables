@@ -291,9 +291,10 @@ function handleDecorations(state, cell) {
   const $cell = state.doc.resolve(cell);
   const table = $cell.node(-1);
   if (!table) return DecorationSet.empty;
-  const map = TableMap.get(table),
-    start = $cell.start(-1);
+  const map = TableMap.get(table);
+  const start = $cell.start(-1);
   const col = map.colCount($cell.pos - start) + $cell.nodeAfter.attrs.colspan;
+
   for (let row = 0; row < map.height; row++) {
     const index = col + row * map.width - 1;
     // For positions that are have either a different cell or the end

@@ -4,3 +4,6 @@
 /.eslintrc
 /.vscode
 /.stylelintrc.json
+README.md
+.tern-port
+/demo_bundle.js

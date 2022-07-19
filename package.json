@@ -86,10 +86,10 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "test": "mocha test/test-*.js",
-    "build_demo": "rollup -c rollup.demo.config.js",
-    "watch_demo": "rollup -w -c rollup.demo.config.js",
     "build": "rollup -c",
     "watch": "rollup -w -c",
+    "build_demo": "rollup -c rollup.demo.config.js",
+    "watch_demo": "rollup -w -c rollup.demo.config.js",
     "prepare": "npm run build",
     "build_readme": "builddocs --name tables --format markdown --main src/README.md src/*.js > README.md"
   }
