@@ -228,6 +228,7 @@ function isolateHorizontal(tr, map, table, start, left, right, top, mapFrom) {
           setAttr(cell.attrs, 'rowspan', cellTop + cell.attrs.rowspan - top)
         )
       );
+      // TODO: need to add a renderCellContentBetween call for new cells, like in addRows.
       col += cell.attrs.colspan - 1;
     }
   }
@@ -261,6 +262,7 @@ function isolateVertical(tr, map, table, start, top, bottom, left, mapFrom) {
         updatePos + cell.nodeSize,
         cell.type.createAndFill(removeColSpan(cell.attrs, 0, left - cellLeft))
       );
+      // TODO: need to add a renderCellContentBetween call for new cells, ike in addRows.
       row += cell.attrs.rowspan - 1;
     }
   }

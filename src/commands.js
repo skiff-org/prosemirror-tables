@@ -21,6 +21,7 @@ import {
   sortNumVsString
 } from './util';
 import {tableNodeTypes} from './schema/schema';
+import {renderCellContentBetween} from './columnsTypes/renderCellContentBetween';
 
 const MAX_COLS = 500;
 
@@ -44,38 +45,6 @@ export function selectedRect(state) {
   rect.map = map;
   rect.table = table;
   return rect;
-}
-
-/**
- * Helper function that renders content into cells in the range [from, to], adding to tr.
- *
- * It is assumed that the cells already have the correct cell.attrs, in particular,
- * cell.attrs.type, which is used to know which node type to render.
- * (If not present, defaults to 'text').
- */
-function renderCellsBetween(schema, tr, from, to) {
-  // It is convenient to render cells in reverse order, so that we don't have to map later
-  // positions past earlier changes.
-  const reversedCells = [];
-  tr.doc.nodesBetween(from, to, (node, pos) => {
-    if (node.type === schema.nodes.table_cell) {
-      reversedCells.unshift({cell: node, pos});
-    }
-  });
-
-  reversedCells.forEach(({cell, pos}) => {
-    const typeHandler = columnTypesMap[cell.attrs.type ?? 'text'].handler;
-    tr.replaceRangeWith(
-      pos + 1,
-      pos + cell.nodeSize - 1,
-      typeHandler.renderContentNode(
-        schema,
-        typeHandler.convertContent(cell),
-        tr,
-        pos
-      )
-    );
-  });
 }
 
 // Add a column at the given position in a table.
@@ -236,7 +205,7 @@ export function addRow(schema, tr, {map, tableStart, table}, row) {
   }
   const newRow = tableNodeTypes(table.type.schema).row.create(null, cells);
   tr.insert(rowPos, newRow);
-  renderCellsBetween(schema, tr, rowPos, rowPos + newRow.nodeSize);
+  renderCellContentBetween(schema, tr, rowPos, rowPos + newRow.nodeSize);
   tr.setSelection(TextSelection.near(tr.doc.resolve(rowPos)));
   return tr;
 }
@@ -512,6 +481,7 @@ export function splitCellWithType(getCellType) {
         getCellType({node: cellNode, row: rect.top, col: rect.left}),
         attrs[0]
       );
+      // TODO: need to add a renderCellContentBetween call for new cells, like in addRows.
       if (sel instanceof CellSelection)
         tr.setSelection(
           new CellSelection(
