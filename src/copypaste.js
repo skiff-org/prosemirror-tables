@@ -17,6 +17,7 @@ import {setAttr, removeColSpan} from './util';
 import {TableMap} from './tablemap';
 import {CellSelection} from './cellselection';
 import {tableNodeTypes} from './schema/schema';
+import {renderCellContent} from './columnsTypes/renderCellContent';
 
 // Utilities to help with copying and pasting table cells
 
@@ -175,7 +176,14 @@ function growTable(tr, map, table, start, width, height, mapFrom) {
         add = empty || (empty = types.cell.createAndFill());
       else add = emptyHead || (emptyHead = types.header_cell.createAndFill());
       for (let i = map.width; i < width; i++) cells.push(add);
-      tr.insert(tr.mapping.slice(mapFrom).map(rowEnd - 1 + start), cells);
+      // TODO: assign cell types (attrs.type)
+      const from = tr.mapping.slice(mapFrom).map(rowEnd - 1 + start);
+      tr.insert(from, cells);
+      renderCellContent(
+        tr,
+        from,
+        from + cells.map((node) => node.nodeSize).reduce((a, b) => a + b, 0)
+      );
     }
   }
   if (height > map.height) {
@@ -199,7 +207,14 @@ function growTable(tr, map, table, start, width, height, mapFrom) {
     const emptyRow = types.row.create(null, Fragment.from(cells)),
       rows = [];
     for (let i = map.height; i < height; i++) rows.push(emptyRow);
-    tr.insert(tr.mapping.slice(mapFrom).map(start + table.nodeSize - 2), rows);
+    const from = tr.mapping.slice(mapFrom).map(start + table.nodeSize - 2);
+    tr.insert(from, rows);
+    // TODO: assign cell types (attrs.type)
+    renderCellContent(
+      tr,
+      from,
+      from + rows.map((node) => node.nodeSize).reduce((a, b) => a + b, 0)
+    );
   }
   return !!(empty || emptyHead);
 }
@@ -228,7 +243,7 @@ function isolateHorizontal(tr, map, table, start, left, right, top, mapFrom) {
           setAttr(cell.attrs, 'rowspan', cellTop + cell.attrs.rowspan - top)
         )
       );
-      // TODO: need to add a renderCellContentBetween call for new cells, like in addRows.
+      // TODO: need to add a renderCellContent call for new cells, like in addRows.
       col += cell.attrs.colspan - 1;
     }
   }
@@ -262,7 +277,7 @@ function isolateVertical(tr, map, table, start, top, bottom, left, mapFrom) {
         updatePos + cell.nodeSize,
         cell.type.createAndFill(removeColSpan(cell.attrs, 0, left - cellLeft))
       );
-      // TODO: need to add a renderCellContentBetween call for new cells, ike in addRows.
+      // TODO: need to add a renderCellContent call for new cells, like in addRows.
       row += cell.attrs.rowspan - 1;
     }
   }

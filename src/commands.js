@@ -21,7 +21,7 @@ import {
   sortNumVsString
 } from './util';
 import {tableNodeTypes} from './schema/schema';
-import {renderCellContentBetween} from './columnsTypes/renderCellContentBetween';
+import {renderCellContent} from './columnsTypes/renderCellContent';
 
 const MAX_COLS = 500;
 
@@ -166,7 +166,7 @@ export function rowIsHeader(map, table, row) {
   return true;
 }
 
-export function addRow(schema, tr, {map, tableStart, table}, row) {
+export function addRow(tr, {map, tableStart, table}, row) {
   let rowPos = tableStart;
   for (let i = 0; i < row; i++) rowPos += table.child(i).nodeSize;
   const cells = [];
@@ -205,7 +205,7 @@ export function addRow(schema, tr, {map, tableStart, table}, row) {
   }
   const newRow = tableNodeTypes(table.type.schema).row.create(null, cells);
   tr.insert(rowPos, newRow);
-  renderCellContentBetween(schema, tr, rowPos, rowPos + newRow.nodeSize);
+  renderCellContent(tr, rowPos, rowPos + newRow.nodeSize);
   tr.setSelection(TextSelection.near(tr.doc.resolve(rowPos)));
   return tr;
 }
@@ -216,7 +216,7 @@ export function addRowBefore(state, dispatch) {
   if (!isInTable(state)) return false;
   if (dispatch) {
     const rect = selectedRect(state);
-    dispatch(addRow(state.schema, state.tr, rect, rect.top));
+    dispatch(addRow(state.tr, rect, rect.top));
   }
   return true;
 }
@@ -227,7 +227,7 @@ export function addRowAfter(state, dispatch) {
   if (!isInTable(state)) return false;
   if (dispatch) {
     const rect = selectedRect(state);
-    dispatch(addRow(state.schema, state.tr, rect, rect.bottom));
+    dispatch(addRow(state.tr, rect, rect.bottom));
   }
   return true;
 }
@@ -243,7 +243,7 @@ export function addBottomRow(state, dispatch) {
       table: table.node,
       map: TableMap.get(table.node)
     };
-    const tr = addRow(state.schema, state.tr, rect, rect.map.height);
+    const tr = addRow(state.tr, rect, rect.map.height);
     dispatch(tr);
   }
   return true;
@@ -481,7 +481,7 @@ export function splitCellWithType(getCellType) {
         getCellType({node: cellNode, row: rect.top, col: rect.left}),
         attrs[0]
       );
-      // TODO: need to add a renderCellContentBetween call for new cells, like in addRows.
+      // TODO: need to add a renderCellContent call for new cells, like in addRows.
       if (sel instanceof CellSelection)
         tr.setSelection(
           new CellSelection(
@@ -812,7 +812,7 @@ export const addRowBeforeButton = (view, pos) => {
 
   const rowNumber = cellIndex / tableRect.map.width;
 
-  const tr = addRow(view.state.schema, view.state.tr, tableRect, rowNumber);
+  const tr = addRow(view.state.tr, tableRect, rowNumber);
 
   view.dispatch(tr);
   view.focus();
