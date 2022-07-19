@@ -183,7 +183,8 @@ export function tableNodes(options) {
           {
             class: 'cell-date',
             ...setNodeAttrs(node, dateExtraAttrs)
-          }
+          },
+          0
         ];
       }
     },
