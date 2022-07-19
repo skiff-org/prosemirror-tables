@@ -1,4 +1,5 @@
 import {Selection} from 'prosemirror-state';
+import {typeInheritance} from '../columnsTypes/typeInheritance';
 
 export const switchRows = (
   view,
@@ -18,6 +19,7 @@ export const switchRows = (
   );
 
   const newTr = tr || view.state.tr;
+  // No need for typeInheritance because we haven't changed column types or add new cells.
   newTr.replaceWith(
     tableRect.tableStart,
     tableRect.tableStart + tableRect.table.content.size,
@@ -53,6 +55,11 @@ export const switchCols = (
     tableRect.tableStart,
     tableRect.tableStart + tableRect.table.content.size,
     newRowsSlice
+  );
+  typeInheritance(
+    newTr,
+    newTr.doc.nodeAt(tableRect.tableStart - 1),
+    tableRect.tableStart
   );
   newTr.setSelection(Selection.near(newTr.doc.resolve(selPos), 1));
 

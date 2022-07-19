@@ -7,6 +7,7 @@ import {PluginKey} from 'prosemirror-state';
 import {TableMap} from './tablemap';
 import {setAttr, removeColSpan} from './util';
 import {tableNodeTypes} from './schema/schema';
+import {typeInheritance} from './columnsTypes/typeInheritance';
 
 export const fixTablesKey = new PluginKey('fix-tables');
 
@@ -123,5 +124,6 @@ export function fixTable(state, table, tablePos, tr) {
     }
     pos = end;
   }
+  typeInheritance(tr, tr.doc.nodeAt(tablePos), tablePos + 1);
   return tr.setMeta(fixTablesKey, {fixTables: true});
 }

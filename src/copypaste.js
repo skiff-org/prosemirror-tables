@@ -17,6 +17,7 @@ import {setAttr, removeColSpan} from './util';
 import {TableMap} from './tablemap';
 import {CellSelection} from './cellselection';
 import {tableNodeTypes} from './schema/schema';
+import {typeInheritance} from './columnsTypes/typeInheritance';
 
 // Utilities to help with copying and pasting table cells
 
@@ -201,7 +202,10 @@ function growTable(tr, map, table, start, width, height, mapFrom) {
     for (let i = map.height; i < height; i++) rows.push(emptyRow);
     tr.insert(tr.mapping.slice(mapFrom).map(start + table.nodeSize - 2), rows);
   }
-  return !!(empty || emptyHead);
+  if (empty || emptyHead) {
+    typeInheritance(tr, tr.doc.nodeAt(start - 1), start);
+    return true;
+  } else return false;
 }
 
 // Make sure the given line (left, top) to (right, top) doesn't cross
@@ -231,6 +235,7 @@ function isolateHorizontal(tr, map, table, start, left, right, top, mapFrom) {
       col += cell.attrs.colspan - 1;
     }
   }
+  // TODO: typeInheritance
   return found;
 }
 
@@ -264,6 +269,7 @@ function isolateVertical(tr, map, table, start, top, bottom, left, mapFrom) {
       row += cell.attrs.rowspan - 1;
     }
   }
+  // TODO: typeInheritance
   return found;
 }
 
@@ -308,6 +314,7 @@ export function insertCells(state, dispatch, tableStart, rect, cells) {
     );
   }
   recomp();
+  typeInheritance(tr, table, tableStart);
   tr.setSelection(
     new CellSelection(
       tr.doc.resolve(tableStart + map.positionAt(top, left, table)),

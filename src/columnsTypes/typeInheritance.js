@@ -11,10 +11,11 @@ import {TableMap} from '../tablemap';
  * @param tr A transaction to add the changes to
  * @param table A Node of type schema.types.table. This Node should come from tr.doc,
  * so that its positions can be used in tr methods.
- * @param pos table's position
+ * @param tableStart table's tableStart position, i.e., the pos of the first row
+ * (1 + pos of table itself)
  * @return tr
  */
-export const typeInheritance = (tr, table, pos) => {
+export const typeInheritance = (tr, table, tableStart) => {
   if (!table.attrs.headers || !table.maybeChild(0)) return tr;
 
   // Store col types in colTypes (null if we should skip checking the column).
@@ -40,7 +41,7 @@ export const typeInheritance = (tr, table, pos) => {
 
       const cell = table.child(row).maybeChild(col);
       if (cell.attrs.type !== colType) {
-        const cellPos = tableMap.map[row * tableMap.width + col] + pos;
+        const cellPos = tableMap.map[row * tableMap.width + col] + tableStart;
         const typeHandler = columnTypesMap[colType].handler;
 
         tr.replaceRangeWith(

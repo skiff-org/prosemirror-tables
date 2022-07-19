@@ -87,6 +87,7 @@ export function addColumn(tr, {map, tableStart, table}, col) {
       );
     }
   }
+  typeInheritance(tr, tr.doc.nodeAt(tableStart - 1), tableStart);
 
   return tr;
 }
@@ -166,8 +167,6 @@ export function rowIsHeader(map, table, row) {
   return true;
 }
 
-// Note: tableStart is the start of the first row, not the position
-// of table itself.
 export function addRow(tr, {map, tableStart, table}, row) {
   let rowPos = tableStart;
   for (let i = 0; i < row; i++) rowPos += table.child(i).nodeSize;
@@ -199,8 +198,6 @@ export function addRow(tr, {map, tableStart, table}, row) {
     }
   }
   tr.insert(rowPos, tableNodeTypes(table.type.schema).row.create(null, cells));
-  // Need to subtract 1 from tableStart to get the actual table node position.
-  // (We get it from tr.doc instead of using table b/c we want the new tr.doc version.)
   typeInheritance(tr, tr.doc.nodeAt(tableStart - 1), tableStart);
   tr.setSelection(TextSelection.near(tr.doc.resolve(rowPos)));
   return tr;
@@ -291,6 +288,7 @@ export function removeRow(tr, {map, table, tableStart}, row) {
       const newPos = map.positionAt(row + 1, col, table);
       tr.insert(tr.mapping.slice(mapFrom).map(tableStart + newPos), copy);
       col += cell.attrs.colspan - 1;
+      // TODO: typeInheritance
     }
   }
 }
@@ -406,6 +404,7 @@ export function mergeCells(state, dispatch) {
       const start = isEmpty(mergedCell) ? mergedPos + 1 : end;
       tr.replaceWith(start + rect.tableStart, end + rect.tableStart, content);
     }
+    // TODO: typeInheritance
     tr.setSelection(
       new CellSelection(tr.doc.resolve(mergedPos + rect.tableStart))
     );
@@ -484,6 +483,7 @@ export function splitCellWithType(getCellType) {
             lastCell && tr.doc.resolve(lastCell)
           )
         );
+      // TODO: typeInheritance
       dispatch(tr);
     }
     return true;
@@ -782,6 +782,7 @@ export function sortColumn(view, colNumber, pos, dir) {
     )
   );
 
+  // No need for typeInheritance because we haven't changed the column's type or added new cells
   tr.replaceWith(rect.tableStart, rect.tableStart + rect.table.content.size, [
     header,
     ...newRowsArray
