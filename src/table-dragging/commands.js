@@ -19,13 +19,13 @@ export const switchRows = (
   );
 
   const newTr = tr || view.state.tr;
-  // No need for typeInheritance because we haven't changed column types or add new cells.
   newTr.replaceWith(
     tableRect.tableStart,
     tableRect.tableStart + tableRect.table.content.size,
     rowsSlice
   );
   newTr.setSelection(Selection.near(newTr.doc.resolve(selPos), 1));
+  // No need for typeInheritance because we haven't changed column types or add new cells.
 
   if (tr) {
     return newTr;
@@ -56,8 +56,8 @@ export const switchCols = (
     tableRect.tableStart + tableRect.table.content.size,
     newRowsSlice
   );
-  typeInheritance(newTr, tableRect.tableStart);
   newTr.setSelection(Selection.near(newTr.doc.resolve(selPos), 1));
+  // No need for typeInheritance because we also switch the column headers (hence types).
 
   if (tr) {
     return newTr;

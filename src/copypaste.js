@@ -313,8 +313,8 @@ export function insertCells(state, dispatch, tableStart, rect, cells) {
       new Slice(cells.rows[row - top], 0, 0)
     );
   }
-  recomp();
   typeInheritance(tr, tableStart);
+  recomp();
   tr.setSelection(
     new CellSelection(
       tr.doc.resolve(tableStart + map.positionAt(top, left, table)),

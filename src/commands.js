@@ -198,8 +198,8 @@ export function addRow(tr, {map, tableStart, table}, row) {
     }
   }
   tr.insert(rowPos, tableNodeTypes(table.type.schema).row.create(null, cells));
-  typeInheritance(tr, tableStart);
   tr.setSelection(TextSelection.near(tr.doc.resolve(rowPos)));
+  typeInheritance(tr, tableStart);
   return tr;
 }
 
