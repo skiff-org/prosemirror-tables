@@ -203,7 +203,7 @@ function growTable(tr, map, table, start, width, height, mapFrom) {
     tr.insert(tr.mapping.slice(mapFrom).map(start + table.nodeSize - 2), rows);
   }
   if (empty || emptyHead) {
-    typeInheritance(tr, tr.doc.nodeAt(start - 1), start);
+    typeInheritance(tr, start);
     return true;
   } else return false;
 }
@@ -314,7 +314,7 @@ export function insertCells(state, dispatch, tableStart, rect, cells) {
     );
   }
   recomp();
-  typeInheritance(tr, table, tableStart);
+  typeInheritance(tr, tableStart);
   tr.setSelection(
     new CellSelection(
       tr.doc.resolve(tableStart + map.positionAt(top, left, table)),

@@ -56,11 +56,7 @@ export const switchCols = (
     tableRect.tableStart + tableRect.table.content.size,
     newRowsSlice
   );
-  typeInheritance(
-    newTr,
-    newTr.doc.nodeAt(tableRect.tableStart - 1),
-    tableRect.tableStart
-  );
+  typeInheritance(newTr, tableRect.tableStart);
   newTr.setSelection(Selection.near(newTr.doc.resolve(selPos), 1));
 
   if (tr) {

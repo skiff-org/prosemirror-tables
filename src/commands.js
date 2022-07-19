@@ -87,7 +87,7 @@ export function addColumn(tr, {map, tableStart, table}, col) {
       );
     }
   }
-  typeInheritance(tr, tr.doc.nodeAt(tableStart - 1), tableStart);
+  typeInheritance(tr, tableStart);
 
   return tr;
 }
@@ -198,7 +198,7 @@ export function addRow(tr, {map, tableStart, table}, row) {
     }
   }
   tr.insert(rowPos, tableNodeTypes(table.type.schema).row.create(null, cells));
-  typeInheritance(tr, tr.doc.nodeAt(tableStart - 1), tableStart);
+  typeInheritance(tr, tableStart);
   tr.setSelection(TextSelection.near(tr.doc.resolve(rowPos)));
   return tr;
 }

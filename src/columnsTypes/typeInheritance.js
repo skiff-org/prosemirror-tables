@@ -9,18 +9,19 @@ import {TableMap} from '../tablemap';
  * new or their column type was changed.
  *
  * @param tr A transaction to add the changes to
- * @param table A Node of type schema.types.table. This Node should come from tr.doc,
- * so that its positions can be used in tr methods.
- * @param tableStart table's tableStart position, i.e., the pos of the first row
- * (1 + pos of table itself)
+ * @param tableStart The table's tableStart position, i.e., the pos of the first row
+ * (1 + pos of table itself) relative to tr.doc
  * @return tr
  */
-export const typeInheritance = (tr, table, tableStart) => {
+export const typeInheritance = (tr, tableStart) => {
+  // Subtract one to go from tableStart (start of first row) to actual table node's pos.
+  const table = tr.doc.nodeAt(tableStart - 1);
+
   if (!table.attrs.headers || !table.maybeChild(0)) return tr;
 
   // Store col types in colTypes (null if we should skip checking the column).
   // we don't allow cells merging, so we fill comfortable to check only the first row
-  const tableMap = TableMap.get(table);
+  const tableMap = TableMap.get(table); // Will error if table is not a table
   const colTypes = [];
   for (let col = tableMap.width - 1; col >= 0; col--) {
     if (!table.child(0).maybeChild(col)) colTypes[col] = null;

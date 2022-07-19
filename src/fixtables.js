@@ -124,6 +124,6 @@ export function fixTable(state, table, tablePos, tr) {
     }
     pos = end;
   }
-  typeInheritance(tr, tr.doc.nodeAt(tablePos), tablePos + 1);
+  typeInheritance(tr, tablePos + 1);
   return tr.setMeta(fixTablesKey, {fixTables: true});
 }
