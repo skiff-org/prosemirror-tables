@@ -87,7 +87,8 @@ export function addColumn(tr, {map, tableStart, table}, col) {
       );
     }
   }
-  typeInheritance(tr, tableStart);
+  // TODO: If we allow non-text columns / text cells needed rendering, we'd need typeInheritance:
+  // typeInheritance(tr, tableStart);
 
   return tr;
 }

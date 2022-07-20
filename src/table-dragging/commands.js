@@ -1,5 +1,4 @@
 import {Selection} from 'prosemirror-state';
-import {typeInheritance} from '../columnsTypes/typeInheritance';
 
 export const switchRows = (
   view,

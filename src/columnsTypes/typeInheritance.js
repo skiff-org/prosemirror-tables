@@ -40,7 +40,7 @@ export const typeInheritance = (tr, tableStart) => {
       const colType = colTypes[col];
       if (colType === null || !table.child(row).maybeChild(col)) continue;
 
-      const cell = table.child(row).maybeChild(col);
+      const cell = table.child(row).child(col);
       if (cell.attrs.type !== colType) {
         const cellPos = tableMap.map[row * tableMap.width + col] + tableStart;
         const typeHandler = columnTypesMap[colType].handler;
