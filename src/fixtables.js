@@ -118,7 +118,9 @@ export function fixTable(state, table, tablePos, tr) {
       }
       const nodes = [];
       for (let j = 0; j < add; j++)
-        nodes.push(tableNodeTypes(state.schema)[tableNodeType].createAndFill());
+        nodes.push(
+          tableNodeTypes(state.schema)[tableNodeType].createAndFill({})
+        );
       const side = (i == 0 || first == i - 1) && last == i ? pos + 1 : end - 1;
       tr.insert(tr.mapping.map(side), nodes);
     }

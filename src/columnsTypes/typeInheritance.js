@@ -27,7 +27,7 @@ export const typeInheritance = (tr, tableStart) => {
     if (!table.child(0).maybeChild(col)) colTypes[col] = null;
     else {
       const header = table.child(0).child(col);
-      colTypes[col] = header.attrs.type;
+      colTypes[col] = header.attrs.type ?? 'text';
     }
   }
 

@@ -85,9 +85,9 @@ function ensureRectangular(schema, rows) {
   for (let r = 0; r < widths.length; r++) {
     if (r >= rows.length) rows.push(Fragment.empty);
     if (widths[r] < width) {
-      const empty = tableNodeTypes(schema).cell.createAndFill(),
-        cells = [];
-      for (let i = widths[r]; i < width; i++) cells.push(empty);
+      const cells = [];
+      for (let i = widths[r]; i < width; i++)
+        cells.push(tableNodeTypes(schema).cell.createAndFill({}));
       rows[r] = rows[r].append(Fragment.from(cells));
     }
   }
@@ -95,7 +95,7 @@ function ensureRectangular(schema, rows) {
 }
 
 export function fitSlice(nodeType, slice) {
-  const node = nodeType.createAndFill();
+  const node = nodeType.createAndFill({});
   const tr = new Transform(node).replace(0, node.content.size, slice);
   return tr.doc;
 }
@@ -163,9 +163,9 @@ export function clipCells({width, height, rows}, newWidth, newHeight) {
 // Make sure a table has at least the given width and height. Return
 // true if something was changed.
 function growTable(tr, map, table, start, width, height, mapFrom) {
+  let changed = false;
   const schema = tr.doc.type.schema,
     types = tableNodeTypes(schema);
-  let empty, emptyHead;
   if (width > map.width) {
     for (let row = 0, rowEnd = 0; row < map.height; row++) {
       const rowNode = table.child(row);
@@ -173,10 +173,11 @@ function growTable(tr, map, table, start, width, height, mapFrom) {
       const cells = [];
       let add;
       if (rowNode.lastChild == null || rowNode.lastChild.type == types.cell)
-        add = empty || (empty = types.cell.createAndFill());
-      else add = emptyHead || (emptyHead = types.header_cell.createAndFill());
+        add = types.cell.createAndFill({});
+      else add = types.header_cell.createAndFill({});
       for (let i = map.width; i < width; i++) cells.push(add);
       tr.insert(tr.mapping.slice(mapFrom).map(rowEnd - 1 + start), cells);
+      changed = true;
     }
   }
   if (height > map.height) {
@@ -192,8 +193,8 @@ function growTable(tr, map, table, start, width, height, mapFrom) {
           : table.nodeAt(map.map[start + i]).type == types.header_cell;
       cells.push(
         header
-          ? emptyHead || (emptyHead = types.header_cell.createAndFill())
-          : empty || (empty = types.cell.createAndFill())
+          ? types.header_cell.createAndFill({})
+          : types.cell.createAndFill({})
       );
     }
 
@@ -201,11 +202,11 @@ function growTable(tr, map, table, start, width, height, mapFrom) {
       rows = [];
     for (let i = map.height; i < height; i++) rows.push(emptyRow);
     tr.insert(tr.mapping.slice(mapFrom).map(start + table.nodeSize - 2), rows);
+    changed = true;
   }
-  if (empty || emptyHead) {
-    typeInheritance(tr, start);
-    return true;
-  } else return false;
+  // No need for typeInheritance because this function is only called from insertCells, which
+  // calls that itself later.
+  return changed;
 }
 
 // Make sure the given line (left, top) to (right, top) doesn't cross
