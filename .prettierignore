@@ -1,6 +1,9 @@
-README.md
-
-/node_modules
-.tern-port
+/package.json
+/bin
 /dist
+/.eslintrc
+/.vscode
+/.stylelintrc.json
+README.md
+.tern-port
 /demo_bundle.js

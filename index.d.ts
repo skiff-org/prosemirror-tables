@@ -32,6 +32,7 @@ export interface TableNodesOptions {
   tableGroup?: string;
   cellContent: string;
   cellAttributes: { [key: string]: CellAttributes };
+  cellContentGroup: string;
 }
 
 export type getFromDOM = (dom: Element) => any;
@@ -41,6 +42,16 @@ export interface CellAttributes {
   default: any;
   getFromDOM?: getFromDOM;
   setDOMAttr?: setDOMAttr;
+}
+
+export enum NodeNames {
+    TABLE= 'table',
+    TABLE_ROW= 'table_row',
+    TABLE_CELL= 'table_cell',
+    TABLE_HEADER= 'table_header',
+    CHECKBOX= 'checkbox',
+    DATE= 'date',
+    LABEL= 'label'
 }
 
 export interface TableNodes {
@@ -131,13 +142,19 @@ export interface CellBookmark {
 }
 
 export function tableEditing(options?: TableEditingOptions): Plugin;
+export function columnHandles(): Plugin;
 
 export function deleteTable(
   state: EditorState,
   dispatch?: (tr: Transaction) => void,
 ): boolean;
 
-export function goToNextCell(
+export function sortColumn(
+  state: EditorState,
+  dispatch?: (tr: Transaction) => void
+): boolean;
+
+export function goToNextCell<S extends Schema = any>(
   direction: number,
 ): (state: EditorState, dispatch?: (tr: Transaction) => void) => boolean;
 
@@ -306,6 +323,74 @@ export function nextCell(
   axis: string,
   dir: number,
 ): null | ResolvedPos;
+
+export function fixTables(
+  state: EditorState,
+  oldState?: EditorState,
+): null | Transaction;
+
+
+export function addBottomRow(
+  state: EditorState,   
+  dispatch: (tr: Transaction) => void,
+  pos: number
+): void
+  
+
+export function addRightColumn(
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+  pos: number
+): void
+
+export function deleteLastRow(
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): void
+
+export function deleteLastCol(
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): void
+
+export function changeCellsBackgroundColor(
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+  color: string
+): void
+
+export function toggleTableHeaders(
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+  view: EditorView
+): void
+
+export function getDeleteCommand(
+  state: EditorState
+): (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+) => void
+
+export function isCellColorActive(
+  state: EditorState,
+  color: string
+)
+
+export function getSelectedCellsCoords(
+  view: EditorView
+): {
+  top: number,
+  bottom: number,
+  right: number,
+  left: number,
+  width: number,
+  height: number
+}
+
+export function setBaseName(
+  name: string
+)
 
 export function fixTables(
   state: EditorState,
