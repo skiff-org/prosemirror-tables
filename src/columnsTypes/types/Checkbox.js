@@ -1,4 +1,5 @@
 import CellDataType from './Type';
+import {NodeNames} from '../../schema/nodeNames';
 
 class CheckboxType extends CellDataType {
   /**
@@ -15,6 +16,15 @@ class CheckboxType extends CellDataType {
     return schema.nodes.checkbox.create({
       checked: typeof checked === 'boolean' ? checked : false
     });
+  }
+
+  /**
+   * check cell content is valid for the current type
+   */
+  validateContent(cell) {
+    return (
+      cell.childCount === 1 && cell.firstChild.type.name === NodeNames.CHECKBOX
+    );
   }
 }
 

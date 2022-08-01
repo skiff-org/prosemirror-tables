@@ -82,6 +82,13 @@ class CellDataType {
     }
     return [];
   }
+
+  /**
+   * check cell content is valid for the current type
+   */
+  validateContent(_cell) {
+    return true;
+  }
 }
 
 export default CellDataType;
