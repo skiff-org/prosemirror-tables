@@ -9,7 +9,7 @@ const useClickOutside = (onClose, eventType) => {
   const escapeListener = useCallback(
     (e) => {
       if (e.key === 'Escape') {
-        onClose();
+        onClose?.(e);
       }
     },
     [onClose]

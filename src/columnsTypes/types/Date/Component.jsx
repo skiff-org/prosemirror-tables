@@ -69,6 +69,10 @@ export const DatePickerComponent = ({view, node, pos}) => {
   const ref = useClickOutside((e) => {
     if (!view.dom.contains(e.target)) return;
 
+    // Skip click events, only listen for Esc events.
+    // See https://linear.app/skiff/issue/ENG-3320/table-date-picker-breaks-if-you-click-directly-from-one-cell-to
+    if (e.type === 'click') return;
+
     const {tr} = view.state;
     tr.setMeta(tableDateMenuKey, {
       id: window.id,
