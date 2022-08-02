@@ -16,7 +16,6 @@ import {TableMap} from '../tablemap';
 export const typeInheritance = (tr, tableStart) => {
   // Subtract one to go from tableStart (start of first row) to actual table node's pos.
   const table = tr.doc.nodeAt(tableStart - 1);
-  console.log(table, tr.steps, 'before');
 
   if (!table.attrs.headers || !table.maybeChild(0)) return tr;
 
@@ -55,7 +54,7 @@ export const typeInheritance = (tr, tableStart) => {
         });
 
         // create cell content according to type
-        const cellContent = cell.type.createAndFill(
+        const updatedCellWithContent = cell.type.createAndFill(
           newAttrs,
           typeHandler.renderContentNode(
             table.type.schema,
@@ -66,11 +65,14 @@ export const typeInheritance = (tr, tableStart) => {
         );
 
         // replace the cell with new cell with updated type and content
-        tr.replaceRangeWith(cellPos, cellPos + cell.nodeSize, cellContent);
+        tr.replaceRangeWith(
+          cellPos,
+          cellPos + cell.nodeSize,
+          updatedCellWithContent
+        );
       }
     }
   }
-  const table1 = tr.doc.nodeAt(tableStart - 1);
-  console.log(table1, tr.steps, 'after');
+
   return tr;
 };
