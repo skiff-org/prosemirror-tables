@@ -1,7 +1,6 @@
 import {NodeSelection} from 'prosemirror-state';
 import {addBottomRow, addRightColumn} from './commands';
 import {createButtonWithIcon, createElementWithClass} from './util';
-import {typeInheritance} from './headers/headers-menu/index';
 import {tableFiltersMenuKey} from './filters/utils';
 import {tableHeadersMenuKey} from './columnsTypes/types.config';
 
@@ -177,9 +176,6 @@ export class TableView {
       return false;
     }
     this.buildActiveFiltersButton(node);
-    if (this.node.attrs.headers) {
-      typeInheritance(this.view, node, this.getPos());
-    }
 
     if (!this.node.sameMarkup(node)) {
       return false;

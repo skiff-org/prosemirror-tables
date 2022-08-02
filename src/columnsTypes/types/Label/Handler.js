@@ -1,6 +1,7 @@
 import CellDataType from '../Type';
 import {randomString, stringToColor, updateTablesLabels} from './utils';
 import {findParentNodeOfTypeClosestToPos} from 'prosemirror-utils';
+import {NodeNames} from '../../../schema/nodeNames';
 
 class LabelType extends CellDataType {
   /**
@@ -47,6 +48,15 @@ class LabelType extends CellDataType {
     return schema.nodes.label.create({
       labels
     });
+  }
+
+  /**
+   * check cell content is valid for the current type
+   */
+  validateContent(cell) {
+    return (
+      cell.childCount === 1 && cell.firstChild.type.name === NodeNames.LABEL
+    );
   }
 }
 

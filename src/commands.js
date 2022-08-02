@@ -21,6 +21,7 @@ import {
   sortNumVsString
 } from './util';
 import {tableNodeTypes} from './schema/schema';
+import {typeInheritance} from './columnsTypes/typeInheritance';
 
 const MAX_COLS = 500;
 
@@ -86,6 +87,8 @@ export function addColumn(tr, {map, tableStart, table}, col) {
       );
     }
   }
+  // TODO: If we allow non-text columns / text cells needed rendering, we'd need typeInheritance:
+  // typeInheritance(tr, tableStart);
 
   return tr;
 }
@@ -197,6 +200,7 @@ export function addRow(tr, {map, tableStart, table}, row) {
   }
   tr.insert(rowPos, tableNodeTypes(table.type.schema).row.create(null, cells));
   tr.setSelection(TextSelection.near(tr.doc.resolve(rowPos)));
+  typeInheritance(tr, tableStart);
   return tr;
 }
 
@@ -285,6 +289,7 @@ export function removeRow(tr, {map, table, tableStart}, row) {
       const newPos = map.positionAt(row + 1, col, table);
       tr.insert(tr.mapping.slice(mapFrom).map(tableStart + newPos), copy);
       col += cell.attrs.colspan - 1;
+      // TODO: typeInheritance
     }
   }
 }
@@ -400,6 +405,7 @@ export function mergeCells(state, dispatch) {
       const start = isEmpty(mergedCell) ? mergedPos + 1 : end;
       tr.replaceWith(start + rect.tableStart, end + rect.tableStart, content);
     }
+    // TODO: typeInheritance
     tr.setSelection(
       new CellSelection(tr.doc.resolve(mergedPos + rect.tableStart))
     );
@@ -478,6 +484,7 @@ export function splitCellWithType(getCellType) {
             lastCell && tr.doc.resolve(lastCell)
           )
         );
+      // TODO: typeInheritance
       dispatch(tr);
     }
     return true;
@@ -776,6 +783,7 @@ export function sortColumn(view, colNumber, pos, dir) {
     )
   );
 
+  // No need for typeInheritance because we haven't changed the column's type or added new cells
   tr.replaceWith(rect.tableStart, rect.tableStart + rect.table.content.size, [
     header,
     ...newRowsArray

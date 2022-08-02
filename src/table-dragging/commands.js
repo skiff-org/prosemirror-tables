@@ -24,6 +24,7 @@ export const switchRows = (
     rowsSlice
   );
   newTr.setSelection(Selection.near(newTr.doc.resolve(selPos), 1));
+  // No need for typeInheritance because we haven't changed column types or add new cells.
 
   if (tr) {
     return newTr;
@@ -55,6 +56,7 @@ export const switchCols = (
     newRowsSlice
   );
   newTr.setSelection(Selection.near(newTr.doc.resolve(selPos), 1));
+  // No need for typeInheritance because we also switch the column headers (hence types).
 
   if (tr) {
     return newTr;

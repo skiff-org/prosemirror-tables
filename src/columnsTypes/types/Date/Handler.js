@@ -1,5 +1,6 @@
 import CellDataType from '../Type';
 import {buildDateObjectFromText, DATE_FORMAT, formatDate} from './utils';
+import {NodeNames} from '../../../schema/nodeNames';
 
 class DateType extends CellDataType {
   /**
@@ -22,6 +23,15 @@ class DateType extends CellDataType {
       dateInMili !== -1
         ? [schema.text(formatDate(new Date(dateInMili), DATE_FORMAT))]
         : []
+    );
+  }
+
+  /**
+   * check cell content is valid for the current type
+   */
+  validateContent(cell) {
+    return (
+      cell.childCount === 1 && cell.firstChild.type.name === NodeNames.DATE
     );
   }
 }
