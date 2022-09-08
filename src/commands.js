@@ -924,6 +924,7 @@ export const deleteLastRow = (state, dispatch) => {
   );
 
   dispatch(tr);
+  return true;
 };
 
 export const deleteLastCol = (state, dispatch) => {
@@ -941,6 +942,7 @@ export const deleteLastCol = (state, dispatch) => {
   );
 
   dispatch(tr);
+  return true;
 };
 
 export const changeCellsBackgroundColor = (state, dispatch, color) => {
@@ -949,12 +951,9 @@ export const changeCellsBackgroundColor = (state, dispatch, color) => {
   const {tr} = state;
   state.selection.forEachCell((cell, pos, parent) => {
     if (parent.attrs.hidden) return;
-    tr.setNodeMarkup(
-      pos,
-      undefined,
-      Object.assign({}, cell.attrs, {background: color})
-    );
+    tr.setNodeMarkup(pos, undefined, {...cell.attrs, background: color});
   });
+
   dispatch(tr);
 };
 

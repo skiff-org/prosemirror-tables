@@ -15,7 +15,6 @@ import {
 import {key as tableEditingKey} from './util';
 import {drawCellSelection, normalizeSelection} from './cellselection';
 import {fixTables, fixTablesKey} from './fixtables';
-import tablePopUpMenu, {tablePopUpMenuKey} from './tooltip-menus/index';
 import CheckboxNodeView from './columnsTypes/types/Checkbox/NodeView';
 import DateComponent from './columnsTypes/types/Date/Component.jsx';
 import DateTypeNodeView from './columnsTypes/types/Date/NodeView';
@@ -128,7 +127,6 @@ export {
   insertCells as __insertCells,
   clipCells as __clipCells
 } from './copypaste';
-export {tablePopUpMenu, tablePopUpMenuKey};
 export {tableHeadersMenu} from './headers/headers-menu/index';
 export {selectionShadowPlugin} from './selectionshadow';
 export {typesEnforcer} from './columnsTypes/typesEnforcer';

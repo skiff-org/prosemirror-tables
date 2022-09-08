@@ -356,7 +356,7 @@ export function deleteLastCol(
 export function changeCellsBackgroundColor(
   state: EditorState,
   dispatch: (tr: Transaction) => void,
-  color: string
+  color: string,
 ): void
 
 export function toggleTableHeaders(
@@ -375,7 +375,7 @@ export function getDeleteCommand(
 export function isCellColorActive(
   state: EditorState,
   color: string
-)
+): boolean
 
 export function getSelectedCellsCoords(
   view: EditorView
@@ -390,7 +390,7 @@ export function getSelectedCellsCoords(
 
 export function setBaseName(
   name: string
-)
+): void
 
 export function fixTables(
   state: EditorState,
