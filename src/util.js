@@ -1,11 +1,21 @@
 // Various helper function for working with tables
 
-import { PluginKey } from 'prosemirror-state';
-
-import { TableMap } from './tablemap';
-import { tableNodeTypes } from './schema';
+import {PluginKey} from 'prosemirror-state';
+import {findParentNodeOfTypeClosestToPos} from 'prosemirror-utils';
+import {TableMap} from './tablemap';
+import {tableNodeTypes} from './schema/schema';
+import {selectedRect} from './commands';
+import {CellSelection} from './cellselection';
 
 export const key = new PluginKey('selectingCells');
+let baseName = 'czi';
+
+export function setBaseName(name) {
+  baseName = name;
+}
+export function getBaseName() {
+  return baseName;
+}
 
 export function cellAround($pos) {
   for (let d = $pos.depth - 1; d > 0; d--)
@@ -24,14 +34,14 @@ export function cellWrapping($pos) {
 }
 
 export function isInTable(state) {
-  let $head = state.selection.$head;
+  const $head = state.selection.$head;
   for (let d = $head.depth; d > 0; d--)
     if ($head.node(d).type.spec.tableRole == 'row') return true;
   return false;
 }
 
 export function selectionCell(state) {
-  let sel = state.selection;
+  const sel = state.selection;
   if (sel.$anchorCell) {
     return sel.$anchorCell.pos > sel.$headCell.pos
       ? sel.$anchorCell
@@ -48,7 +58,7 @@ function cellNear($pos) {
     after;
     after = after.firstChild, pos++
   ) {
-    let role = after.type.spec.tableRole;
+    const role = after.type.spec.tableRole;
     if (role == 'cell' || role == 'header_cell') return $pos.doc.resolve(pos);
   }
   for (
@@ -56,10 +66,12 @@ function cellNear($pos) {
     before;
     before = before.lastChild, pos--
   ) {
-    let role = before.type.spec.tableRole;
+    const role = before.type.spec.tableRole;
     if (role == 'cell' || role == 'header_cell')
       return $pos.doc.resolve(pos - before.nodeSize);
   }
+
+  return null;
 }
 
 export function pointsAtCell($pos) {
@@ -83,21 +95,21 @@ export function colCount($pos) {
 }
 
 export function nextCell($pos, axis, dir) {
-  let start = $pos.start(-1),
+  const start = $pos.start(-1),
     map = TableMap.get($pos.node(-1));
-  let moved = map.nextCell($pos.pos - start, axis, dir);
+  const moved = map.nextCell($pos.pos - start, axis, dir);
   return moved == null ? null : $pos.node(0).resolve(start + moved);
 }
 
 export function setAttr(attrs, name, value) {
-  let result = {};
-  for (let prop in attrs) result[prop] = attrs[prop];
+  const result = {};
+  for (const prop in attrs) result[prop] = attrs[prop];
   result[name] = value;
   return result;
 }
 
 export function removeColSpan(attrs, pos, n = 1) {
-  let result = setAttr(attrs, 'colspan', attrs.colspan - n);
+  const result = setAttr(attrs, 'colspan', attrs.colspan - n);
   if (result.colwidth) {
     result.colwidth = result.colwidth.slice();
     result.colwidth.splice(pos, n);
@@ -107,7 +119,7 @@ export function removeColSpan(attrs, pos, n = 1) {
 }
 
 export function addColSpan(attrs, pos, n = 1) {
-  let result = setAttr(attrs, 'colspan', attrs.colspan + n);
+  const result = setAttr(attrs, 'colspan', attrs.colspan + n);
   if (result.colwidth) {
     result.colwidth = result.colwidth.slice();
     for (let i = 0; i < n; i++) result.colwidth.splice(pos, 0, 0);
@@ -116,9 +128,110 @@ export function addColSpan(attrs, pos, n = 1) {
 }
 
 export function columnIsHeader(map, table, col) {
-  let headerCell = tableNodeTypes(table.type.schema).header_cell;
+  const headerCell = tableNodeTypes(table.type.schema).header_cell;
   for (let row = 0; row < map.height; row++)
     if (table.nodeAt(map.map[col + row * map.width]).type != headerCell)
       return false;
   return true;
 }
+
+export function getColIndex(state, pos) {
+  const resPos = state.doc.resolve(pos + 1); // make sure we are in the table and not before it
+
+  const table = findParentNodeOfTypeClosestToPos(
+    resPos,
+    state.schema.nodes.table
+  );
+
+  if (!table) return 0;
+
+  const map = TableMap.get(table.node);
+
+  const {pos: insertCellPos} = findParentNodeOfTypeClosestToPos(
+    resPos,
+    state.schema.nodes.table_cell
+  );
+
+  const insertCellIndex = map.map.indexOf(insertCellPos - table.start);
+
+  if (insertCellIndex === -1) return null;
+
+  return insertCellIndex % map.width;
+}
+
+export const getColIndexFromSelectedRect = (state, pos) => {
+  const tableRect = selectedRect(state);
+  const cellIndex = tableRect.map.map.indexOf(pos - tableRect.tableStart);
+
+  if (cellIndex === -1) return null;
+
+  return cellIndex % tableRect.map.width;
+};
+
+export const createElementWithClass = (type, className, datatest) => {
+  const el = document.createElement(type);
+  el.className = className;
+  if (datatest) {
+    el.dataset.test = datatest;
+  }
+
+  return el;
+};
+
+export const createButtonWithIcon = (className) => {
+  const button = createElementWithClass('button', `${className}-button`);
+  const icon = createElementWithClass('span', `${className}-icon`);
+  const buttonLabel = createElementWithClass('span', `${className}-label`);
+
+  button.appendChild(icon);
+  button.appendChild(buttonLabel);
+
+  return button;
+};
+
+export const getRowIndex = (state, pos) => {
+  const tableRect = selectedRect(state);
+  const cellIndex = tableRect.map.map.indexOf(pos - tableRect.tableStart);
+
+  if (cellIndex === -1) return null;
+
+  const rowNumber = Math.floor(cellIndex / tableRect.map.width);
+
+  return rowNumber;
+};
+
+export const getColCells = (headerPos, state) => {
+  const ColSelection = CellSelection.colSelection(state.doc.resolve(headerPos));
+  const cells = [];
+
+  ColSelection.forEachCell((cell, pos) => cells.push({node: cell, pos}));
+  cells.splice(0, 1);
+  return cells;
+};
+
+export const sortCollator = new Intl.Collator(undefined, {
+  numeric: true,
+  sensitivity: 'base'
+});
+
+export const sortNumVsString = (direction, textA, textB, collator) => {
+  // give first priority to numbers - so if only one content is numeric he will always be first
+  const aNumber = parseFloat(textA);
+  const bNumber = parseFloat(textB);
+
+  const aIsNotNumber = isNaN(aNumber);
+  const bIsNotNumber = isNaN(bNumber);
+
+  if (aIsNotNumber && bIsNotNumber) {
+    // if not numeric values sort alphabetically
+    return direction * (collator || sortCollator).compare(textA, textB);
+  }
+
+  if (!aIsNotNumber && bIsNotNumber) return -1 * direction;
+  if (aIsNotNumber && !bIsNotNumber) return 1 * direction;
+  return direction > 0 ? aNumber - bNumber : bNumber - aNumber;
+};
+
+// sometimes cells has invisible character when they are empty - remove it
+export const removeInvisibleCharacterFromText = (text) =>
+  text.replace(/[\u200B]/g, '');

@@ -4,17 +4,24 @@
 // transaction, the shapes of tables are normalized to be rectangular
 // and not contain overlapping cells.
 
-import { Plugin } from 'prosemirror-state';
+import {Plugin} from 'prosemirror-state';
 
 import {
   handleTripleClick,
   handleKeyDown,
   handlePaste,
-  handleMouseDown,
+  handleMouseDown
 } from './input';
-import { key as tableEditingKey } from './util';
-import { drawCellSelection, normalizeSelection } from './cellselection';
-import { fixTables, fixTablesKey } from './fixtables';
+import {key as tableEditingKey} from './util';
+import {drawCellSelection, normalizeSelection} from './cellselection';
+import {fixTables, fixTablesKey} from './fixtables';
+import tablePopUpMenu, {tablePopUpMenuKey} from './tooltip-menus/index';
+import CheckboxNodeView from './columnsTypes/types/Checkbox/NodeView';
+import DateComponent from './columnsTypes/types/Date/Component.jsx';
+import DateTypeNodeView from './columnsTypes/types/Date/NodeView';
+import LabelTypeNodeView from './columnsTypes/types/Label/NodeView';
+import LabelComponent from './columnsTypes/types/Label/Component.jsx';
+import {addLabelsToPastedTable} from './copypaste';
 
 // :: () → Plugin
 //
@@ -28,7 +35,7 @@ import { fixTables, fixTablesKey } from './fixtables';
 // rather broadly, and other plugins, like the gap cursor or the
 // column-width dragging plugin, might want to get a turn first to
 // perform more specific behavior.
-export function tableEditing({ allowTableNodeSelection = false } = {}) {
+export function tableEditing({allowTableNodeSelection = false} = {}) {
   return new Plugin({
     key: tableEditingKey,
 
@@ -40,24 +47,26 @@ export function tableEditing({ allowTableNodeSelection = false } = {}) {
         return null;
       },
       apply(tr, cur) {
-        let set = tr.getMeta(tableEditingKey);
+        const set = tr.getMeta(tableEditingKey);
         if (set != null) return set == -1 ? null : set;
         if (cur == null || !tr.docChanged) return cur;
-        let { deleted, pos } = tr.mapping.mapResult(cur);
+        const {deleted, pos} = tr.mapping.mapResult(cur);
         return deleted ? null : pos;
-      },
+      }
     },
 
     props: {
       decorations: drawCellSelection,
 
       handleDOMEvents: {
-        mousedown: handleMouseDown,
+        mousedown: handleMouseDown
       },
 
       createSelectionBetween(view) {
         if (tableEditingKey.getState(view.state) != null)
           return view.state.selection;
+
+        return null;
       },
 
       handleTripleClick,
@@ -65,19 +74,30 @@ export function tableEditing({ allowTableNodeSelection = false } = {}) {
       handleKeyDown,
 
       handlePaste,
+
+      nodeViews: {
+        checkbox: (node, view, getPos) =>
+          new CheckboxNodeView(node, view, getPos),
+        date: (node, view, getPos, decorations) =>
+          new DateTypeNodeView(node, view, getPos, decorations, DateComponent),
+        label: (node, view, getPos, decorations) =>
+          new LabelTypeNodeView(node, view, getPos, decorations, LabelComponent)
+      },
+
+      transformPasted: addLabelsToPastedTable
     },
 
     appendTransaction(_, oldState, state) {
       return normalizeSelection(
         state,
         fixTables(state, oldState),
-        allowTableNodeSelection,
+        allowTableNodeSelection
       );
-    },
+    }
   });
 }
 
-export { fixTables, handlePaste, fixTablesKey };
+export {fixTables, handlePaste, fixTablesKey};
 export {
   cellAround,
   isInTable,
@@ -92,19 +112,27 @@ export {
   removeColSpan,
   addColSpan,
   columnIsHeader,
+  setBaseName
 } from './util';
-export { tableNodes, tableNodeTypes } from './schema';
-export { CellSelection } from './cellselection';
-export { TableMap } from './tablemap';
-export { tableEditingKey };
+export {tableNodes, tableNodeTypes} from './schema/schema';
+export {NodeNames} from './schema/nodeNames';
+export {CellSelection, getSelectedCellsCoords} from './cellselection';
+export {columnHandles} from './columnhandles';
+export {TableMap} from './tablemap';
+export {tableEditingKey};
 export * from './commands';
-export {
-  columnResizing,
-  key as columnResizingPluginKey,
-} from './columnresizing';
-export { updateColumns as updateColumnsOnResize, TableView } from './tableview';
+export {columnResizing, key as columnResizingPluginKey} from './columnresizing';
+export {updateColumns as updateColumnsOnResize, TableView} from './tableview';
 export {
   pastedCells as __pastedCells,
   insertCells as __insertCells,
-  clipCells as __clipCells,
+  clipCells as __clipCells
 } from './copypaste';
+export {tablePopUpMenu, tablePopUpMenuKey};
+export {tableHeadersMenu} from './headers/headers-menu/index';
+export {selectionShadowPlugin} from './selectionshadow';
+export {typesEnforcer} from './columnsTypes/typesEnforcer';
+export {TableDateMenu} from './columnsTypes/types/Date/datePopup';
+export {TableLabelMenu} from './columnsTypes/types/Label/labelPopup';
+export {TableFiltersMenu} from './filters/filters-menu';
+export {getDeleteCommand} from './input';

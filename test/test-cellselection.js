@@ -1,6 +1,6 @@
 import ist from 'ist';
-import { EditorState, NodeSelection } from 'prosemirror-state';
-import { Slice } from 'prosemirror-model';
+import {EditorState, NodeSelection} from 'prosemirror-state';
+import {Slice} from 'prosemirror-model';
 
 import {
   doc,
@@ -14,7 +14,7 @@ import {
   cHead,
   c,
   eq,
-  selectionFor,
+  selectionFor
 } from './build';
 import {
   CellSelection,
@@ -22,22 +22,22 @@ import {
   addRowAfter,
   addColumnBefore,
   addColumnAfter,
-  tableEditing,
+  tableEditing
 } from '../src/';
 
 describe('CellSelection', () => {
-  let t = doc(
+  const t = doc(
     table(
       tr(/* 2*/ cEmpty, /* 6*/ cEmpty, /*10*/ cEmpty),
       tr(/*16*/ cEmpty, /*20*/ cEmpty, /*24*/ cEmpty),
-      tr(/*30*/ cEmpty, /*34*/ cEmpty, /*36*/ cEmpty),
-    ),
+      tr(/*30*/ cEmpty, /*34*/ cEmpty, /*36*/ cEmpty)
+    )
   );
 
   function run(anchor, head, command) {
     let state = EditorState.create({
       doc: t,
-      selection: CellSelection.create(t, anchor, head),
+      selection: CellSelection.create(t, anchor, head)
     });
     command(state, (tr) => (state = state.apply(tr)));
     return state;
@@ -88,29 +88,29 @@ describe('CellSelection.content', () => {
         table(
           tr(c11, cAnchor, cEmpty),
           tr(c11, cEmpty, cHead),
-          tr(c11, c11, c11),
-        ),
+          tr(c11, c11, c11)
+        )
       ).content(),
       slice(table('<a>', tr(c11, cEmpty), tr(cEmpty, c11))),
-      eq,
+      eq
     ));
 
   it('understands spanning cells', () =>
     ist(
       selectionFor(
-        table(tr(cAnchor, c(2, 2), c11, c11), tr(c11, cHead, c11, c11)),
+        table(tr(cAnchor, c(2, 2), c11, c11), tr(c11, cHead, c11, c11))
       ).content(),
       slice(table(tr(c11, c(2, 2), c11), tr(c11, c11))),
-      eq,
+      eq
     ));
 
   it('cuts off cells sticking out horizontally', () =>
     ist(
       selectionFor(
-        table(tr(c11, cAnchor, c(2, 1)), tr(c(4, 1)), tr(c(2, 1), cHead, c11)),
+        table(tr(c11, cAnchor, c(2, 1)), tr(c(4, 1)), tr(c(2, 1), cHead, c11))
       ).content(),
-      slice(table(tr(c11, c11), tr(td({ colspan: 2 }, p())), tr(cEmpty, c11))),
-      eq,
+      slice(table(tr(c11, c11), tr(td({colspan: 2}, p())), tr(cEmpty, c11))),
+      eq
     ));
 
   it('cuts off cells sticking out vertically', () =>
@@ -120,11 +120,11 @@ describe('CellSelection.content', () => {
           tr(c11, c(1, 4), c(1, 2)),
           tr(cAnchor),
           tr(c(1, 2), cHead),
-          tr(c11),
-        ),
+          tr(c11)
+        )
       ).content(),
-      slice(table(tr(c11, td({ rowspan: 2 }, p()), cEmpty), tr(c11, c11))),
-      eq,
+      slice(table(tr(c11, td({rowspan: 2}, p()), cEmpty), tr(c11, c11))),
+      eq
     ));
 
   it('preserves column widths', () =>
@@ -132,29 +132,29 @@ describe('CellSelection.content', () => {
       selectionFor(
         table(
           tr(c11, cAnchor, c11),
-          tr(td({ colspan: 3, colwidth: [100, 200, 300] }, p('x'))),
-          tr(c11, cHead, c11),
-        ),
+          tr(td({colspan: 3, colwidth: [100, 200, 300]}, p('x'))),
+          tr(c11, cHead, c11)
+        )
       ).content(),
-      slice(table(tr(c11), tr(td({ colwidth: [200] }, p())), tr(c11))),
-      eq,
+      slice(table(tr(c11), tr(td({colwidth: [200]}, p())), tr(c11))),
+      eq
     ));
 });
 
 describe('normalizeSelection', () => {
-  let t = doc(
+  const t = doc(
     table(
       tr(/* 2*/ c11, /* 7*/ c11, /*12*/ c11),
       tr(/*19*/ c11, /*24*/ c11, /*29*/ c11),
-      tr(/*36*/ c11, /*41*/ c11, /*46*/ c11),
-    ),
+      tr(/*36*/ c11, /*41*/ c11, /*46*/ c11)
+    )
   );
 
-  function normalize(selection, { allowTableNodeSelection = false } = {}) {
-    let state = EditorState.create({
+  function normalize(selection, {allowTableNodeSelection = false} = {}) {
+    const state = EditorState.create({
       doc: t,
       selection,
-      plugins: [tableEditing({ allowTableNodeSelection })],
+      plugins: [tableEditing({allowTableNodeSelection})]
     });
     return state.apply(state.tr).selection;
   }
@@ -163,15 +163,15 @@ describe('normalizeSelection', () => {
     ist(
       normalize(NodeSelection.create(t, 0)),
       CellSelection.create(t, 2, 46),
-      eq,
+      eq
     );
   });
 
   it('retains a table node selection if the allowTableNodeSelection option is true', () => {
     ist(
-      normalize(NodeSelection.create(t, 0), { allowTableNodeSelection: true }),
+      normalize(NodeSelection.create(t, 0), {allowTableNodeSelection: true}),
       NodeSelection.create(t, 0),
-      eq,
+      eq
     );
   });
 
@@ -179,7 +179,7 @@ describe('normalizeSelection', () => {
     ist(
       normalize(NodeSelection.create(t, 1)),
       CellSelection.create(t, 2, 12),
-      eq,
+      eq
     );
   });
 
@@ -187,7 +187,7 @@ describe('normalizeSelection', () => {
     ist(
       normalize(NodeSelection.create(t, 2)),
       CellSelection.create(t, 2, 2),
-      eq,
+      eq
     );
   });
 });
