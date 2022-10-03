@@ -17,7 +17,6 @@ import {setNodeAttrs} from './schema/schema';
 import {cellExtraAttrs} from './schema/cellAttrs';
 import {CellSelection} from './cellselection';
 import {tableHeadersMenuKey} from './columnsTypes/types.config';
-import {isCellInFirstRow} from './columnsTypes/utils';
 
 export const key = new PluginKey('tableColumnHandles');
 

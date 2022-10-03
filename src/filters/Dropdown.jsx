@@ -105,7 +105,8 @@ const SelectDropdown = ({
     }
 
     setShowDropdown(!showDropdown);
-    if (!showDropdown) document.addEventListener('click', closeDropdown);
+    if (!showDropdown)
+      setTimeout(() => document.addEventListener('click', closeDropdown), 0);
   }, [closeDropdown, parentRef, showDropdown]);
 
   const updateValue = useCallback(

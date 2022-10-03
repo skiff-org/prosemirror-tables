@@ -119,9 +119,9 @@ function endOfTextblockVertical(view, state, dir, selection) {
     const coords = view.coordsAtPos($pos.pos, 1);
     for (let child = dom.firstChild; child; child = child.nextSibling) {
       let boxes;
-      if (child.nodeType == 1) {
+      if (child && child.nodeType == 1) {
         boxes = child.getClientRects();
-      } else if (child.nodeType == 3) {
+      } else if (child && child.nodeType == 3) {
         boxes = textRange(child, 0, child.nodeValue.length).getClientRects();
       } else {
         continue;
@@ -170,6 +170,7 @@ function endOfTextblockHorizontal(view, state, dir, selection) {
       ? view.docView.domAfterPos($head.before())
       : view.dom;
     const result =
+      !sel.focusNode ||
       !parentDOM.contains(
         sel.focusNode.nodeType == 1 ? sel.focusNode : sel.focusNode.parentNode
       ) ||
