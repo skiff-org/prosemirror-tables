@@ -1,6 +1,6 @@
 {
   "name": "@skiff-org/prosemirror-tables",
-  "version": "3.5.1",
+  "version": "3.6.0",
   "description": "ProseMirror's rowspan/colspan tables component",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -17,16 +17,8 @@
       "email": "kevin@barefootcoders.com"
     },
     {
-      "name": "Skiff Org",
-      "email": "prosemirror-tables@nightwatchapp.com"
-    },
-    {
-      "name": "Eduard Shvedai",
-      "email": "eshvedai@atlassian.com"
-    },
-    {
-      "name": "Huanhuan Huang",
-      "email": "hhuang@atlassian.com"
+      "name": "Skiff World, Inc.",
+      "email": "hello@skiff.org"
     }
   ],
   "peerDependencies": {
