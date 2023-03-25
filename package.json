@@ -1,6 +1,6 @@
 {
   "name": "@skiff-org/prosemirror-tables",
-  "version": "3.6.0",
+  "version": "3.6.1",
   "description": "ProseMirror's rowspan/colspan tables component",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -50,6 +50,7 @@
     "@rollup/plugin-commonjs": "^20.0.0",
     "@rollup/plugin-image": "^2.1.1",
     "@rollup/plugin-node-resolve": "^13.0.4",
+    "@rollup/plugin-terser": "^0.4.0",
     "@types/prosemirror-model": "1.13.0",
     "@types/prosemirror-state": "1.2.6",
     "@types/prosemirror-view": "1.17.1",
