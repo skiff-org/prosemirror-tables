@@ -7,6 +7,8 @@ import image from '@rollup/plugin-image';
 import terser from '@rollup/plugin-terser';
 import pkg from './package.json';
 
+import analyze from 'rollup-plugin-analyzer';
+
 export default {
   input: './src/index.js',
   output: [
@@ -30,6 +32,7 @@ export default {
       include: 'node_modules/**'
     }),
     image(),
-    terser()
+    terser(),
+    analyze()
   ]
 };
