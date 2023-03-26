@@ -5,9 +5,10 @@ import postcss from 'rollup-plugin-postcss';
 import resolve from '@rollup/plugin-node-resolve';
 import image from '@rollup/plugin-image';
 import terser from '@rollup/plugin-terser';
-import pkg from './package.json';
-
 import analyze from 'rollup-plugin-analyzer';
+import gzipPlugin from 'rollup-plugin-gzip';
+
+import pkg from './package.json';
 
 export default {
   input: './src/index.js',
@@ -23,7 +24,7 @@ export default {
   ],
   plugins: [
     external(),
-    postcss(),
+    postcss({minimize: true, sourceMap: false}),
     babel({
       exclude: 'node_modules/**'
     }),
@@ -33,6 +34,7 @@ export default {
     }),
     image(),
     terser(),
+    gzipPlugin(),
     analyze()
   ]
 };

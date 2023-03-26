@@ -1629,6 +1629,7 @@ __metadata:
     rollup-plugin-analyzer: 4.0.0
     rollup-plugin-babel: ^4.4.0
     rollup-plugin-commonjs: ^10.1.0
+    rollup-plugin-gzip: ^3.1.0
     rollup-plugin-node-resolve: ^5.2.0
     rollup-plugin-peer-deps-external: ^2.2.4
     rollup-plugin-postcss: ^4.0.1
@@ -5826,6 +5827,15 @@ __metadata:
   peerDependencies:
     rollup: ">=1.12.0"
   checksum: 396fc4d536e14dc6b5e62557370aaa5e0cd1b219b282783b8db5209341e8d8fa5d7b8f7190237e20d48ab0f400fb553b07d71080063ae2be17c793e4a61a6d4a
+  languageName: node
+  linkType: hard
+
+"rollup-plugin-gzip@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "rollup-plugin-gzip@npm:3.1.0"
+  peerDependencies:
+    rollup: ">=2.0.0"
+  checksum: b6e9671639f50bd4fda586603d784597abe19925ceda81fd4d3aa44f538b3be45f4d4b29ea1e251c20b2f2c3c16f498e762fac266114751f827b324acfca8b4f
   languageName: node
   linkType: hard
 

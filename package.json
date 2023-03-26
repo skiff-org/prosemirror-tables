@@ -1,6 +1,6 @@
 {
   "name": "@skiff-org/prosemirror-tables",
-  "version": "3.7.3",
+  "version": "3.7.4",
   "description": "ProseMirror's rowspan/colspan tables component",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -68,6 +68,7 @@
     "rollup-plugin-analyzer": "4.0.0",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-gzip": "^3.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.1",
