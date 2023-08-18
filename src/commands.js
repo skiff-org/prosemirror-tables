@@ -23,7 +23,7 @@ import {
 import {tableNodeTypes} from './schema/schema';
 import {typeInheritance} from './columnsTypes/typeInheritance';
 
-const MAX_COLS = 500;
+const MAX_COLS = 200;
 
 // Helper to get the selected rectangle in a table, if any. Adds table
 // map, table node, and table start offset to the object for

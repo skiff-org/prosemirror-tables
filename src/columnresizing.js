@@ -11,7 +11,7 @@ export const key = new PluginKey('tableColumnResizing');
 
 export function columnResizing({
   handleWidth = 5,
-  cellMinWidth = 75,
+  cellMinWidth = 120,
   View = TableView,
   lastColumnResizable = true
 } = {}) {
