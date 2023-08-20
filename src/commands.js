@@ -661,7 +661,7 @@ export const toggleHeaderCell = toggleHeader('cell', {
   useDeprecatedLogic: true
 });
 
-function findNextCell($cell, dir) {
+export function findNextCell($cell, dir) {
   if (dir < 0) {
     const before = $cell.nodeBefore;
     if (before) return $cell.pos - before.nodeSize;

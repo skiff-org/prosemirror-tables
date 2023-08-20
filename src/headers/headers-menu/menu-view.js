@@ -5,7 +5,6 @@ import {TextField} from './textField/text-field.prosemirror';
 import {tableHeadersMenuKey} from '../../columnsTypes/types.config';
 import {columnTypesMap} from '../../columnsTypes/types.config';
 import {createElementWithClass, getBaseName} from '../../util';
-import {goToNextCell} from '../../commands';
 
 /**
  * class attached to the editor and update table tooltip on every view update.
@@ -64,21 +63,33 @@ class TableHeadersMenuView {
         this.view.dispatch(tr);
       }
       // on tab, switch to the next cell
-      if (e.key === 'Tab') {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log('tab');
+      // if (e.key === 'Tab') {
+      //   e.preventDefault();
+      //   e.stopPropagation();
+      //   console.log('tab');
+      //   console.log('this.view.state', this.view.state);
+      //   console.log('selection', this.view.state.selection);
+      //   const {tr} = this.view.state;
+      //   const {pos, node} = this.headerData;
+      //   console.log('pos', pos);
+      //   console.log('node', node);
+      //   const nextNode = this.view.state.doc.nodeAt(pos + node.nodeSize);
+      //   const nextPos = pos + node.nodeSize;
+      //   // get pos from next node
+      //   console.log('nextNode', nextNode);
+      //   tr.setMeta(tableHeadersMenuKey, {
+      //     pos: nextPos,
+      //     dom: this.dom,
+      //     node: nextNode,
+      //     id: window.id,
+      //     action: 'open'
+      //   });
+      //   this.view.dispatch(tr);
 
-        // Use the goToNextCell command to shift focus to the next cell
-        if (goToNextCell(1)(this.view.state, this.view.dispatch)) {
-          // If the next cell exists and focus is shifted, then we don't need to do anything further.
-        } else {
-          // close menu - no more cells
-          const {tr} = this.view.state;
-          tr.setMeta(tableHeadersMenuKey, {action: 'close', id: window.id});
-          this.view.dispatch(tr);
-        }
-      }
+      //   this.onClose();
+      //   // rerender the menu
+      //   this.updateMenu(this.view);
+      // }
     });
 
     this.popUpDOM.appendChild(this.inputFieldDOM);
