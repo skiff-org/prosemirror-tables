@@ -62,6 +62,15 @@ class TableHeadersMenuView {
         tr.setMeta(tableHeadersMenuKey, {action: 'close', id: window.id});
         this.view.dispatch(tr);
       }
+      // on tab, switch to the next cell
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('tab');
+        const {tr} = this.view.state;
+        tr.setMeta(tableHeadersMenuKey, {action: 'close', id: window.id});
+        this.view.dispatch(tr);
+      }
     });
 
     this.popUpDOM.appendChild(this.inputFieldDOM);
